@@ -1,26 +1,40 @@
 package com.example.quizzer_onlinequizapp;
 
 public class CategoryModel {
-    private String imageUrl,title;
+    private String name,url;
+    private int sets;
 
-    public CategoryModel(String imageUrl, String title) {
-        this.imageUrl = imageUrl;
-        this.title = title;
+    public CategoryModel(){
+
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public CategoryModel(String name, String url, int sets) {
+        this.name = name;
+        this.url = url;
+        this.sets = sets;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public String getName() {
+        return name;
     }
 
-    public String getTitle() {
-        return title;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public int getSets() {
+        return sets;
+    }
+
+    public void setSets(int sets) {
+        this.sets = sets;
     }
 }

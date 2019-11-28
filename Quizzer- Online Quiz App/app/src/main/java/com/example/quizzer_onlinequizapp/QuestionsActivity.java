@@ -1,5 +1,6 @@
 package com.example.quizzer_onlinequizapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -12,13 +13,23 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionsActivity extends AppCompatActivity {
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
 
     private TextView question,noIndicator;
     private FloatingActionButton bookmarks;
@@ -27,8 +38,11 @@ public class QuestionsActivity extends AppCompatActivity {
     private  List<QuestionModel> list;
     private int position;
     private int score = 0;
-
     private int count=0;
+    private String category;
+    private int setNo;
+    private boolean isTabed=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,41 +58,89 @@ public class QuestionsActivity extends AppCompatActivity {
         shareBtn = findViewById(R.id.share_button);
         nextBtn = findViewById(R.id.next_button);
 
+
+        category = getIntent().getStringExtra("category");
+        setNo = getIntent().getIntExtra("setNo",1);
+
+
+
+
         list = new ArrayList<>();
 
-        list.add(new QuestionModel("Question 1","A","B","C","D","D"));
-        list.add(new QuestionModel("Question 2","A","B","C","D","D"));
-        list.add(new QuestionModel("Question 3","A","B","C","D","C"));
-        list.add(new QuestionModel("Question 4","A","B","C","D","D"));
-        list.add(new QuestionModel("Question 5","A","B","C","D","D"));
-        list.add(new QuestionModel("Question 6","A","B","C","D","D"));
-        list.add(new QuestionModel("Question 7","A","B","C","D","A"));
-
-        for(int i=0;i<4;i++){
-            optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkAnswer((Button) v);
-                }
-            });
-        }
-
-        playAnim(question,0,list.get(position).getQuestion());
-        nextBtn.setOnClickListener(new View.OnClickListener() {
+        myRef.child("SETS").child(category).child("questions").orderByChild("setNo").equalTo(setNo).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View v) {
-                enableOption(true);
-                position++;
-                if(position == list.size()){
-                    //
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    return;
+                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+                    list.add(snapshot.getValue(QuestionModel.class));
                 }
-                count=0;
 
-                playAnim(question,0,list.get(position).getQuestion());
+                if(list.size() > 0){
+                    for(int i=0;i<4;i++){
+                        optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                isTabed = true;
+                                checkAnswer((Button) v);
+                            }
+                        });
+                    }
+
+                    playAnim(question,0,list.get(position).getQuestion());
+
+                    nextBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            enableOption(true);
+                            if(isTabed){
+                                list.remove(position);
+                            }else {
+                                position++;
+
+                            }
+                            if(position == list.size()){
+                                //
+
+                                return;
+                            }
+                            count=0;
+
+                            playAnim(question,0,list.get(position).getQuestion());
+                            isTabed = false;
+
+                        }
+
+                    });
+
+                    shareBtn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            enableOption(true);
+                            position--;
+                            if(position == list.size()){
+                                //
+
+                                return;
+                            }
+                            count=0;
+
+                            playAnim(question,0,list.get(position).getQuestion());
+                        }
+                    });
+                }else {
+                    finish();
+                    Toast.makeText(QuestionsActivity.this, "No Ques", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Toast.makeText(QuestionsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
     }
 

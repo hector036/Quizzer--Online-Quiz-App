@@ -3,14 +3,20 @@ package com.example.quizzer_onlinequizapp;
 public class QuestionModel {
 
     private String question, optionA,optionB,optionC,optionD,correctAns;
+    private int setNo;
 
-    public QuestionModel(String question, String optionA, String optionB, String optionC, String optionD, String correctAns) {
+    public QuestionModel(){
+
+    }
+
+    public QuestionModel(String question, String optionA, String optionB, String optionC, String optionD, String correctAns,int setNo) {
         this.question = question;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
         this.optionD = optionD;
         this.correctAns = correctAns;
+        this.setNo = setNo;
     }
 
     public String getQuestion() {
@@ -59,5 +65,13 @@ public class QuestionModel {
 
     public void setCorrectAns(String correctAns) {
         this.correctAns = correctAns;
+    }
+
+    public int getSetNo() {
+        return setNo;
+    }
+
+    public void setSetNo(int setNo) {
+        this.setNo = setNo;
     }
 }
