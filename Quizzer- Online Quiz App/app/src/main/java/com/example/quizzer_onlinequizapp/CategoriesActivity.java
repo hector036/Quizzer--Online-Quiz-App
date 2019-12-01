@@ -45,26 +45,30 @@ public class CategoriesActivity extends AppCompatActivity {
 
 
          list = new ArrayList<>();
+         list.add(new CategoryModel("Hsc Physics 1st Paper","",1));
+         list.add(new CategoryModel("Hsc Physics 2nd Paper","",1));
 
         final CategoryAdapter adapter = new CategoryAdapter(list);
         recyclerView.setAdapter(adapter);
+                      adapter.notifyDataSetChanged();
 
-        myRef.child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-                    list.add(dataSnapshot1.getValue(CategoryModel.class));
 
-                }
-
-                adapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+//        myRef.child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+//                    list.add(dataSnapshot1.getValue(CategoryModel.class));
+//
+//                }
+//
+//                adapter.notifyDataSetChanged();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
 

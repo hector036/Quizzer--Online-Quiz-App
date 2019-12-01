@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.animation.Animator;
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -100,7 +101,11 @@ public class QuestionsActivity extends AppCompatActivity {
                             }
                             if(position == list.size()){
                                 //
-
+                                Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
+                                scoreIntent.putExtra("score",score);
+                                scoreIntent.putExtra("total",list.size());
+                                startActivity(scoreIntent);
+                                finish();
                                 return;
                             }
                             count=0;
