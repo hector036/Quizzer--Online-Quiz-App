@@ -6,16 +6,31 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.quizzer_onlinequizapp.QuestionsActivity.FILE_NAME;
+import static com.example.quizzer_onlinequizapp.QuestionsActivity.KEY_NAME;
 
 public class BookmarksActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
+
+    private List<QuestionModel> bookmarksList;
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private Gson gson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,23 +45,27 @@ public class BookmarksActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv_bookmarks);
 
+        preferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        gson = new Gson();
+
+        getBookmarks();
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        List<QuestionModel> list = new ArrayList<>();
 
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-        list.add(new QuestionModel("What is your Name?","","","","","Jhon Doe",0));
-
-
-        BookmarksAdater adater = new BookmarksAdater(list);
+        BookmarksAdater adater = new BookmarksAdater(bookmarksList);
         recyclerView.setAdapter(adater);
+    }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storeBookmarks();
     }
 
 
@@ -58,5 +77,27 @@ public class BookmarksActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void getBookmarks(){
+        String json = preferences.getString(KEY_NAME,"");
+        Type type =new  TypeToken<List<QuestionModel>>(){}.getType();
+
+        bookmarksList = gson.fromJson(json,type);
+
+        if(bookmarksList == null){
+            bookmarksList = new ArrayList<>();
+        }
+    }
+
+
+    private void storeBookmarks(){
+
+        String json = gson.toJson(bookmarksList);
+
+        editor.putString(KEY_NAME,json);
+
+        editor.commit();
+
     }
 }

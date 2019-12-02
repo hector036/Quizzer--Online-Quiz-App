@@ -24,7 +24,7 @@
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:textAlignment="center"
-            android:text="Quizzer" />
+            android:text="jQuizzer" />
 
         <TextView
             android:id="@+id/textView2"

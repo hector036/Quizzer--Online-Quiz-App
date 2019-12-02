@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.animation.Animator;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -22,17 +26,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 public class QuestionsActivity extends AppCompatActivity {
 
+
+    public static final String FILE_NAME = "QUIZZER";
+    public static final String KEY_NAME = "QUESTIONS";
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
 
-    private TextView question,noIndicator;
+    private TextView question,noIndicator,totalQuestion;
     private FloatingActionButton bookmarks;
     private LinearLayout optionContrainer;
     private Button shareBtn, nextBtn;
@@ -43,14 +54,24 @@ public class QuestionsActivity extends AppCompatActivity {
     private String category;
     private int setNo;
     private boolean isTabed=false;
+    private int totalQues;
+    CountDownTimer countdownTimer;
+    private int matchedQuestionPosition;
+
+    private List<QuestionModel> bookmarksList;
+
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private Gson gson;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+       // setSupportActionBar(toolbar);
 
         question = findViewById(R.id.questions);
         noIndicator = findViewById(R.id.no_indicator);
@@ -58,6 +79,27 @@ public class QuestionsActivity extends AppCompatActivity {
         optionContrainer = findViewById(R.id.options_contrainer);
         shareBtn = findViewById(R.id.share_button);
         nextBtn = findViewById(R.id.next_button);
+        totalQuestion = findViewById(R.id.total_question);
+
+        preferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        gson = new Gson();
+
+        getBookmarks();
+
+        bookmarks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(modelMatch()){
+                    bookmarksList.remove(matchedQuestionPosition);
+                    bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark_border));
+                }else {
+                    bookmarksList.add(list.get(position));
+                    bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
+
+                }
+            }
+        });
 
 
         category = getIntent().getStringExtra("category");
@@ -68,88 +110,130 @@ public class QuestionsActivity extends AppCompatActivity {
 
         list = new ArrayList<>();
 
-        myRef.child("SETS").child(category).child("questions").orderByChild("setNo").equalTo(setNo).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+        list.add(new QuestionModel("The desire to maintain a safe laboratory environment for all begins with","prevention","microbiology","ubiquity","accidents","accidents",1));
+        list.add(new QuestionModel("When a chemical splashes in the eye rinse for ","10 seconds","5 minutes","30 seconds","15 minutes","15 minutes",1));
+        list.add(new QuestionModel("Temp Qustion 3 ","prevention","microbiology","ubiquity","accidents","accidents",1));
+        list.add(new QuestionModel("Temp Qustion 4 ","prevention","microbiology","ubiquity","accidents","accidents",1));
+        list.add(new QuestionModel("Temp Qustion 5 ","prevention","microbiology","ubiquity","accidents","accidents",1));
 
-                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-                    list.add(snapshot.getValue(QuestionModel.class));
-                }
+        totalQues = list.size();
+        totalQuestion.setText("Total Questions: "+totalQues);
 
-                if(list.size() > 0){
-                    for(int i=0;i<4;i++){
-                        optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                isTabed = true;
-                                checkAnswer((Button) v);
-                            }
-                        });
-                    }
+        countdownTimer= new CountDownTimer(2*60*1000, 1000) {
 
-                    playAnim(question,0,list.get(position).getQuestion());
+            public void onTick(long millisUntilFinished) {
 
-                    nextBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            enableOption(true);
-                            if(isTabed){
-                                list.remove(position);
-                            }else {
-                                position++;
+                long Minutes = millisUntilFinished / (60 * 1000) % 60;
+                long Seconds = millisUntilFinished / 1000 % 60;
 
-                            }
-                            if(position == list.size()){
-                                //
-                                Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
-                                scoreIntent.putExtra("score",score);
-                                scoreIntent.putExtra("total",list.size());
-                                startActivity(scoreIntent);
-                                finish();
-                                return;
-                            }
-                            count=0;
-
-                            playAnim(question,0,list.get(position).getQuestion());
-                            isTabed = false;
-
-                        }
-
-                    });
-
-                    shareBtn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            enableOption(true);
-                            position--;
-                            if(position == list.size()){
-                                //
-
-                                return;
-                            }
-                            count=0;
-
-                            playAnim(question,0,list.get(position).getQuestion());
-                        }
-                    });
-                }else {
-                    finish();
-                    Toast.makeText(QuestionsActivity.this, "No Ques", Toast.LENGTH_SHORT).show();
-                }
+                noIndicator.setText(String.format("%02d", Minutes)+":"+String.format("%02d", Seconds));
             }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onFinish() {
+                noIndicator.setText("Time Over");
 
-                Toast.makeText(QuestionsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuestionsActivity.this, "Your Time is Over", Toast.LENGTH_SHORT).show();
+                Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
+                scoreIntent.putExtra("score",score);
+                scoreIntent.putExtra("total",totalQues);
+                startActivity(scoreIntent);
+                finish();
+                return;
             }
-        });
+        }.start();
+
+
+        tempFunction();
+
+//        myRef.child("SETS").child(category).child("questions").orderByChild("setNo").equalTo(setNo).addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
+//                    list.add(snapshot.getValue(QuestionModel.class));
+//                }
+//
+//                if(list.size() > 0){
+//                    for(int i=0;i<4;i++){
+//                        optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//                                isTabed = true;
+//                                checkAnswer((Button) v);
+//                            }
+//                        });
+//                    }
+//
+//                    playAnim(question,0,list.get(position).getQuestion());
+//
+//                    nextBtn.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            enableOption(true);
+//                            if(isTabed){
+//                                list.remove(position);
+//                            }else {
+//                                position++;
+//
+//                            }
+//                            if(position == list.size()){
+//                                //
+//                                Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
+//                                scoreIntent.putExtra("score",score);
+//                                scoreIntent.putExtra("total",list.size());
+//                                startActivity(scoreIntent);
+//                                finish();
+//                                return;
+//                            }
+//                            count=0;
+//
+//                            playAnim(question,0,list.get(position).getQuestion());
+//                            isTabed = false;
+//
+//                        }
+//
+//                    });
+//
+//                    shareBtn.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            enableOption(true);
+//                            position--;
+//                            if(position == list.size()){
+//                                //
+//
+//                                return;
+//                            }
+//                            count=0;
+//
+//                            playAnim(question,0,list.get(position).getQuestion());
+//                        }
+//                    });
+//                }else {
+//                    finish();
+//                    Toast.makeText(QuestionsActivity.this, "No Ques", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                Toast.makeText(QuestionsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
 
 
     }
 
-    private void playAnim(final View view, final int value,final String data){
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        storeBookmarks();
+    }
+
+    private void playAnim(final View view, final int value, final String data){
 
         view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(100)
                 .setInterpolator(new DecelerateInterpolator()).setListener(new Animator.AnimatorListener() {
@@ -184,7 +268,13 @@ public class QuestionsActivity extends AppCompatActivity {
 
                     try {
                         ((TextView)view).setText(data);
-                        noIndicator.setText(position+1+"/"+list.size());
+                       // noIndicator.setText(position+1+"/"+list.size());
+                        if(modelMatch()){
+                            bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
+                        }else {
+                            bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark_border));
+
+                        }
 
 
                     }catch (ClassCastException ex){
@@ -213,16 +303,17 @@ public class QuestionsActivity extends AppCompatActivity {
 
         enableOption(false);
 
-        if(selectOption.equals(list.get(position).getCorrectAns())){
+        if(selectOption.getText().toString().equals(list.get(position).getCorrectAns())){
             //
-            score++;
+
             selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+            score++;
 
         }else {
             //
-            selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#ff0000")));
-           Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
-            currectoption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+            selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+           //Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
+            //currectoption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
 
         }
     }
@@ -235,5 +326,131 @@ public class QuestionsActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    private void tempFunction(){
+        for(int i=0;i<4;i++){
+            optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    isTabed = true;
+                    checkAnswer((Button) v);
+                }
+            });
+        }
+
+        playAnim(question,0,list.get(position).getQuestion());
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableOption(true);
+                if(isTabed){
+                    list.remove(position);
+                }else {
+                    position++;
+
+                }
+                if(position>0){
+                    shareBtn.setEnabled(true);
+                    shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+
+                }
+                if(position == list.size()-1){
+                    nextBtn.setText("Submit");
+                }
+                if(position == list.size()){
+                    //
+                    Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
+                    scoreIntent.putExtra("score",score);
+                    System.out.println("Check score"+score);
+                    scoreIntent.putExtra("total",totalQues);
+                    startActivity(scoreIntent);
+                    finish();
+                    return;
+                }
+                count=0;
+
+                playAnim(question,0,list.get(position).getQuestion());
+                isTabed = false;
+
+            }
+
+        });
+
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                enableOption(true);
+                if(isTabed){
+                    list.remove(position);
+                }
+                position--;
+                if(position == 0){
+                    shareBtn.setEnabled(false);
+                    shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
+                }
+                if(position !=list.size()){
+                    nextBtn.setText("Next");
+                }
+                if(position == list.size()-1){
+                    nextBtn.setText("Submit");
+                }
+                count=0;
+
+                playAnim(question,0,list.get(position).getQuestion());
+                isTabed = false;
+            }
+        });
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (countdownTimer != null) {
+            countdownTimer.cancel();
+        }
+    }
+
+    private void getBookmarks(){
+        String json = preferences.getString(KEY_NAME,"");
+        Type type =new  TypeToken<List<QuestionModel>>(){}.getType();
+
+        bookmarksList = gson.fromJson(json,type);
+
+        if(bookmarksList == null){
+            bookmarksList = new ArrayList<>();
+        }
+    }
+
+    private boolean modelMatch(){
+
+        boolean matched = false;
+        int i=0;
+         for(QuestionModel model: bookmarksList){
+             if(model.getQuestion().equals(list.get(position).getQuestion())
+             && model.getCorrectAns().equals(list.get(position).getCorrectAns())
+             && model.getSetNo() == list.get(position).getSetNo()
+             ){
+                 matched=true;
+                 matchedQuestionPosition = i;
+             }
+             i++;
+
+         }
+
+         return matched;
+    }
+
+    private void storeBookmarks(){
+
+        String json = gson.toJson(bookmarksList);
+
+        editor.putString(KEY_NAME,json);
+
+        editor.commit();
+
     }
 }

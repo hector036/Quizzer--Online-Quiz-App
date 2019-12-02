@@ -57,13 +57,14 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
         private void setData(String question, String answer,final int position){
 
             this.question.setText(question);
-            this.question.setText(answer);
+            this.answer.setText(answer);
 
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     list.remove(position);
-                    notifyItemRemoved(position);
+                   // notifyItemRemoved(position);
+                    notifyDataSetChanged();
                 }
             });
         }
