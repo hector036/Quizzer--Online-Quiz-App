@@ -15,9 +15,11 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
 
     private List<QuestionModel> list ;
+    private int type;
 
-    public BookmarksAdater(List<QuestionModel> list) {
+    public BookmarksAdater(List<QuestionModel> list,int type) {
         this.list = list;
+        this.type = type;
     }
 
     @NonNull
@@ -58,6 +60,14 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
             this.question.setText(question);
             this.answer.setText(answer);
+
+            if(type==1){
+                deleteBtn.setEnabled(false);
+                deleteBtn.setVisibility(View.GONE);
+            }else {
+                deleteBtn.setVisibility(View.VISIBLE);
+                deleteBtn.setEnabled(true);
+            }
 
             deleteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override

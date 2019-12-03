@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -73,6 +75,8 @@ public class QuestionsActivity extends AppCompatActivity {
         //Toolbar toolbar = findViewById(R.id.toolbar);
        // setSupportActionBar(toolbar);
 
+        loadAds();
+
         question = findViewById(R.id.questions);
         noIndicator = findViewById(R.id.no_indicator);
         bookmarks = findViewById(R.id.bookmark_button);
@@ -93,9 +97,12 @@ public class QuestionsActivity extends AppCompatActivity {
                 if(modelMatch()){
                     bookmarksList.remove(matchedQuestionPosition);
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark_border));
+                    Toast.makeText(QuestionsActivity.this, "Removed", Toast.LENGTH_SHORT).show();
                 }else {
                     bookmarksList.add(list.get(position));
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
+                    Toast.makeText(QuestionsActivity.this, "Bookmarked", Toast.LENGTH_SHORT).show();
+
 
                 }
             }
@@ -110,11 +117,11 @@ public class QuestionsActivity extends AppCompatActivity {
 
         list = new ArrayList<>();
 
-        list.add(new QuestionModel("The desire to maintain a safe laboratory environment for all begins with","prevention","microbiology","ubiquity","accidents","accidents",1));
-        list.add(new QuestionModel("When a chemical splashes in the eye rinse for ","10 seconds","5 minutes","30 seconds","15 minutes","15 minutes",1));
-        list.add(new QuestionModel("Temp Qustion 3 ","prevention","microbiology","ubiquity","accidents","accidents",1));
-        list.add(new QuestionModel("Temp Qustion 4 ","prevention","microbiology","ubiquity","accidents","accidents",1));
-        list.add(new QuestionModel("Temp Qustion 5 ","prevention","microbiology","ubiquity","accidents","accidents",1));
+        list.add(new QuestionModel("A man presses more weight on earth at :","Sitting position","Standing Position","Lying Position","None of these","Standing Position",1));
+        list.add(new QuestionModel("A piece of ice is dropped in a vesel containing kerosene. When ice melts, the level of kerosene will","Rise","Fall","Remain Same","None of these","Fall",1));
+        list.add(new QuestionModel("Young's modulus is the property of ","Gas only","Both Solid and Liquid","Liquid only","Solid only","Solid only",1));
+        list.add(new QuestionModel("An artificial Satellite revolves round the Earth in circular orbit, which quantity remains constant?","Angular Momentum","Linear Velocity","Angular Displacement","None of these","Angular Momentum",1));
+        list.add(new QuestionModel("With the increase of pressure, the boiling point of any substance","Increases","Decreases","Remains Same","Becomes zero","Increases",1));
 
         totalQues = list.size();
         totalQuestion.setText("Total Questions: "+totalQues);
@@ -130,9 +137,9 @@ public class QuestionsActivity extends AppCompatActivity {
             }
 
             public void onFinish() {
-                noIndicator.setText("Time Over");
+                noIndicator.setText("Time is Over");
 
-                Toast.makeText(QuestionsActivity.this, "Your Time is Over", Toast.LENGTH_SHORT).show();
+                Toast.makeText(QuestionsActivity.this, "Time is Over", Toast.LENGTH_SHORT).show();
                 Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
                 scoreIntent.putExtra("score",score);
                 scoreIntent.putExtra("total",totalQues);
@@ -452,5 +459,13 @@ public class QuestionsActivity extends AppCompatActivity {
 
         editor.commit();
 
+    }
+
+
+    private void loadAds() {
+
+        AdView mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
     }
 }
