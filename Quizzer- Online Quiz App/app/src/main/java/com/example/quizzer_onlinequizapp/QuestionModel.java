@@ -2,21 +2,31 @@ package com.example.quizzer_onlinequizapp;
 
 public class QuestionModel {
 
-    private String question, optionA,optionB,optionC,optionD,correctAns;
-    private int setNo;
+    private String id,question, optionA,optionB,optionC,optionD,correctAns,set;
+    //private String id,question,A,B,C,D,answer,set;
+
 
     public QuestionModel(){
 
     }
 
-    public QuestionModel(String question, String optionA, String optionB, String optionC, String optionD, String correctAns,int setNo) {
+    public QuestionModel(String id, String question, String optionA, String optionB, String optionC, String optionD, String correctAns, String set) {
+        this.id = id;
         this.question = question;
         this.optionA = optionA;
         this.optionB = optionB;
         this.optionC = optionC;
         this.optionD = optionD;
         this.correctAns = correctAns;
-        this.setNo = setNo;
+        this.set = set;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getQuestion() {
@@ -67,11 +77,11 @@ public class QuestionModel {
         this.correctAns = correctAns;
     }
 
-    public int getSetNo() {
-        return setNo;
+    public String getSet() {
+        return set;
     }
 
-    public void setSetNo(int setNo) {
-        this.setNo = setNo;
+    public void setSet(String set) {
+        this.set = set;
     }
 }

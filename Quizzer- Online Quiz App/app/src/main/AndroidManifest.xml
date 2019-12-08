@@ -22,8 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".BookmarksActivity" />
-        <activity android:name=".ScoreActivity" />
-        <activity android:name=".QuestionsActivity" />
+        <activity android:name=".ScoreActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".QuestionsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".SetsActivity" />
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".MainActivity"></activity>

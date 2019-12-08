@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.animation.Animator;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -45,17 +46,20 @@ public class QuestionsActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference();
 
 
-    private TextView question,noIndicator,totalQuestion;
+    private TextView question, noIndicator, totalQuestion;
     private FloatingActionButton bookmarks;
     private LinearLayout optionContrainer;
     private Button shareBtn, nextBtn;
-    private  List<QuestionModel> list;
+    private List<QuestionModel> list;
+    public static List<QuestionModel> listAns;
+
+
     private int position;
     private int score = 0;
-    private int count=0;
+    private int count = 0;
     private String category;
-    private int setNo;
-    private boolean isTabed=false;
+    private String setId;
+    private boolean isTabed = false;
     private int totalQues;
     CountDownTimer countdownTimer;
     private int matchedQuestionPosition;
@@ -66,14 +70,13 @@ public class QuestionsActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private Gson gson;
 
+    private ProgressDialog loadingDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
-
-        //Toolbar toolbar = findViewById(R.id.toolbar);
-       // setSupportActionBar(toolbar);
 
         loadAds();
 
@@ -89,16 +92,20 @@ public class QuestionsActivity extends AppCompatActivity {
         editor = preferences.edit();
         gson = new Gson();
 
+        loadingDialog = new ProgressDialog(this, R.style.dialogStyle);
+        loadingDialog.setMessage("Loading...");
+        loadingDialog.setCancelable(true);
+
         getBookmarks();
 
         bookmarks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(modelMatch()){
+                if (modelMatch()) {
                     bookmarksList.remove(matchedQuestionPosition);
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark_border));
                     Toast.makeText(QuestionsActivity.this, "Removed", Toast.LENGTH_SHORT).show();
-                }else {
+                } else {
                     bookmarksList.add(list.get(position));
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
                     Toast.makeText(QuestionsActivity.this, "Bookmarked", Toast.LENGTH_SHORT).show();
@@ -110,39 +117,29 @@ public class QuestionsActivity extends AppCompatActivity {
 
 
         category = getIntent().getStringExtra("category");
-        setNo = getIntent().getIntExtra("setNo",1);
-
-
+        setId = getIntent().getStringExtra("setId");
 
 
         list = new ArrayList<>();
+        listAns = new ArrayList<>();
 
-        list.add(new QuestionModel("A man presses more weight on earth at :","Sitting position","Standing Position","Lying Position","None of these","Standing Position",1));
-        list.add(new QuestionModel("A piece of ice is dropped in a vesel containing kerosene. When ice melts, the level of kerosene will","Rise","Fall","Remain Same","None of these","Fall",1));
-        list.add(new QuestionModel("Young's modulus is the property of ","Gas only","Both Solid and Liquid","Liquid only","Solid only","Solid only",1));
-        list.add(new QuestionModel("An artificial Satellite revolves round the Earth in circular orbit, which quantity remains constant?","Angular Momentum","Linear Velocity","Angular Displacement","None of these","Angular Momentum",1));
-        list.add(new QuestionModel("With the increase of pressure, the boiling point of any substance","Increases","Decreases","Remains Same","Becomes zero","Increases",1));
-
-        totalQues = list.size();
-        totalQuestion.setText("Total Questions: "+totalQues);
-
-        countdownTimer= new CountDownTimer(2*60*1000, 1000) {
+        countdownTimer = new CountDownTimer(25 * 60 * 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
 
                 long Minutes = millisUntilFinished / (60 * 1000) % 60;
                 long Seconds = millisUntilFinished / 1000 % 60;
 
-                noIndicator.setText(String.format("%02d", Minutes)+":"+String.format("%02d", Seconds));
+                noIndicator.setText(String.format("%02d", Minutes) + ":" + String.format("%02d", Seconds));
             }
 
             public void onFinish() {
                 noIndicator.setText("Time is Over");
 
                 Toast.makeText(QuestionsActivity.this, "Time is Over", Toast.LENGTH_SHORT).show();
-                Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
-                scoreIntent.putExtra("score",score);
-                scoreIntent.putExtra("total",totalQues);
+                Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+                scoreIntent.putExtra("score", score);
+                scoreIntent.putExtra("total", totalQues);
                 startActivity(scoreIntent);
                 finish();
                 return;
@@ -150,85 +147,49 @@ public class QuestionsActivity extends AppCompatActivity {
         }.start();
 
 
-        tempFunction();
+        loadingDialog.show();
+        myRef.child("SETS").child(setId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-//        myRef.child("SETS").child(category).child("questions").orderByChild("setNo").equalTo(setNo).addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                for(DataSnapshot snapshot: dataSnapshot.getChildren()){
-//                    list.add(snapshot.getValue(QuestionModel.class));
-//                }
-//
-//                if(list.size() > 0){
-//                    for(int i=0;i<4;i++){
-//                        optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View v) {
-//                                isTabed = true;
-//                                checkAnswer((Button) v);
-//                            }
-//                        });
-//                    }
-//
-//                    playAnim(question,0,list.get(position).getQuestion());
-//
-//                    nextBtn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            enableOption(true);
-//                            if(isTabed){
-//                                list.remove(position);
-//                            }else {
-//                                position++;
-//
-//                            }
-//                            if(position == list.size()){
-//                                //
-//                                Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
-//                                scoreIntent.putExtra("score",score);
-//                                scoreIntent.putExtra("total",list.size());
-//                                startActivity(scoreIntent);
-//                                finish();
-//                                return;
-//                            }
-//                            count=0;
-//
-//                            playAnim(question,0,list.get(position).getQuestion());
-//                            isTabed = false;
-//
-//                        }
-//
-//                    });
-//
-//                    shareBtn.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                            enableOption(true);
-//                            position--;
-//                            if(position == list.size()){
-//                                //
-//
-//                                return;
-//                            }
-//                            count=0;
-//
-//                            playAnim(question,0,list.get(position).getQuestion());
-//                        }
-//                    });
-//                }else {
-//                    finish();
-//                    Toast.makeText(QuestionsActivity.this, "No Ques", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                Toast.makeText(QuestionsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+                int i = 1;
 
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    String id = dataSnapshot1.getKey();
+                    String question = "Q " + i + ". " + dataSnapshot1.child("question").getValue().toString();
+                    String a = dataSnapshot1.child("optionA").getValue().toString();
+                    String b = dataSnapshot1.child("optionB").getValue().toString();
+                    String c = dataSnapshot1.child("optionC").getValue().toString();
+                    String d = dataSnapshot1.child("optionD").getValue().toString();
+                    String correctAns = dataSnapshot1.child("correctAns").getValue().toString();
+
+                    list.add(new QuestionModel(id, question, a, b, c, d, correctAns, setId));
+                    listAns.add(new QuestionModel(id, question, a, b, c, d, "Ans. " + correctAns, setId));
+                    i++;
+                }
+
+                if (list.size() > 0) {
+
+                    totalQues = list.size();
+                    totalQuestion.setText("Total Questions: " + totalQues);
+
+                    tempFunction();
+                    loadingDialog.dismiss();
+
+                } else {
+                    loadingDialog.dismiss();
+                    finish();
+                    Toast.makeText(QuestionsActivity.this, "Empty Set", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Toast.makeText(QuestionsActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
     }
@@ -240,56 +201,56 @@ public class QuestionsActivity extends AppCompatActivity {
         storeBookmarks();
     }
 
-    private void playAnim(final View view, final int value, final String data){
+    private void playAnim(final View view, final int value, final String data) {
 
         view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(100)
                 .setInterpolator(new DecelerateInterpolator()).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
-                if(value ==0 && count< 4){
+                if (value == 0 && count < 4) {
 
-                    String option="";
+                    String option = "";
 
-                    if(count == 0){
+                    if (count == 0) {
                         option = list.get(position).getOptionA();
-                    }else if(count == 1){
+                    } else if (count == 1) {
                         option = list.get(position).getOptionB();
 
-                    }else if(count == 2){
+                    } else if (count == 2) {
                         option = list.get(position).getOptionC();
 
-                    }else if(count == 3){
+                    } else if (count == 3) {
                         option = list.get(position).getOptionD();
 
                     }
 
-                    playAnim(optionContrainer.getChildAt(count),0,option);
+                    playAnim(optionContrainer.getChildAt(count), 0, option);
                     count++;
                 }
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                if(value == 0){
+                if (value == 0) {
 
                     try {
-                        ((TextView)view).setText(data);
-                       // noIndicator.setText(position+1+"/"+list.size());
-                        if(modelMatch()){
+                        ((TextView) view).setText(data);
+                        // noIndicator.setText(position+1+"/"+list.size());
+                        if (modelMatch()) {
                             bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
-                        }else {
+                        } else {
                             bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark_border));
 
                         }
 
 
-                    }catch (ClassCastException ex){
-                        ((Button)view).setText(data);
+                    } catch (ClassCastException ex) {
+                        ((Button) view).setText(data);
 
                     }
                     view.setTag(data);
-                    playAnim(view,1,data);
+                    playAnim(view, 1, data);
                 }
             }
 
@@ -306,37 +267,37 @@ public class QuestionsActivity extends AppCompatActivity {
 
     }
 
-    private void checkAnswer(Button selectOption){
+    private void checkAnswer(Button selectOption) {
 
         enableOption(false);
 
-        if(selectOption.getText().toString().equals(list.get(position).getCorrectAns())){
+        if (selectOption.getText().toString().equals(list.get(position).getCorrectAns())) {
             //
 
             selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
             score++;
 
-        }else {
+        } else {
             //
             selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
-           //Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
+            //Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
             //currectoption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
 
         }
     }
 
-    private void enableOption(boolean enable){
-        for(int i= 0; i< 4; i++){
+    private void enableOption(boolean enable) {
+        for (int i = 0; i < 4; i++) {
             optionContrainer.getChildAt(i).setEnabled(enable);
-            if(enable){
+            if (enable) {
                 optionContrainer.getChildAt(i).setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#989898")));
 
             }
         }
     }
 
-    private void tempFunction(){
-        for(int i=0;i<4;i++){
+    private void tempFunction() {
+        for (int i = 0; i < 4; i++) {
             optionContrainer.getChildAt(i).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -346,39 +307,39 @@ public class QuestionsActivity extends AppCompatActivity {
             });
         }
 
-        playAnim(question,0,list.get(position).getQuestion());
+        playAnim(question, 0, list.get(position).getQuestion());
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 enableOption(true);
-                if(isTabed){
+                if (isTabed) {
                     list.remove(position);
-                }else {
+                } else {
                     position++;
 
                 }
-                if(position>0){
+                if (position > 0) {
                     shareBtn.setEnabled(true);
                     shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")));
 
                 }
-                if(position == list.size()-1){
+                if (position == list.size() - 1) {
                     nextBtn.setText("Submit");
                 }
-                if(position == list.size()){
+                if (position == list.size()) {
                     //
-                    Intent scoreIntent = new Intent(QuestionsActivity.this,ScoreActivity.class);
-                    scoreIntent.putExtra("score",score);
-                    System.out.println("Check score"+score);
-                    scoreIntent.putExtra("total",totalQues);
+                    Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+                    scoreIntent.putExtra("score", score);
+                    System.out.println("Check score" + score);
+                    scoreIntent.putExtra("total", totalQues);
                     startActivity(scoreIntent);
                     finish();
                     return;
                 }
-                count=0;
+                count = 0;
 
-                playAnim(question,0,list.get(position).getQuestion());
+                playAnim(question, 0, list.get(position).getQuestion());
                 isTabed = false;
 
             }
@@ -389,23 +350,23 @@ public class QuestionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 enableOption(true);
-                if(isTabed){
+                if (isTabed) {
                     list.remove(position);
                 }
                 position--;
-                if(position == 0){
+                if (position == 0) {
                     shareBtn.setEnabled(false);
                     shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
                 }
-                if(position !=list.size()){
+                if (position != list.size()) {
                     nextBtn.setText("Next");
                 }
-                if(position == list.size()-1){
+                if (position == list.size() - 1) {
                     nextBtn.setText("Submit");
                 }
-                count=0;
+                count = 0;
 
-                playAnim(question,0,list.get(position).getQuestion());
+                playAnim(question, 0, list.get(position).getQuestion());
                 isTabed = false;
             }
         });
@@ -421,41 +382,42 @@ public class QuestionsActivity extends AppCompatActivity {
         }
     }
 
-    private void getBookmarks(){
-        String json = preferences.getString(KEY_NAME,"");
-        Type type =new  TypeToken<List<QuestionModel>>(){}.getType();
+    private void getBookmarks() {
+        String json = preferences.getString(KEY_NAME, "");
+        Type type = new TypeToken<List<QuestionModel>>() {
+        }.getType();
 
-        bookmarksList = gson.fromJson(json,type);
+        bookmarksList = gson.fromJson(json, type);
 
-        if(bookmarksList == null){
+        if (bookmarksList == null) {
             bookmarksList = new ArrayList<>();
         }
     }
 
-    private boolean modelMatch(){
+    private boolean modelMatch() {
 
         boolean matched = false;
-        int i=0;
-         for(QuestionModel model: bookmarksList){
-             if(model.getQuestion().equals(list.get(position).getQuestion())
-             && model.getCorrectAns().equals(list.get(position).getCorrectAns())
-             && model.getSetNo() == list.get(position).getSetNo()
-             ){
-                 matched=true;
-                 matchedQuestionPosition = i;
-             }
-             i++;
+        int i = 0;
+        for (QuestionModel model : bookmarksList) {
+            if (model.getQuestion().equals(list.get(position).getQuestion())
+                    && model.getCorrectAns().equals(list.get(position).getCorrectAns())
+                    && model.getSet() == list.get(position).getSet()
+            ) {
+                matched = true;
+                matchedQuestionPosition = i;
+            }
+            i++;
 
-         }
+        }
 
-         return matched;
+        return matched;
     }
 
-    private void storeBookmarks(){
+    private void storeBookmarks() {
 
         String json = gson.toJson(bookmarksList);
 
-        editor.putString(KEY_NAME,json);
+        editor.putString(KEY_NAME, json);
 
         editor.commit();
 

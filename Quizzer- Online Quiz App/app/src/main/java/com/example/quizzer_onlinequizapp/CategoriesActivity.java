@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.ads.AdRequest;
@@ -20,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CategoriesActivity extends AppCompatActivity {
 
@@ -28,7 +31,10 @@ public class CategoriesActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference();
 
     private RecyclerView recyclerView;
-    private List<CategoryModel> list;
+    public static List<CategoryModel> list;
+
+    private ProgressBar progressBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +48,8 @@ public class CategoriesActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.rv);
+        progressBar = findViewById(R.id.progressBar);
+
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
@@ -49,30 +57,42 @@ public class CategoriesActivity extends AppCompatActivity {
 
 
          list = new ArrayList<>();
-         list.add(new CategoryModel("Hsc Physics 1st Paper","",1));
-         list.add(new CategoryModel("Hsc Physics 2nd Paper","",1));
-
         final CategoryAdapter adapter = new CategoryAdapter(list);
         recyclerView.setAdapter(adapter);
-                      adapter.notifyDataSetChanged();
 
+        progressBar.setVisibility(View.VISIBLE);
 
-//        myRef.child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
-//                    list.add(dataSnapshot1.getValue(CategoryModel.class));
-//
-//                }
-//
-//                adapter.notifyDataSetChanged();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
+        myRef.child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+
+                    List<String> sets =new ArrayList<>();
+
+                    for(DataSnapshot dataSnapshot2: dataSnapshot1.child("sets").getChildren()){
+                        sets.add(dataSnapshot2.getKey());
+                    }
+
+                    list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
+                    dataSnapshot1.child("url").getValue().toString(),
+                            dataSnapshot1.getKey(),
+                            sets
+                    ));
+
+                }
+
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressBar.setVisibility(View.GONE);
+
+                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
 
 

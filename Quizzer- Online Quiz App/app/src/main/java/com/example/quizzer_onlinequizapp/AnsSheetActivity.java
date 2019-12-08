@@ -50,17 +50,8 @@ public class AnsSheetActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        list = new ArrayList<>();
 
-
-        list.add(new QuestionModel("A man presses more weight on earth at :","Sitting position","Standing Position","Lying Position","None of these","Standing Position",1));
-        list.add(new QuestionModel("A piece of ice is dropped in a vesel containing kerosene. When ice melts, the level of kerosene will","Rise","Fall","Remain Same","None of these","Fall",1));
-        list.add(new QuestionModel("Young's modulus is the property of ","Gas only","Both Solid and Liquid","Liquid only","Solid only","Solid only",1));
-        list.add(new QuestionModel("An artificial Satellite revolves round the Earth in circular orbit, which quantity remains constant?","Angular Momentum","Linear Velocity","Angular Displacement","None of these","Angular Momentum",1));
-        list.add(new QuestionModel("With the increase of pressure, the boiling point of any substance","Increases","Decreases","Remains Same","Becomes zero","Increases",1));
-
-
-        BookmarksAdater adater = new BookmarksAdater(list,1);
+        BookmarksAdater adater = new BookmarksAdater(QuestionsActivity.listAns,1);
         recyclerView.setAdapter(adater);
     }
 

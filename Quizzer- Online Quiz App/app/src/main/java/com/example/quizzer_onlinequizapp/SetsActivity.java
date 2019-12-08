@@ -34,7 +34,7 @@ public class SetsActivity extends AppCompatActivity {
 
         gridView = findViewById(R.id.gridview);
 
-        GridAdapter adapter = new GridAdapter(getIntent().getIntExtra("sets",0),getIntent().getStringExtra("title"),mInterstitialAd);
+        GridAdapter adapter = new GridAdapter(CategoriesActivity.list.get(getIntent().getIntExtra("position",0)).getSets(),getIntent().getStringExtra("title"),mInterstitialAd);
         gridView.setAdapter(adapter);
     }
 
