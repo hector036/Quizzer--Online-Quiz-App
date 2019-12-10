@@ -157,7 +157,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
                     String id = dataSnapshot1.getKey();
-                    String question = "Q " + i + ". " + dataSnapshot1.child("question").getValue().toString();
+                    String question = "Q " + i + ".   " + dataSnapshot1.child("question").getValue().toString();
                     String a = dataSnapshot1.child("optionA").getValue().toString();
                     String b = dataSnapshot1.child("optionB").getValue().toString();
                     String c = dataSnapshot1.child("optionC").getValue().toString();

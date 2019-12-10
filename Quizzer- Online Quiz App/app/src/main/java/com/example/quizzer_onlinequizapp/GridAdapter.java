@@ -56,24 +56,24 @@ public class GridAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
 
-                interstitialAd.setAdListener(new AdListener(){
-                    @Override
-                    public void onAdClosed() {
-                        super.onAdClosed();
-                        interstitialAd.loadAd(new AdRequest.Builder().build());
-                        Intent questionIntent = new Intent(parent.getContext(),QuestionsActivity.class);
-                        questionIntent.putExtra("category",category);
-                        questionIntent.putExtra("setId",sets.get(position));
-
-                        parent.getContext().startActivity(questionIntent);
-
-                    }
-                });
-
-                if (interstitialAd.isLoaded()){
-                    interstitialAd.show();
-                    return;
-                }
+//                interstitialAd.setAdListener(new AdListener(){
+//                    @Override
+//                    public void onAdClosed() {
+//                        super.onAdClosed();
+//                        interstitialAd.loadAd(new AdRequest.Builder().build());
+//                        Intent questionIntent = new Intent(parent.getContext(),QuestionsActivity.class);
+//                        questionIntent.putExtra("category",category);
+//                        questionIntent.putExtra("setId",sets.get(position));
+//
+//                        parent.getContext().startActivity(questionIntent);
+//
+//                    }
+//                });
+//
+//                if (interstitialAd.isLoaded()){
+//                    interstitialAd.show();
+//                    return;
+//                }
 
                 Intent questionIntent = new Intent(parent.getContext(),QuestionsActivity.class);
                 questionIntent.putExtra("category",category);

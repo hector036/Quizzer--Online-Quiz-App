@@ -6,6 +6,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -35,10 +39,19 @@ public class MainActivity extends AppCompatActivity {
 
         loadAds();
 
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        long vibrate[]={100,600,100,600};
 
         NotificationChannel channel = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channel = new NotificationChannel("TextNoti", "TextNoti", NotificationManager.IMPORTANCE_DEFAULT);
+            channel = new NotificationChannel("1010", "1010", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setSound(soundUri,new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build());
+            channel.setLightColor(Color.GREEN);
+            channel.setVibrationPattern(vibrate);
+            channel.enableVibration(true);
+
         }
 
         NotificationManager manager = null;
@@ -50,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        FirebaseMessaging.getInstance().subscribeToTopic("textnoti")
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -84,5 +97,48 @@ public class MainActivity extends AppCompatActivity {
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+
+        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        long vibrate[]={100,600,100,600};
+
+        NotificationChannel channel = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            channel = new NotificationChannel("1010", "1010", NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setSound(soundUri,new AudioAttributes.Builder()
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    .build());
+            channel.setLightColor(Color.GREEN);
+            channel.setVibrationPattern(vibrate);
+            channel.enableVibration(true);
+
+        }
+
+        NotificationManager manager = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            manager = getSystemService(NotificationManager.class);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            manager.createNotificationChannel(channel);
+        }
+
+
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Successfull";
+                        if (!task.isSuccessful()) {
+                            msg = "Failed";
+                        }
+                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+
     }
 }
