@@ -3,8 +3,10 @@ package com.example.quizzer_onlinequizapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.AudioAttributes;
@@ -23,7 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnUpdateCheckListener{
 
     private Button startButton, bookmarkBtn;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
         startButton = findViewById(R.id.start_btn);
         bookmarkBtn = findViewById(R.id.bookmarks_btn);
+
 
         MobileAds.initialize(this);
 
@@ -139,6 +142,44 @@ public class MainActivity extends AppCompatActivity {
                         //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
+
+    }
+
+    @Override
+    public void onUpdateCheckListener(final String urlApp) {
+
+        AlertDialog alertDialog = new AlertDialog.Builder(this,R.style.Theme_AppCompat_Light_Dialog)
+                .setTitle("jQuizzer New Version Available")
+                .setMessage("Please update to new version to continue")
+                .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Toast.makeText(MainActivity.this, "Update", Toast.LENGTH_SHORT).show();
+
+                        String appName = getPackageName();
+
+                        startActivity(new Intent(Intent.ACTION_VIEW,Uri.parse(""+urlApp)));
+                    }
+                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).create();
+
+        alertDialog.show();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+        UpdateHelper.with(this)
+                .onUpdateCheck(this)
+                .check();
+
 
     }
 }
