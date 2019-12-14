@@ -29,9 +29,11 @@
         <activity android:name=".CategoriesActivity" />
         <activity android:name=".MainActivity"></activity>
 
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <!-- My App ID: ca-app-pub-3339496054642989~6621653407 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-3339496054642989~6621653407"/>
 
         <service
             android:name=".MessingServiceClass"

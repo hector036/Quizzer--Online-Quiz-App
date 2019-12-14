@@ -180,7 +180,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 } else {
                     loadingDialog.dismiss();
                     finish();
-                    Toast.makeText(QuestionsActivity.this, "Empty Set", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(QuestionsActivity.this, "The Questions will be uploaded soon", Toast.LENGTH_SHORT).show();
                 }
             }
 

@@ -37,6 +37,10 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
         startButton = findViewById(R.id.start_btn);
         bookmarkBtn = findViewById(R.id.bookmarks_btn);
 
+        UpdateHelper.with(this)
+                .onUpdateCheck(this)
+                .check();
+
 
         MobileAds.initialize(this);
 
@@ -174,11 +178,6 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
     @Override
     protected void onStart() {
         super.onStart();
-
-
-        UpdateHelper.with(this)
-                .onUpdateCheck(this)
-                .check();
 
 
     }
