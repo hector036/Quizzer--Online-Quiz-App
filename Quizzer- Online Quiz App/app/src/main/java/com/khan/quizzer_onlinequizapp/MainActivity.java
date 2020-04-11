@@ -152,9 +152,9 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
     @Override
     public void onUpdateCheckListener(final String urlApp) {
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this,R.style.Theme_AppCompat_Light_Dialog)
-                .setTitle("jQuizzer New Version Available")
-                .setMessage("Please update to new version to continue")
+        AlertDialog alertDialog = new AlertDialog.Builder(this,R.style.dialogStyle)
+                .setTitle("jQuizzer Update")
+                .setMessage("There is a new version available. Please update to new version to continue")
                 .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

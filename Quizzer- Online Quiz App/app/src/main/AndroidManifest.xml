@@ -3,7 +3,8 @@
     package="com.khan.quizzer_onlinequizapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -12,7 +13,8 @@
         android:roundIcon="@mipmap/icon_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AnsSheetActivity"></activity>
+        <activity android:name=".ChapterActivity" />
+        <activity android:name=".AnsSheetActivity" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -23,17 +25,19 @@
             </intent-filter>
         </activity>
         <activity android:name=".BookmarksActivity" />
-        <activity android:name=".ScoreActivity" android:screenOrientation="portrait"/>
-        <activity android:name=".QuestionsActivity" android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ScoreActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".QuestionsActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".SetsActivity" />
         <activity android:name=".CategoriesActivity" />
-        <activity android:name=".MainActivity"></activity>
-
-        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <activity android:name=".MainActivity" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <!-- My App ID: ca-app-pub-3339496054642989~6621653407 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3339496054642989~6621653407"/>
+            android:value="ca-app-pub-3339496054642989~6621653407" />
 
         <service
             android:name=".MessingServiceClass"
@@ -42,7 +46,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
     </application>
 
 </manifest>

@@ -4,17 +4,19 @@ import java.util.List;
 
 public class CategoryModel {
     private String name,url,key;
-    private List<String> sets;
+    private List<TestClass> sets;
+    private List<TestClass> chapters;
 
     public CategoryModel(){
 
     }
 
-    public CategoryModel(String name, String url, String key, List<String> sets) {
+    public CategoryModel(String name, String url, String key, List<TestClass> sets, List<TestClass> chapters) {
         this.name = name;
         this.url = url;
         this.key = key;
         this.sets = sets;
+        this.chapters = chapters;
     }
 
     public String getName() {
@@ -41,11 +43,19 @@ public class CategoryModel {
         this.key = key;
     }
 
-    public List<String> getSets() {
+    public List<TestClass> getSets() {
         return sets;
     }
 
-    public void setSets(List<String> sets) {
+    public void setSets(List<TestClass> sets) {
         this.sets = sets;
+    }
+
+    public List<TestClass> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<TestClass> chapters) {
+        this.chapters = chapters;
     }
 }

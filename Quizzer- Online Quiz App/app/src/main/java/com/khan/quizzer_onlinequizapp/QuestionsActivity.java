@@ -5,12 +5,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.animation.Animator;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.MotionEvent;
@@ -71,6 +74,8 @@ public class QuestionsActivity extends AppCompatActivity {
     private Gson gson;
 
     private ProgressDialog loadingDialog;
+    private AlertDialog alertDialog;
+    private boolean btnEnable = false;
 
 
     @Override
@@ -144,7 +149,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 finish();
                 return;
             }
-        }.start();
+        };
 
 
         loadingDialog.show();
@@ -175,6 +180,7 @@ public class QuestionsActivity extends AppCompatActivity {
                     totalQuestion.setText("Total Questions: " + totalQues);
 
                     tempFunction();
+                    countdownTimer.start();
                     loadingDialog.dismiss();
 
                 } else {
@@ -320,7 +326,9 @@ public class QuestionsActivity extends AppCompatActivity {
 
                 }
                 if (position > 0) {
-                    shareBtn.setEnabled(true);
+
+                    //shareBtn.setEnabled(true);
+                    btnEnable = true;
                     shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")));
 
                 }
@@ -346,30 +354,39 @@ public class QuestionsActivity extends AppCompatActivity {
 
         });
 
-        shareBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enableOption(true);
-                if (isTabed) {
-                    list.remove(position);
-                }
-                position--;
-                if (position == 0) {
-                    shareBtn.setEnabled(false);
-                    shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
-                }
-                if (position != list.size()) {
-                    nextBtn.setText("Next");
-                }
-                if (position == list.size() - 1) {
-                    nextBtn.setText("Submit");
-                }
-                count = 0;
 
-                playAnim(question, 0, list.get(position).getQuestion());
-                isTabed = false;
-            }
-        });
+            shareBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(btnEnable){
+                        enableOption(true);
+                        if (isTabed) {
+                            list.remove(position);
+                        }
+                        position--;
+                        if (position == 0) {
+                           // shareBtn.setEnabled(false);
+                            btnEnable =false;
+                            shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
+                        }
+                        if (position != list.size()) {
+                            nextBtn.setText("Next");
+                        }
+                        if (position == list.size() - 1) {
+                            nextBtn.setText("Submit");
+                        }
+                        count = 0;
+
+                        playAnim(question, 0, list.get(position).getQuestion());
+                        isTabed = false;
+                    }else {
+                        Toast.makeText(QuestionsActivity.this, "No Previous Questions Available", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                }
+            });
 
     }
 
@@ -423,11 +440,33 @@ public class QuestionsActivity extends AppCompatActivity {
 
     }
 
-
     private void loadAds() {
 
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        alertDialog = new AlertDialog.Builder(this,R.style.dialogStyle)
+                .setTitle("Quit Exam")
+                .setMessage("Are you sure you want to quit this exam?")
+                .setPositiveButton("QUIT", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                        //super.onBackPressed();
+
+                    }
+                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+
     }
 }

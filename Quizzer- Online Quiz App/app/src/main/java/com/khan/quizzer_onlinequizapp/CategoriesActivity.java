@@ -67,16 +67,21 @@ public class CategoriesActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
 
-                    List<String> sets =new ArrayList<>();
+                    List<TestClass> sets =new ArrayList<>();
+                    List<TestClass> chapters =new ArrayList<>();
 
                     for(DataSnapshot dataSnapshot2: dataSnapshot1.child("sets").getChildren()){
-                        sets.add(dataSnapshot2.getKey());
+                        sets.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot2.getValue().toString()));
+                    }
+
+                    for(DataSnapshot dataSnapshot2: dataSnapshot1.child("chapters").getChildren()){
+                        chapters.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot2.getValue().toString()));
                     }
 
                     list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
                     dataSnapshot1.child("url").getValue().toString(),
                             dataSnapshot1.getKey(),
-                            sets
+                            sets,chapters
                     ));
 
                 }

@@ -121,7 +121,7 @@
             android:layout_marginBottom="32dp"
             android:background="@drawable/rounded_corners"
             android:backgroundTint="#848484"
-            android:enabled="false"
+
             android:text="Previous"
             android:textColor="@color/disableBtn"
             app:layout_constraintBottom_toBottomOf="parent"
