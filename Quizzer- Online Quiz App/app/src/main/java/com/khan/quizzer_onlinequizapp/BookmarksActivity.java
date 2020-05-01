@@ -61,7 +61,7 @@ public class BookmarksActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        BookmarksAdater adater = new BookmarksAdater(bookmarksList,0);
+        BookmarksAdater adater = new BookmarksAdater(bookmarksList,2);
         recyclerView.setAdapter(adater);
     }
 

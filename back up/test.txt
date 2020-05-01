@@ -1,0 +1,21 @@
+mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    @Override
+    public void onComplete(@NonNull Task<AuthResult> task) {
+        if(task.isSuccessful()){
+            // Sign in is successful
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(mName).build();
+
+            user.updateProfile(profileUpdates)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                  @Override
+                  public void onComplete(@NonNull Task<Void> task) {
+                      if (task.isSuccessful()) {
+                          Log.d(TAG, "User profile updated.");
+                      }
+                  }
+              });
+        }
+});

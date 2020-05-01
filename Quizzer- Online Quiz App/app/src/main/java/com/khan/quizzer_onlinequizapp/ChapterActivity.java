@@ -12,10 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 public class ChapterActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Button modelTestBtn;
+    private List<TestClass> chapterList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +40,16 @@ public class ChapterActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        ChapterAdapter adapter = new ChapterAdapter(CategoriesActivity.list.get(getIntent().getIntExtra("position",0)).getChapters(),getIntent().getStringExtra("title"));
+        chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position",0)).getChapters();
+
+        Collections.sort(chapterList, new Comparator<TestClass>() {
+            @Override
+            public int compare(TestClass o1, TestClass o2) {
+                return (int) (o1.getOrder() - o2.getOrder());
+            }
+        });
+
+        ChapterAdapter adapter = new ChapterAdapter(chapterList,getIntent().getStringExtra("title"));
         recyclerView.setAdapter(adapter);
 
         modelTestBtn.setOnClickListener(new View.OnClickListener() {

@@ -24,18 +24,39 @@
             android:layout_height="wrap_content"
             android:background="@color/colorPrimary"
             android:orientation="vertical"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/questions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:id="@+id/layoutQuestion"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1.0"
                 android:layout_margin="16dp"
+                android:orientation="vertical"
                 android:background="@drawable/category_bg"
-                android:padding="16dp"
-                android:textColor="@android:color/black" />
+                android:padding="16dp">
+
+                <katex.hourglass.in.mathlib.MathView
+                    android:id="@+id/questions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:setClickable="true"
+                    app:setTextSize="10sp"
+                    app:setTextColor="@android:color/black"
+                    />
+                <ImageView
+                    android:id="@+id/figure_ques"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_weight="1"
+
+                    app:srcCompat="@drawable/ic_launcher_background" />
+            </LinearLayout>>
 
             <TextView
                 android:id="@+id/no_indicator"

@@ -43,6 +43,7 @@ public class ScoreActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(ScoreActivity.this,AnsSheetActivity.class);
+                intent.putExtra("isScoreBoard",0);
                 startActivity(intent);
                 finish();
             }

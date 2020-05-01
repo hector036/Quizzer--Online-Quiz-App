@@ -9,8 +9,9 @@
     </item>
 
     <item>
-        <bitmap android:src="@mipmap/splash_test_text5" android:gravity="center"/>
+        <bitmap android:src="@mipmap/splash_test_text5"
+            android:filter="true"
+            android:gravity="center"/>
     </item>
-
 
 </layer-list>

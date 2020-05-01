@@ -67,6 +67,8 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
                     Intent questionIntent = new Intent( itemView.getContext(),QuestionsActivity.class);
                     questionIntent.putExtra("category",category);
                     questionIntent.putExtra("setId",setId);
+                    questionIntent.putExtra("type",1);
+
 
                     itemView.getContext().startActivity(questionIntent);
                 }

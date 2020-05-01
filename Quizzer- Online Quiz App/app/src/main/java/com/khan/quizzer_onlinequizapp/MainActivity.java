@@ -14,25 +14,51 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnUpdateCheckListener{
 
+    public static String url="";
+    public static byte[] decodedBytes;
+    public static String firstName="",lastName="",institute="",phone="";
+
+    private FirebaseAuth auth;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference();
+
     private Button startButton, bookmarkBtn;
+    private GridView gridView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        auth= FirebaseAuth.getInstance();
 
         startButton = findViewById(R.id.start_btn);
         bookmarkBtn = findViewById(R.id.bookmarks_btn);
@@ -41,10 +67,11 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                 .onUpdateCheck(this)
                 .check();
 
+        getUserDetails();
 
         MobileAds.initialize(this);
 
-        loadAds();
+//        loadAds();
 
         Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         long vibrate[]={100,600,100,600};
@@ -82,6 +109,20 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
                     }
                 });
 
+
+
+        gridView = findViewById(R.id.gridview);
+        List<HomeModel> list = new ArrayList<>();
+
+        list.add(new HomeModel(R.drawable.subjectwise1_home,"Subject-wise Exam"));
+        list.add(new HomeModel(R.drawable.weekly1_home,"Weekly Test"));
+        list.add(new HomeModel(R.drawable.bookmark_home,"Bookmarks"));
+        list.add(new HomeModel(R.drawable.profile2_home,"Profile"));
+
+
+        GridAdapterHome adapter = new GridAdapterHome(list);
+        gridView.setAdapter(adapter);
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,11 +140,30 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
         });
     }
 
+    private void getUserDetails(){
+        myRef.child("Users").child(Objects.requireNonNull(auth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                firstName = dataSnapshot.child("firstname").getValue().toString();
+                lastName = dataSnapshot.child("lastName").getValue().toString();
+                institute = dataSnapshot.child("instituteName").getValue().toString();
+                phone = dataSnapshot.child("phone").getValue().toString();
+                url = dataSnapshot.child("url").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void loadAds() {
 
         AdView mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        mAdView.loadAd(adRequest);
     }
 
     @Override

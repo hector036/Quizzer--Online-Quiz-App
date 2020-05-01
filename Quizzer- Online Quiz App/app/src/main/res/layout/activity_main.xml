@@ -17,29 +17,50 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="64dp"
-        app:layout_constraintBottom_toTopOf="@+id/start_btn"
-        android:background="@color/colorPrimary"
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        <FrameLayout
+            android:id="@+id/frameLayout2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/colorPrimary"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="jQuizzer"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="42dp"
-            android:layout_gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/gridview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="jQuizzer"
+                android:textColor="@android:color/white"
+                android:textSize="42dp"
+                android:textStyle="bold"
 
-    </FrameLayout>>
+                />
+
+        </FrameLayout>>
+
+
+        <GridView
+            android:id="@+id/gridview"
+            android:layout_width="320dp"
+            android:layout_height="200dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:layout_weight="1"
+            android:columnWidth="120dp"
+            android:gravity="center"
+            android:horizontalSpacing="16dp"
+            android:numColumns="2"
+            android:verticalSpacing="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/frameLayout2" />
 
     <Button
         android:id="@+id/start_btn"
@@ -53,7 +74,9 @@
         android:background="@drawable/rounded_corners"
         app:layout_constraintBottom_toTopOf="@+id/bookmarks_btn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
+        />
 
     <Button
         android:id="@+id/bookmarks_btn"
@@ -69,21 +92,11 @@
         android:background="@drawable/rounded_corners"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/banner_id">
-    </com.google.android.gms.ads.AdView>
 
 </LinearLayout>

@@ -78,6 +78,8 @@ public class GridAdapter extends BaseAdapter {
                 Intent questionIntent = new Intent(parent.getContext(),QuestionsActivity.class);
                 questionIntent.putExtra("category",category);
                 questionIntent.putExtra("setId",sets.get(position).getSetId());
+                questionIntent.putExtra("type",1);
+
                 parent.getContext().startActivity(questionIntent);
             }
         });

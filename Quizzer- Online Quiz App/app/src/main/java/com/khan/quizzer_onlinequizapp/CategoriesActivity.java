@@ -62,7 +62,7 @@ public class CategoriesActivity extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
 
-        myRef.child("Categories").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef.child("Categories").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
@@ -71,11 +71,15 @@ public class CategoriesActivity extends AppCompatActivity {
                     List<TestClass> chapters =new ArrayList<>();
 
                     for(DataSnapshot dataSnapshot2: dataSnapshot1.child("sets").getChildren()){
-                        sets.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot2.getValue().toString()));
+                        sets.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot2.getValue().toString(),1));
                     }
 
                     for(DataSnapshot dataSnapshot2: dataSnapshot1.child("chapters").getChildren()){
-                        chapters.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot2.getValue().toString()));
+
+                        DataSnapshot dataSnapshot3 = dataSnapshot2.child("name");
+                        DataSnapshot dataSnapshot4 = dataSnapshot2.child("order");
+                        chapters.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot3.getValue().toString(), (Long) dataSnapshot4.getValue()));
+
                     }
 
                     list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),

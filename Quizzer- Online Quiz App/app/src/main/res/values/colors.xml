@@ -3,5 +3,8 @@
     <color name="colorPrimary">#55D394</color>
     <color name="colorPrimaryDark">#55D394</color>
     <color name="colorAccent">#ffffff</color>
+    <color name="buttonColor">#55D394</color>
+    <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>
+    <color name="redButtonDisabled">#50ffffff</color>
 </resources>

@@ -16,17 +16,23 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,33 +43,41 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import katex.hourglass.in.mathlib.MathView;
+
+import static com.khan.quizzer_onlinequizapp.MainActivity.institute;
 
 public class QuestionsActivity extends AppCompatActivity {
-
 
     public static final String FILE_NAME = "QUIZZER";
     public static final String KEY_NAME = "QUESTIONS";
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
+    private FirebaseAuth mAuth;
 
-
-    private TextView question, noIndicator, totalQuestion;
+    private TextView noIndicator, totalQuestion;
     private FloatingActionButton bookmarks;
-    private LinearLayout optionContrainer;
-    private Button shareBtn, nextBtn;
+    private LinearLayout optionContrainer, layoutQuestion;
+    private Button shareBtn, nextBtn, viewAnsSheet, startBtn;
     private List<QuestionModel> list;
     public static List<QuestionModel> listAns;
 
-
     private int position;
     private int score = 0;
+    private int type;
     private int count = 0;
     private String category;
-    private String setId;
+    private String url = "";
+    String instituteNAme = "", temp;
+    private String setId, testName;
     private boolean isTabed = false;
-    private int totalQues;
+    private int totalQues = 0;
     CountDownTimer countdownTimer;
     private int matchedQuestionPosition;
 
@@ -76,6 +90,10 @@ public class QuestionsActivity extends AppCompatActivity {
     private ProgressDialog loadingDialog;
     private AlertDialog alertDialog;
     private boolean btnEnable = false;
+    private boolean finishActivity = true;
+
+    private MathView question;
+    private ImageView figure;
 
 
     @Override
@@ -85,10 +103,14 @@ public class QuestionsActivity extends AppCompatActivity {
 
         loadAds();
 
+        mAuth = FirebaseAuth.getInstance();
+
         question = findViewById(R.id.questions);
+        figure = findViewById(R.id.figure_ques);
         noIndicator = findViewById(R.id.no_indicator);
         bookmarks = findViewById(R.id.bookmark_button);
         optionContrainer = findViewById(R.id.options_contrainer);
+        layoutQuestion = findViewById(R.id.layoutQuestion);
         shareBtn = findViewById(R.id.share_button);
         nextBtn = findViewById(R.id.next_button);
         totalQuestion = findViewById(R.id.total_question);
@@ -100,6 +122,7 @@ public class QuestionsActivity extends AppCompatActivity {
         loadingDialog = new ProgressDialog(this, R.style.dialogStyle);
         loadingDialog.setMessage("Loading...");
         loadingDialog.setCancelable(true);
+
 
         getBookmarks();
 
@@ -120,9 +143,10 @@ public class QuestionsActivity extends AppCompatActivity {
             }
         });
 
-
+        type = getIntent().getIntExtra("type", 0);
         category = getIntent().getStringExtra("category");
         setId = getIntent().getStringExtra("setId");
+        testName = getIntent().getStringExtra("test");
 
 
         list = new ArrayList<>();
@@ -142,12 +166,20 @@ public class QuestionsActivity extends AppCompatActivity {
                 noIndicator.setText("Time is Over");
 
                 Toast.makeText(QuestionsActivity.this, "Time is Over", Toast.LENGTH_SHORT).show();
-                Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
-                scoreIntent.putExtra("score", score);
-                scoreIntent.putExtra("total", totalQues);
-                startActivity(scoreIntent);
-                finish();
-                return;
+
+                if (type == 1) {
+                    Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+                    scoreIntent.putExtra("score", score);
+                    scoreIntent.putExtra("total", totalQues);
+                    startActivity(scoreIntent);
+                    finish();
+                    return;
+                } else {
+                    uploadScore();
+                    return;
+                }
+
+
             }
         };
 
@@ -168,26 +200,72 @@ public class QuestionsActivity extends AppCompatActivity {
                     String c = dataSnapshot1.child("optionC").getValue().toString();
                     String d = dataSnapshot1.child("optionD").getValue().toString();
                     String correctAns = dataSnapshot1.child("correctAns").getValue().toString();
+                    if (dataSnapshot1.child("url").exists()) {
+                        url = dataSnapshot1.child("url").getValue().toString();
+                    } else {
+                        url = "";
+                    }
 
-                    list.add(new QuestionModel(id, question, a, b, c, d, correctAns, setId));
-                    listAns.add(new QuestionModel(id, question, a, b, c, d, "Ans. " + correctAns, setId));
+                    list.add(new QuestionModel(id, question, a, b, c, d, correctAns, setId, url));
+                    list.get(i - 1).setInitPosition(i - 1);
+
+                    listAns.add(new QuestionModel(id, question, a, b, c, d, correctAns, setId, url));
                     i++;
                 }
 
-                if (list.size() > 0) {
+                if (type == 1) {
 
-                    totalQues = list.size();
-                    totalQuestion.setText("Total Questions: " + totalQues);
+                    if (list.size() > 0) {
 
-                    tempFunction();
-                    countdownTimer.start();
-                    loadingDialog.dismiss();
+                        totalQues = list.size();
+                        totalQuestion.setText("Total Questions: " + totalQues);
+
+                        tempFunction();
+                        setTimer();
+                        countdownTimer.start();
+                        loadingDialog.dismiss();
+
+
+                    } else {
+                        loadingDialog.dismiss();
+                        finish();
+                        Toast.makeText(QuestionsActivity.this, "The Questions will be uploaded soon", Toast.LENGTH_SHORT).show();
+                    }
 
                 } else {
-                    loadingDialog.dismiss();
-                    finish();
-                    Toast.makeText(QuestionsActivity.this, "The Questions will be uploaded soon", Toast.LENGTH_SHORT).show();
+                    myRef.child("Results").child(setId).child(Objects.requireNonNull(mAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.exists()) {
+                                showDialog();
+                            } else {
+                                if (list.size() > 0) {
+
+                                    totalQues = list.size();
+                                    totalQuestion.setText("Total Questions: " + totalQues);
+
+                                    tempFunction();
+                                    setTimer();
+                                    countdownTimer.start();
+                                    loadingDialog.dismiss();
+
+
+                                } else {
+                                    loadingDialog.dismiss();
+                                    finish();
+                                    Toast.makeText(QuestionsActivity.this, "The Questions will be uploaded soon", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
+
+
             }
 
             @Override
@@ -207,7 +285,7 @@ public class QuestionsActivity extends AppCompatActivity {
         storeBookmarks();
     }
 
-    private void playAnim(final View view, final int value, final String data) {
+    private void playAnim(final View view, final int value, final String data, final String figure) {
 
         view.animate().alpha(value).scaleX(value).scaleY(value).setDuration(500).setStartDelay(100)
                 .setInterpolator(new DecelerateInterpolator()).setListener(new Animator.AnimatorListener() {
@@ -231,7 +309,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
                     }
 
-                    playAnim(optionContrainer.getChildAt(count), 0, option);
+                    playAnim(optionContrainer.getChildAt(count), 0, option, "");
                     count++;
                 }
             }
@@ -241,7 +319,16 @@ public class QuestionsActivity extends AppCompatActivity {
                 if (value == 0) {
 
                     try {
-                        ((TextView) view).setText(data);
+                        ((MathView) ((LinearLayout) view).getChildAt(0)).setDisplayText(data);
+
+                        if (figure.isEmpty()) {
+                            ((ImageView) ((LinearLayout) view).getChildAt(1)).setVisibility(View.GONE);
+                        } else {
+                            ((ImageView) ((LinearLayout) view).getChildAt(1)).setVisibility(View.VISIBLE);
+                            Glide.with(QuestionsActivity.this).load(figure).placeholder(R.drawable.profile_edit).into((ImageView) ((LinearLayout) view).getChildAt(1));
+
+                        }
+
                         // noIndicator.setText(position+1+"/"+list.size());
                         if (modelMatch()) {
                             bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
@@ -256,7 +343,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
                     }
                     view.setTag(data);
-                    playAnim(view, 1, data);
+                    playAnim(view, 1, data, "");
                 }
             }
 
@@ -281,10 +368,15 @@ public class QuestionsActivity extends AppCompatActivity {
             //
 
             selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+
+            listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
+
             score++;
 
         } else {
             //
+            listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
+
             selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
             //Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
             //currectoption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
@@ -313,7 +405,7 @@ public class QuestionsActivity extends AppCompatActivity {
             });
         }
 
-        playAnim(question, 0, list.get(position).getQuestion());
+        playAnim(layoutQuestion, 0, list.get(position).getQuestion(), list.get(position).getUrl());
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -337,17 +429,30 @@ public class QuestionsActivity extends AppCompatActivity {
                 }
                 if (position == list.size()) {
                     //
-                    Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
-                    scoreIntent.putExtra("score", score);
-                    System.out.println("Check score" + score);
-                    scoreIntent.putExtra("total", totalQues);
-                    startActivity(scoreIntent);
-                    finish();
-                    return;
+
+                    if (type == 1) {
+                        Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+                        scoreIntent.putExtra("score", score);
+                        scoreIntent.putExtra("total", totalQues);
+                        startActivity(scoreIntent);
+                        finish();
+                        return;
+                    } else {
+                        uploadScore();
+                        return;
+                    }
+
+//                    Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+//                    scoreIntent.putExtra("score", score);
+//                    System.out.println("Check score" + score);
+//                    scoreIntent.putExtra("total", totalQues);
+//                    startActivity(scoreIntent);
+//                    finish();
+//                    return;
                 }
                 count = 0;
 
-                playAnim(question, 0, list.get(position).getQuestion());
+                playAnim(layoutQuestion, 0, list.get(position).getQuestion(), list.get(position).getUrl());
                 isTabed = false;
 
             }
@@ -355,38 +460,38 @@ public class QuestionsActivity extends AppCompatActivity {
         });
 
 
-            shareBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+        shareBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                    if(btnEnable){
-                        enableOption(true);
-                        if (isTabed) {
-                            list.remove(position);
-                        }
-                        position--;
-                        if (position == 0) {
-                           // shareBtn.setEnabled(false);
-                            btnEnable =false;
-                            shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
-                        }
-                        if (position != list.size()) {
-                            nextBtn.setText("Next");
-                        }
-                        if (position == list.size() - 1) {
-                            nextBtn.setText("Submit");
-                        }
-                        count = 0;
-
-                        playAnim(question, 0, list.get(position).getQuestion());
-                        isTabed = false;
-                    }else {
-                        Toast.makeText(QuestionsActivity.this, "No Previous Questions Available", Toast.LENGTH_SHORT).show();
+                if (btnEnable) {
+                    enableOption(true);
+                    if (isTabed) {
+                        list.remove(position);
                     }
+                    position--;
+                    if (position == 0) {
+                        // shareBtn.setEnabled(false);
+                        btnEnable = false;
+                        shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
+                    }
+                    if (position != list.size()) {
+                        nextBtn.setText("Next");
+                    }
+                    if (position == list.size() - 1) {
+                        nextBtn.setText("Submit");
+                    }
+                    count = 0;
 
-
+                    playAnim(layoutQuestion, 0, list.get(position).getQuestion(), list.get(position).getUrl());
+                    isTabed = false;
+                } else {
+                    Toast.makeText(QuestionsActivity.this, "No Previous Questions Available", Toast.LENGTH_SHORT).show();
                 }
-            });
+
+
+            }
+        });
 
     }
 
@@ -451,13 +556,17 @@ public class QuestionsActivity extends AppCompatActivity {
     public void onBackPressed() {
         //super.onBackPressed();
 
-        alertDialog = new AlertDialog.Builder(this,R.style.dialogStyle)
+        alertDialog = new AlertDialog.Builder(this, R.style.dialogStyle)
                 .setTitle("Quit Exam")
-                .setMessage("Are you sure you want to quit this exam?")
                 .setPositiveButton("QUIT", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        finish();
+                        if (type == 1) {
+                            finish();
+                        } else {
+                            dialog.dismiss();
+                            uploadScore();
+                        }
                         //super.onBackPressed();
 
                     }
@@ -466,7 +575,172 @@ public class QuestionsActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
-                }).show();
+                }).create();
 
+        if (type == 1) {
+            alertDialog.setMessage("Are you sure you want to quit this exam?");
+        } else {
+            alertDialog.setMessage("Your score is " + score + " " + "Are you sure you want to quit this exam?");
+        }
+        alertDialog.show();
+    }
+
+
+    private void uploadScore() {
+
+        final Map<String, Object> map = new HashMap<>();
+
+        map.put("name", mAuth.getCurrentUser().getDisplayName());
+
+        if (institute == null || institute.isEmpty()) {
+
+            myRef.child("Users").child(Objects.requireNonNull(mAuth.getUid())).child("instituteName").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    instituteNAme = dataSnapshot.getValue().toString();
+                    map.put("instituteName", instituteNAme);
+                    map.put("score", score);
+                    setResultDetails(map);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+        } else {
+            instituteNAme = institute;
+            map.put("instituteName", instituteNAme);
+            map.put("score", score);
+            setResultDetails(map);
+        }
+
+
+    }
+
+    private void setResultDetails(Map<String, Object> map) {
+
+        database.getReference().child("Results").child(setId).child(Objects.requireNonNull(mAuth.getUid())).setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Intent intent = new Intent(QuestionsActivity.this, AnsSheetActivity.class);
+                    intent.putExtra("score", score);
+                    intent.putExtra("total", totalQues);
+                    intent.putExtra("isScoreBoard", 1);
+                    intent.putExtra("test", testName);
+                    intent.putExtra("setId", setId);
+                    startActivity(intent);
+                    finish();
+
+                } else {
+                    // loadingDialog2.dismiss();
+
+                    Toast.makeText(QuestionsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+
+    private void showDialog() {
+
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.question_dialog, null);
+        /**/
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+
+        alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                if (finishActivity) {
+                    loadingDialog.dismiss();
+                    finish();
+                }
+            }
+        });
+
+        alertDialog.show();
+
+        viewAnsSheet = dialogView.findViewById(R.id.view_ans_sheet);
+        startBtn = dialogView.findViewById(R.id.start_question);
+        startBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                type = 1;
+                finishActivity = false;
+
+                alertDialog.cancel();
+
+
+                if (list.size() > 0) {
+
+                    totalQues = list.size();
+                    totalQuestion.setText("Total Questions: " + totalQues);
+
+                    tempFunction();
+                    setTimer();
+                    countdownTimer.start();
+                    loadingDialog.dismiss();
+
+
+                } else {
+                    loadingDialog.dismiss();
+                    finish();
+                    Toast.makeText(QuestionsActivity.this, "The Questions will be uploaded soon", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        viewAnsSheet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(QuestionsActivity.this, AnsSheetActivity.class);
+                intent.putExtra("isScoreBoard", 0);
+                intent.putExtra("isEvaluation", 0);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+    }
+
+    private void setTimer() {
+        countdownTimer = new CountDownTimer(totalQues * 60 * 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                long Minutes = millisUntilFinished / (60 * 1000) % 60;
+                long Seconds = millisUntilFinished / 1000 % 60;
+
+                noIndicator.setText(String.format("%02d", Minutes) + ":" + String.format("%02d", Seconds));
+            }
+
+            public void onFinish() {
+                noIndicator.setText("Time is Over");
+
+                Toast.makeText(QuestionsActivity.this, "Time is Over", Toast.LENGTH_SHORT).show();
+
+                if (type == 1) {
+                    Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
+                    scoreIntent.putExtra("score", score);
+                    scoreIntent.putExtra("total", totalQues);
+                    startActivity(scoreIntent);
+                    finish();
+                    return;
+                } else {
+                    uploadScore();
+                    return;
+                }
+
+
+            }
+        };
     }
 }

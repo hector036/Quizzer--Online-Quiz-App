@@ -2,7 +2,9 @@ package com.khan.quizzer_onlinequizapp;
 
 public class QuestionModel {
 
-    private String id,question, optionA,optionB,optionC,optionD,correctAns,set;
+    private String id,question, optionA,optionB,optionC,optionD,correctAns,set,url;
+    private String yourAns;
+    private int initPosition;
     //private String id,question,A,B,C,D,answer,set;
 
 
@@ -10,7 +12,7 @@ public class QuestionModel {
 
     }
 
-    public QuestionModel(String id, String question, String optionA, String optionB, String optionC, String optionD, String correctAns, String set) {
+    public QuestionModel(String id, String question, String optionA, String optionB, String optionC, String optionD, String correctAns, String set,String url) {
         this.id = id;
         this.question = question;
         this.optionA = optionA;
@@ -19,6 +21,31 @@ public class QuestionModel {
         this.optionD = optionD;
         this.correctAns = correctAns;
         this.set = set;
+        this.url = url;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getYourAns() {
+        return yourAns;
+    }
+
+    public void setYourAns(String yourAns) {
+        this.yourAns = yourAns;
+    }
+
+    public int getInitPosition() {
+        return initPosition;
+    }
+
+    public void setInitPosition(int initPosition) {
+        this.initPosition = initPosition;
     }
 
     public String getId() {

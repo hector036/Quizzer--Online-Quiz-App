@@ -3,4 +3,8 @@
     <string name="sets">Set</string>
     <string name="banner_id">ca-app-pub-3339496054642989/2630421598</string>
     <string name="interstitialAd_id">ca-app-pub-3339496054642989/8555829407</string>
+    <string name="resend_code_timer">Resend Code (%ds)</string>
+    <string name="terms_policy_text_next">
+            By tapping Next Button, you agree to our <b>Privacy Policy</b>.
+    </string>
 </resources>

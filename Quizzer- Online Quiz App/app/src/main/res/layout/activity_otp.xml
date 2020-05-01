@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OtpActivity"
+
+    android:background="@color/colorAccent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_layout_phone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/border_3_c_primary"
+            android:enabled="false"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="#99FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/phone_login_phne_number" />
+
+
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/countryCodePicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            app:ccp_customMasterCountries="BD"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:ccp_autoDetectCountry="true"
+            app:ccp_contentColor="@android:color/black"
+            app:ccp_defaultNameCode="BD"
+            app:ccp_rememberLastSelection="true"
+            app:ccp_showArrow="false"
+            app:ccp_showFlag="true"
+            app:ccp_hintExampleNumber="true"
+
+
+            app:ccp_showNameCode="false"
+            app:ccp_textSize="17sp"
+            app:layout_constraintBottom_toBottomOf="@+id/phone_login_phne_number"
+            app:layout_constraintEnd_toStartOf="@+id/phone_login_phne_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/phone_login_phne_number" />
+
+        <EditText
+            android:id="@+id/phone_login_phne_number"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:backgroundTint="#4E4E4E"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textColor="@android:color/black"
+
+            android:textColorHint="#D6D6D6"
+            android:textSize="17sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/countryCodePicker"
+            app:layout_constraintTop_toBottomOf="@+id/lb_institute" />
+
+        <TextView
+            android:id="@+id/textViewPrivacy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/terms_policy_text_next"
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/next_button"
+            app:layout_constraintVertical_bias="0.977" />
+
+        <TextView
+            android:id="@+id/lb_institute"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="56dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:text="Enter your phone number "
+            android:textColor="@android:color/black"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/const_layout_otp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        >
+
+
+        <com.poovam.pinedittextfield.SquarePinField
+            android:id="@+id/pinview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:height="48dp"
+            android:inputType="number"
+            android:textColor="#4E4E4E"
+            android:textSize="16sp"
+            app:cornerRadius="2dp"
+            app:distanceInBetween="6dp"
+            app:fieldBgColor="@android:color/white"
+            app:fieldColor="#8c8c8c"
+            app:highlightColor="#4E4E4E"
+            app:highlightType="currentField"
+            app:isCursorEnabled="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/varification_phone_field"
+            app:lineThickness="1dp"
+            app:noOfFields="6"
+
+            />
+
+        <ImageView
+            android:id="@+id/refresh_icon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_resend_code"
+            app:layout_constraintStart_toEndOf="@+id/tv_resend_code"
+            app:layout_constraintTop_toTopOf="@+id/tv_resend_code"
+            app:srcCompat="@drawable/refresh" />
+
+        <TextView
+            android:id="@+id/tv_resend_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
+            android:enabled="false"
+            android:text="Resend Code"
+            android:textColor="@android:color/black"
+            app:layout_constraintStart_toStartOf="@+id/pinview"
+            app:layout_constraintTop_toBottomOf="@+id/pinview" />
+        <TextView
+            android:id="@+id/textViewVarification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Verification Code"
+            android:textColor="@android:color/black"
+            android:textSize="21sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView5Fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Please type the verification code sent to"
+            android:textColor="@android:color/black"
+
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textViewVarification" />
+
+        <TextView
+            android:id="@+id/varification_phone_field"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+8801*******00"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@+id/textView5Fragment"
+            app:layout_constraintStart_toStartOf="@+id/textView5Fragment"
+            app:layout_constraintTop_toBottomOf="@+id/textView5Fragment" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
