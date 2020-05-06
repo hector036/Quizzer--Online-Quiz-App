@@ -41,23 +41,19 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
-
         android:orientation="horizontal"
-
         >
-
         <Button
             android:id="@+id/model_test_btn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
             android:textAllCaps="false"
             android:layout_weight="1"
-            android:background="@drawable/border_3_c_primary"
-            android:text="Model Test (All Chapters)  →"
-
+            android:background="@color/colorPrimary"
+            android:text="Model Test (All Chapters)"
+            android:drawableEnd="@drawable/next"
             android:textColor="@android:color/white" />
 
     </LinearLayout>

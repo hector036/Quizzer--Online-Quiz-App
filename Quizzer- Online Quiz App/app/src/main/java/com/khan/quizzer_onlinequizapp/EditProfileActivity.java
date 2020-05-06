@@ -72,6 +72,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
     private ProgressBar progressBar;
     private ProgressDialog loadingDialog, loadingDialog2;
+
     private int type;
 
     @Override
@@ -94,6 +95,11 @@ public class EditProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Profile");
 
         type = getIntent().getIntExtra("type", 0);
+
+
+        loadingDialog = new ProgressDialog(this, R.style.dialogStyle);
+        loadingDialog.setMessage("Saving...");
+        loadingDialog.setCancelable(false);
 
         if (type == 1) {
             phoneNumber = getIntent().getStringExtra("phone");
@@ -285,6 +291,7 @@ public class EditProfileActivity extends AppCompatActivity {
         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                 .setDisplayName(firstName.getText().toString() + " " + lastName.getText().toString()).build();
 
+        loadingDialog.show();
         user.updateProfile(profileUpdates)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -298,16 +305,18 @@ public class EditProfileActivity extends AppCompatActivity {
                                         if (type == 1) {
                                             Intent intent = new Intent(EditProfileActivity.this, MainActivity.class);
                                             startActivity(intent);
+                                            loadingDialog.dismiss();
                                             finish();
                                         } else {
                                             MainActivity.firstName = firstName.getText().toString();
                                             MainActivity.lastName = lastName.getText().toString();
                                             MainActivity.institute = instituteName.getText().toString();
+                                            loadingDialog.dismiss();
                                             finish();
                                         }
 
                                     } else {
-                                        loadingDialog2.dismiss();
+                                        loadingDialog.dismiss();
 
                                         Toast.makeText(EditProfileActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
 

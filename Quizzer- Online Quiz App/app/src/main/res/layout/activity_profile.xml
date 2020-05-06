@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     tools:context=".ProfileActivity">
-
 
 
     <ScrollView
@@ -15,36 +15,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            android:orientation="vertical" >
+            <include layout="@layout/profile_data_layout" />
 
-
-            <include layout="@layout/profile_data_layout"/>
-
-            <include layout="@layout/profile_info"/>
+            <include layout="@layout/profile_info" />
 
             <Button
                 android:id="@+id/sign_out"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="64dp"
                 android:layout_marginLeft="8dp"
+                android:layout_marginTop="64dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
 
-               android:backgroundTint="#F3F3F3"
-                android:textAllCaps="false"
                 android:background="@drawable/rounded_box"
+                android:backgroundTint="#F3F3F3"
+                android:text="Sign Out"
+                android:textAllCaps="false"
+                android:visibility="gone" />
 
-                android:text="Sign Out" />
-
-
-        </LinearLayout>>
-
-
-
+        </LinearLayout>
 
     </ScrollView>
-
 
 </FrameLayout>

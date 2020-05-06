@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:background="@drawable/category_bg"
+    android:background="@drawable/bookmark_bg"
+    android:elevation="4dp"
     >
 
     <LinearLayout
@@ -74,10 +75,10 @@
         android:id="@+id/evaluation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
-        android:background="#FA0000"
+        android:backgroundTint="#1ABC1A"
+        android:background="@drawable/eveluation_bg"
         android:padding="3dp"
-        android:text=""
+        android:text="Correct"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

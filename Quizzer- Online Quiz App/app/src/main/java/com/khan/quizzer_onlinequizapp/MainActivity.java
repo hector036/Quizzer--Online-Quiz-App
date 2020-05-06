@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
-    private Button startButton, bookmarkBtn;
+
     private GridView gridView;
 
 
@@ -60,8 +60,7 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
 
         auth= FirebaseAuth.getInstance();
 
-        startButton = findViewById(R.id.start_btn);
-        bookmarkBtn = findViewById(R.id.bookmarks_btn);
+
 
         UpdateHelper.with(this)
                 .onUpdateCheck(this)
@@ -123,21 +122,7 @@ public class MainActivity extends AppCompatActivity implements  UpdateHelper.OnU
         GridAdapterHome adapter = new GridAdapterHome(list);
         gridView.setAdapter(adapter);
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent categoryIntent = new Intent(MainActivity.this, CategoriesActivity.class);
-                startActivity(categoryIntent);
-            }
-        });
-
-        bookmarkBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent bookmarkIntent = new Intent(MainActivity.this, BookmarksActivity.class);
-                startActivity(bookmarkIntent);
-            }
-        });
+       
     }
 
     private void getUserDetails(){

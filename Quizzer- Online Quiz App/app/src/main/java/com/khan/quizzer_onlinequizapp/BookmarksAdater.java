@@ -1,5 +1,6 @@
 package com.khan.quizzer_onlinequizapp;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,17 +89,21 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 if(list.get(position).getYourAns()==null){
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("Blank");
-                    evaluation.setBackgroundColor(Color.parseColor("#50000000"));
+                    //evaluation.setBackgroundColor(Color.parseColor("#50000000"));
+                    evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#50000000")));
                 }
                 else if(yourAns.equals(correctAns)){
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("Correct");
-                    evaluation.setBackgroundColor(Color.parseColor("#32CD32"));
+                 //   evaluation.setBackgroundColor(Color.parseColor("#32CD32"));
+                    evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
+
                 }
                 else {
                     yourAnswer.setVisibility(View.VISIBLE);
                     evaluation.setText("Wrong");
-                    evaluation.setBackgroundColor(Color.parseColor("#FA0000"));
+                   // evaluation.setBackgroundColor(Color.parseColor("#FA0000"));
+                      evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
 
                 }
 

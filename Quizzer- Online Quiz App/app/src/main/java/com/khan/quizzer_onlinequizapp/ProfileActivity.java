@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,14 +39,15 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileName;
     private TextView instituteName;
     private TextView contactNumber;
-    private Button editProfileBtn;
+    private FloatingActionButton editProfileBtn;
     private Button signOutBtn;
     private CircleImageView imageView;
+    private boolean isFabEnable = false;
 
 //    private String firstName;
 //    private String lastName;
 //    private String institute;
- //    private String phone;
+ //   private String phone;
 //    private Bitmap decodedBitmap;
 
     private FirebaseAuth auth;
@@ -59,6 +61,12 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
         auth= FirebaseAuth.getInstance();
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         profileName = findViewById(R.id.profile_name);
         instituteName = findViewById(R.id.institue_text);
@@ -75,18 +83,23 @@ public class ProfileActivity extends AppCompatActivity {
             contactNumber.setText(phone);
             decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
             Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+            isFabEnable = true;
+
         }
 
         editProfileBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileActivity.this,EditProfileActivity.class);
-                intent.putExtra("firstName",firstName);
-                intent.putExtra("lastName",lastName);
-                intent.putExtra("instituteName",institute);
-                intent.putExtra("phone",phone);
-                intent.putExtra("type",2);
-                startActivity(intent);
+
+                if(isFabEnable){
+                    Intent intent = new Intent(ProfileActivity.this,EditProfileActivity.class);
+                    intent.putExtra("firstName",firstName);
+                    intent.putExtra("lastName",lastName);
+                    intent.putExtra("instituteName",institute);
+                    intent.putExtra("phone",phone);
+                    intent.putExtra("type",2);
+                    startActivity(intent);
+                }
 
             }
         });
@@ -97,17 +110,21 @@ public class ProfileActivity extends AppCompatActivity {
         myRef.child("Users").child(Objects.requireNonNull(auth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                firstName = dataSnapshot.child("firstname").getValue().toString();
-                lastName = dataSnapshot.child("lastName").getValue().toString();
-                institute = dataSnapshot.child("instituteName").getValue().toString();
-                phone = dataSnapshot.child("phone").getValue().toString();
-                MainActivity.url = dataSnapshot.child("url").getValue().toString();
 
-                profileName.setText(firstName+" "+lastName);
-                instituteName.setText(institute);
-                contactNumber.setText(phone);
-                decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
-                Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+                if(!isFinishing()){
+                    firstName = dataSnapshot.child("firstname").getValue().toString();
+                    lastName = dataSnapshot.child("lastName").getValue().toString();
+                    institute = dataSnapshot.child("instituteName").getValue().toString();
+                    phone = dataSnapshot.child("phone").getValue().toString();
+                    MainActivity.url = dataSnapshot.child("url").getValue().toString();
+
+                    profileName.setText(firstName+" "+lastName);
+                    instituteName.setText(institute);
+                    contactNumber.setText(phone);
+                    decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
+                    Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+                    isFabEnable = true;
+               }
 
             }
 
@@ -131,6 +148,7 @@ public class ProfileActivity extends AppCompatActivity {
             contactNumber.setText(phone);
             decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
             Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+            isFabEnable = true;
         }
 
     }

@@ -4,207 +4,211 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorAccent"
     android:orientation="vertical"
     tools:context=".QuestionsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/total_question"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="28dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="0dp"
+            android:text="Questions: ..."
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/no_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="00:00"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+        <ImageButton
+            android:id="@+id/bookmark_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="0dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="28dp"
+            android:scaleType="fitEnd"
+            android:background="@color/colorAccent"
+            app:srcCompat="@drawable/bookmark_border" />
+
+
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true">
-    
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/layoutQuestion"
-                android:layout_width="fill_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1.0"
-                android:layout_margin="16dp"
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorAccent"
                 android:orientation="vertical"
-                android:background="@drawable/category_bg"
-                android:padding="16dp">
 
-                <katex.hourglass.in.mathlib.MathView
-                    android:id="@+id/questions"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:id="@+id/layoutQuestion"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0dp"
+                    android:layout_margin="16dp"
+                    android:layout_weight="1.0"
+
+                    android:orientation="vertical"
+                    android:padding="12dp">
+
+                    <katex.hourglass.in.mathlib.MathView
+                        android:id="@+id/questions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:setClickable="true"
+                        app:setTextColor="@android:color/black"
+                        />
+
+                    <ImageView
+                        android:id="@+id/figure_ques"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+
+                        app:srcCompat="@drawable/ic_launcher_background" />
+                </LinearLayout>
+                >
+
+                />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/options_contrainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+
+                <Button
+                    android:id="@+id/button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    app:setClickable="true"
-                    app:setTextSize="10sp"
-                    app:setTextColor="@android:color/black"
-                    />
-                <ImageView
-                    android:id="@+id/figure_ques"
-                    android:visibility="gone"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_borders"
+                    android:backgroundTint="#989898"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:id="@+id/button2"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_borders"
+                    android:backgroundTint="#989898"
 
-                    app:srcCompat="@drawable/ic_launcher_background" />
-            </LinearLayout>>
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black" />
 
-            <TextView
-                android:id="@+id/no_indicator"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:paddingLeft="16dp"
-                android:paddingTop="8dp"
-                android:paddingRight="16dp"
-                android:paddingBottom="16dp"
-                android:text="00:00"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_borders"
 
+                    android:backgroundTint="#989898"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black" />
 
-            />
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/rounded_borders"
 
-        </LinearLayout>
+                    android:backgroundTint="#989898"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/options_contrainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="vertical"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_borders"
-                android:backgroundTint="#989898"
-                android:textAllCaps="false"
-                android:textColor="@android:color/black" />
-
-            <Button
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:background="@drawable/rounded_borders"
-                android:textAllCaps="false"
-
-                android:backgroundTint="#989898"
-                android:textColor="@android:color/black" />
-
-            <Button
-                android:id="@+id/button3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textAllCaps="false"
-
-                android:background="@drawable/rounded_borders"
-                android:backgroundTint="#989898"
-                android:textColor="@android:color/black" />
-
-            <Button
-                android:id="@+id/button4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:textAllCaps="false"
-
-                android:background="@drawable/rounded_borders"
-                android:backgroundTint="#989898"
-                android:textColor="@android:color/black" />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/share_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="#848484"
-
-            android:text="Previous"
-            android:textColor="@color/disableBtn"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/next_button"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/options_contrainer" />
-
-        <Button
-            android:id="@+id/next_button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="32dp"
-            android:background="@drawable/rounded_corners"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="Next"
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/share_button"
-            app:layout_constraintTop_toBottomOf="@+id/options_contrainer" />
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/bookmark_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-
-            android:clickable="true"
-            android:translationY="24dp"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/bookmark_border" />
-
-        <TextView
-            android:id="@+id/total_question"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="17dp"
-            android:layout_marginBottom="35dp"
-            android:textColor="@android:color/white"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toTopOf="@+id/options_contrainer"
-            app:layout_constraintStart_toStartOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
 
-    <com.google.android.gms.ads.AdView
-        xmlns:ads="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/adView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
-        ads:adSize="SMART_BANNER"
-        ads:adUnitId="@string/banner_id">
-    </com.google.android.gms.ads.AdView>
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="28dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="16dp"
+            android:stateListAnimator="@null"
+            android:text="‹  Previous"
+            android:textAlignment="textStart"
+            android:textAllCaps="false"
+            android:textColor="@color/disableBtn"
+            android:textSize="16dp" />
+
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingRight="28dp"
+            android:stateListAnimator="@null"
+            android:text="Next  ›"
+            android:textAlignment="textEnd"
+            android:textAllCaps="false"
+            android:textColor="@color/colorAccent"
+            android:textSize="16dp" />
+    </LinearLayout>
 
 </LinearLayout>

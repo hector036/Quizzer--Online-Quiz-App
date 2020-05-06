@@ -121,7 +121,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
 
-            android:hint="School/College Name"
+            android:hint="Educational Institute"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:singleLine="true"
