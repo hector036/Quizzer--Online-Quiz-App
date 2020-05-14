@@ -19,6 +19,9 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static com.khan.quizzer_onlinequizapp.QuestionsActivity.FILE_NAME;
@@ -29,6 +32,8 @@ public class BookmarksActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
 
     private List<QuestionModel> bookmarksList;
+    private List<QuestionModel> tempList;
+    private String category;
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -47,6 +52,8 @@ public class BookmarksActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Bookmarks");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        category = getIntent().getStringExtra("category");
+
         recyclerView = findViewById(R.id.rv_bookmarks);
 
         preferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
@@ -61,10 +68,9 @@ public class BookmarksActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        BookmarksAdater adater = new BookmarksAdater(bookmarksList,2);
+        BookmarksAdater adater = new BookmarksAdater(bookmarksList, 2);
         recyclerView.setAdapter(adater);
     }
-
 
     @Override
     protected void onPause() {
@@ -76,32 +82,46 @@ public class BookmarksActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void getBookmarks(){
-        String json = preferences.getString(KEY_NAME,"");
-        Type type =new  TypeToken<List<QuestionModel>>(){}.getType();
-
-        bookmarksList = gson.fromJson(json,type);
-
-        if(bookmarksList == null){
+    private void getBookmarks() {
+        String json = preferences.getString(KEY_NAME, "");
+        Type type = new TypeToken<List<QuestionModel>>() {
+        }.getType();
+        bookmarksList = gson.fromJson(json, type);
+        if (bookmarksList == null) {
             bookmarksList = new ArrayList<>();
+        }else {
+            Collections.reverse(bookmarksList);
+            for (QuestionModel questionModel:bookmarksList){
+                questionModel.setQuestion(cutString(questionModel.getQuestion()));
+            }
         }
     }
 
-
-    private void storeBookmarks(){
+    private void storeBookmarks() {
 
         String json = gson.toJson(bookmarksList);
 
-        editor.putString(KEY_NAME,json);
+        editor.putString(KEY_NAME, json);
 
         editor.commit();
+
+    }
+    private String cutString(String str) {
+        if (str.charAt(3) == '.') {
+            return str.substring(3);
+        } else if (str.charAt(4) == '.') {
+            return str.substring(4);
+        } else if (str.charAt(5) == '.') {
+            return str.substring(5);
+        }else
+            return str.substring(6);
 
     }
 

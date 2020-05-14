@@ -52,7 +52,7 @@
             android:textAllCaps="false"
             android:layout_weight="1"
             android:background="@color/colorPrimary"
-            android:text="Model Test (All Chapters)"
+            android:text="Model Test"
             android:drawableEnd="@drawable/next"
             android:textColor="@android:color/white" />
 

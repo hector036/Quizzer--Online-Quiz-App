@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.devs.readmoreoption.ReadMoreOption;
 
 import java.util.ArrayList;
 
@@ -36,6 +35,9 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
         if(listItem == null)
             listItem = LayoutInflater.from(mContext).inflate(R.layout.test_item,parent,false);
 
+        final TextView descripton = (TextView)listItem.findViewById(R.id.description);
+        final TextView seeMore = (TextView)listItem.findViewById(R.id.see_more);
+
 //            ((ImageView)listItem.findViewById(R.id.item_imageView)).
         //     setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_appicon));
 
@@ -46,20 +48,22 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
         ((TextView)listItem.findViewById(R.id.start_time))
                 .setText(dataList.get(position).getStartTime());
 
-        ReadMoreOption readMoreOption = new ReadMoreOption.Builder(parent.getContext())
-                // .textLength(3, ReadMoreOption.TYPE_LINE) // OR
-                .textLength(78, ReadMoreOption.TYPE_CHARACTER)
-                .moreLabel("See More")
-                .lessLabel("See Less")
-                .moreLabelColor(Color.BLACK)
-                .lessLabelColor(Color.BLACK)
-                //.labelUnderLine(false)
-                .build();
-        readMoreOption.addReadMoreTo((TextView)listItem.findViewById(R.id.description), dataList.get(position).getDescription());
 
-//
-//            ((TextView)listItem.findViewById(R.id.description))
-//                    .setText(dataList.get(position).getDescription());
+        (descripton).setText(dataList.get(position).getDescription());
+        (descripton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (descripton).setMaxLines(100);
+                seeMore.setVisibility(View.GONE);
+            }
+        });
+        seeMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                (descripton).setMaxLines(100);
+                seeMore.setVisibility(View.GONE);
+            }
+        });
 
         ((Button)listItem.findViewById(R.id.item_button1)).setText("Attempt");
 

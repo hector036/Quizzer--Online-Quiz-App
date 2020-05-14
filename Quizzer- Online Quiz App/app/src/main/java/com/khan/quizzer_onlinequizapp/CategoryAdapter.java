@@ -17,10 +17,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewholder> {
 
-    private List<CategoryModel> categoryModelList;
+    private static final int FROM_SUBJECT_WISE_ACTIVITY = 0;
+    private static final int FROM_BOOKMARKS_ACTIVITY = 1;
 
-    public CategoryAdapter(List<CategoryModel> categoryModelList) {
+    private List<CategoryModel> categoryModelList;
+    private int type;
+
+    public CategoryAdapter(int type,List<CategoryModel> categoryModelList) {
         this.categoryModelList = categoryModelList;
+        this.type = type;
     }
 
     @NonNull
@@ -62,11 +67,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewho
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent setIntent = new Intent( itemView.getContext(),ChapterActivity.class);
-                    setIntent.putExtra("title",title);
-                    setIntent.putExtra("position",position);
-                    setIntent.putExtra("key",key);
-                    itemView.getContext().startActivity(setIntent);
+
+                    if(type == FROM_SUBJECT_WISE_ACTIVITY){
+                        Intent setIntent = new Intent( itemView.getContext(),ChapterActivity.class);
+                        setIntent.putExtra("title",title);
+                        setIntent.putExtra("position",position);
+                        setIntent.putExtra("key",key);
+                        itemView.getContext().startActivity(setIntent);
+                    }
+
                 }
             });
 

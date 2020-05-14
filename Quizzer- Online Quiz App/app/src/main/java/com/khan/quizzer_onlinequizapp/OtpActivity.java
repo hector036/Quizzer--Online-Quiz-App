@@ -42,8 +42,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hbb20.CountryCodePicker;
-import com.mukesh.OnOtpCompletionListener;
-import com.mukesh.OtpView;
 import com.poovam.pinedittextfield.LinePinField;
 import com.poovam.pinedittextfield.PinField;
 import com.poovam.pinedittextfield.SquarePinField;

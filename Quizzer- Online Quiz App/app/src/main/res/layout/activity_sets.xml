@@ -19,8 +19,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/sets"
-        android:textSize="28sp"
+        android:text="Select Set"
+        android:textSize="24sp"
         android:textStyle="bold"
         android:textColor="@android:color/black"
         android:padding="16dp"

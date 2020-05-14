@@ -2,15 +2,16 @@ package com.khan.quizzer_onlinequizapp;
 
 public class QuestionModel {
 
-    private String id,question, optionA,optionB,optionC,optionD,correctAns,set,url;
-    private String yourAns;
-    private int initPosition;
-    //private String id,question,A,B,C,D,answer,set;
-
 
     public QuestionModel(){
 
     }
+
+    private String id,question, optionA,optionB,optionC,optionD,correctAns,set,url;
+    private String yourAns,category;
+    private int initPosition;
+    //private String id,question,A,B,C,D,answer,set;
+
 
     public QuestionModel(String id, String question, String optionA, String optionB, String optionC, String optionD, String correctAns, String set,String url) {
         this.id = id;
@@ -22,6 +23,14 @@ public class QuestionModel {
         this.correctAns = correctAns;
         this.set = set;
         this.url = url;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getUrl() {

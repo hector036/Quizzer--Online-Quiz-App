@@ -40,6 +40,16 @@
             android:textStyle="bold"
             app:setTextColor="@android:color/black"
             />
+           <TextView
+               android:id="@+id/quesText"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_gravity="center"
+               android:textSize="18sp"
+               android:textColor="@android:color/black"
+               android:visibility="gone"
+
+               />
 
            <ImageView
                android:id="@+id/figure_in_bookmarks"
@@ -78,7 +88,7 @@
         android:backgroundTint="#1ABC1A"
         android:background="@drawable/eveluation_bg"
         android:padding="3dp"
-        android:text="Correct"
+        android:text="✔ Correct"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"

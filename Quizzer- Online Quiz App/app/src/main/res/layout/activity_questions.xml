@@ -22,7 +22,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
             android:paddingRight="0dp"
-            android:text="Questions: ..."
+            android:text="Full Marks: ..."
             android:gravity="center"
             android:textColor="@android:color/black"
             android:textSize="13sp" />
@@ -95,6 +95,15 @@
                         android:layout_gravity="center"
                         app:setClickable="true"
                         app:setTextColor="@android:color/black"
+                        />
+                    <TextView
+                        android:id="@+id/quesText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"
+                        android:visibility="gone"
                         />
 
                     <ImageView

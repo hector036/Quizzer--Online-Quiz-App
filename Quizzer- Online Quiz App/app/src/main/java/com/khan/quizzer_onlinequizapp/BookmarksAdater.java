@@ -49,17 +49,29 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
         return list.size();
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
     class Viewholder extends RecyclerView.ViewHolder{
 
         private TextView answer,evaluation,yourAnswer;
         private ImageView figure;
         private MathView question;
+        private TextView quesText;
         private ImageButton deleteBtn;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
 
             question = itemView.findViewById(R.id.question);
+            quesText = itemView.findViewById(R.id.quesText);
             figure = itemView.findViewById(R.id.figure_in_bookmarks);
             evaluation = itemView.findViewById(R.id.evaluation);
             answer = itemView.findViewById(R.id.answer);
@@ -71,7 +83,15 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
         private void setData(String question,String url, String answer,String yourAns, String correctAns, final int position){
 
-            this.question.setDisplayText(question);
+            if(isTex(question)){
+                this.quesText.setVisibility(View.GONE);
+                this.question.setVisibility(View.VISIBLE);
+                this.question.setDisplayText(position+1+question);
+            }else {
+                this.question.setVisibility(View.GONE);
+                this.quesText.setVisibility(View.VISIBLE);
+                this.quesText.setText(position+1+question);
+            }
             if(url.isEmpty()){
                 figure.setVisibility(View.GONE);
             }else {
@@ -94,14 +114,14 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 }
                 else if(yourAns.equals(correctAns)){
                     yourAnswer.setVisibility(View.GONE);
-                    evaluation.setText("Correct");
+                    evaluation.setText("\u2714"+"  Correct");
                  //   evaluation.setBackgroundColor(Color.parseColor("#32CD32"));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
 
                 }
                 else {
                     yourAnswer.setVisibility(View.VISIBLE);
-                    evaluation.setText("Wrong");
+                    evaluation.setText("\u2718"+"  Wrong");
                    // evaluation.setBackgroundColor(Color.parseColor("#FA0000"));
                       evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
 
@@ -127,6 +147,15 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                     notifyDataSetChanged();
                 }
             });
+        }
+
+        private boolean isTex(String str)
+        {
+            if(str.contains("\\(") || str.contains("\\)") || str.contains("$") || str.contains("\\begin") || str.contains("\\end") || str.contains("\\ (") || str.contains("\\ )")){
+                return true;
+            }else
+                return false;
+
         }
 
     }

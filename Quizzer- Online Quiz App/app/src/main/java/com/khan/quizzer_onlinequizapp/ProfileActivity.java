@@ -39,17 +39,16 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView profileName;
     private TextView instituteName;
     private TextView contactNumber;
+    private TextView loading;
     private FloatingActionButton editProfileBtn;
     private Button signOutBtn;
     private CircleImageView imageView;
     private boolean isFabEnable = false;
-
 //    private String firstName;
 //    private String lastName;
 //    private String institute;
  //   private String phone;
 //    private Bitmap decodedBitmap;
-
     private FirebaseAuth auth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -73,6 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         contactNumber = findViewById(R.id.contact_number);
         imageView = findViewById(R.id.profile_image_2);
         editProfileBtn = findViewById(R.id.edit_profile_btn);
+        loading = findViewById(R.id.loading_profile);
         signOutBtn = findViewById(R.id.sign_out);
 
         if(institute.isEmpty()){
@@ -82,8 +82,9 @@ public class ProfileActivity extends AppCompatActivity {
             instituteName.setText(institute);
             contactNumber.setText(phone);
             decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
-            Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+            Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile1_home).into(imageView);
             isFabEnable = true;
+            loading.setVisibility(View.INVISIBLE);
 
         }
 
@@ -107,6 +108,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void getUserDetails(){
+        loading.setVisibility(View.VISIBLE);
         myRef.child("Users").child(Objects.requireNonNull(auth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -122,8 +124,9 @@ public class ProfileActivity extends AppCompatActivity {
                     instituteName.setText(institute);
                     contactNumber.setText(phone);
                     decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
-                    Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+                    Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile1_home).into(imageView);
                     isFabEnable = true;
+                    loading.setVisibility(View.INVISIBLE);
                }
 
             }
@@ -147,7 +150,7 @@ public class ProfileActivity extends AppCompatActivity {
             instituteName.setText(institute);
             contactNumber.setText(phone);
             decodedBytes = Base64.decode( MainActivity.url, Base64.DEFAULT);
-            Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile_edit).into(imageView);
+            Glide.with(ProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile1_home).into(imageView);
             isFabEnable = true;
         }
 

@@ -33,13 +33,13 @@
         android:background="@drawable/r_bg_3_border"
         android:backgroundTint="#55D193"
         android:text="Attempt"
-        android:textAllCaps="false"
 
+        android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/description" />
+        app:layout_constraintTop_toBottomOf="@+id/see_more" />
 
     <TextView
         android:id="@+id/item_textView1"
@@ -58,13 +58,13 @@
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:autoLink="all"
-        android:clickable="true"
-        android:textColorLink="#216FDD"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Syllabus: sum just go thrthhth ough and You have to read all the topics . Just Exclude the topics contatining jintrigral...See More"
+        android:autoLink="all"
+        android:clickable="true"
+        android:maxLines="2"
         android:textColor="#909090"
+        android:textColorLink="#216FDD"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -96,5 +96,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/date"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/date" />
+
+    <TextView
+        android:id="@+id/see_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="...See More"
+        android:padding="2dp"
+        android:textColor="@android:color/black"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@+id/description"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -56,7 +56,7 @@ public class QuestionsActivity extends AppCompatActivity {
     DatabaseReference myRef = database.getReference();
     private FirebaseAuth mAuth;
 
-    private TextView noIndicator, totalQuestion;
+    private TextView noIndicator, totalQuestion, quesText;
     private ImageButton bookmarks;
     private LinearLayout optionContrainer, layoutQuestion;
     private Button shareBtn, nextBtn, viewAnsSheet, startBtn;
@@ -82,7 +82,7 @@ public class QuestionsActivity extends AppCompatActivity {
     private SharedPreferences.Editor editor;
     private Gson gson;
 
-    private ProgressDialog loadingDialog,loadingDialogUploadScore;
+    private ProgressDialog loadingDialog, loadingDialogUploadScore;
     private AlertDialog alertDialog;
     private boolean btnEnable = false;
     private boolean finishActivity = true;
@@ -96,6 +96,7 @@ public class QuestionsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_questions);
+
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -113,13 +114,15 @@ public class QuestionsActivity extends AppCompatActivity {
         editor = preferences.edit();
         gson = new Gson();
 
+        getBookmarks();
+
         loadingDialog = new ProgressDialog(this, R.style.dialogStyle);
         loadingDialog.setMessage("Loading...");
         loadingDialog.setCancelable(true);
         loadingDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
-                if(!isQuestionLoaded){
+                if (!isQuestionLoaded) {
                     loadingDialog.dismiss();
                     finish();
                 }
@@ -137,7 +140,6 @@ public class QuestionsActivity extends AppCompatActivity {
         setId = getIntent().getStringExtra("setId");
         testName = getIntent().getStringExtra("test");
 
-        getBookmarks();
 
         bookmarks.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +152,6 @@ public class QuestionsActivity extends AppCompatActivity {
                     bookmarksList.add(list.get(position));
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
                     Toast.makeText(QuestionsActivity.this, "Bookmarked", Toast.LENGTH_SHORT).show();
-
 
                 }
             }
@@ -244,7 +245,7 @@ public class QuestionsActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if (dataSnapshot.exists()) {
-                               if(!isFinishing()){
+                                if (!isFinishing()) {
                                     showDialog();
                                 }
                             } else {
@@ -272,6 +273,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 }
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -320,14 +322,21 @@ public class QuestionsActivity extends AppCompatActivity {
                 if (value == 0) {
 
                     try {
-                        ((MathView) ((LinearLayout) view).getChildAt(0)).setDisplayText(data);
+                        if (isTex(data)) {
+                            ((TextView) ((LinearLayout) view).getChildAt(1)).setVisibility(View.GONE);
+                            ((MathView) ((LinearLayout) view).getChildAt(0)).setVisibility(View.VISIBLE);
+                            ((MathView) ((LinearLayout) view).getChildAt(0)).setDisplayText(data);
+                        } else {
+                            ((MathView) ((LinearLayout) view).getChildAt(0)).setVisibility(View.GONE);
+                            ((TextView) ((LinearLayout) view).getChildAt(1)).setVisibility(View.VISIBLE);
+                            ((TextView) ((LinearLayout) view).getChildAt(1)).setText(data);
+                        }
 
                         if (figure.isEmpty()) {
-                            ((ImageView) ((LinearLayout) view).getChildAt(1)).setVisibility(View.GONE);
+                            ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.GONE);
                         } else {
-                            ((ImageView) ((LinearLayout) view).getChildAt(1)).setVisibility(View.VISIBLE);
-                            Glide.with(QuestionsActivity.this).load(figure).placeholder(R.drawable.profile_edit).into((ImageView) ((LinearLayout) view).getChildAt(1));
-
+                            ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.VISIBLE);
+                            Glide.with(QuestionsActivity.this).load(figure).placeholder(R.drawable.profile_edit).into((ImageView) ((LinearLayout) view).getChildAt(2));
                         }
                         if (modelMatch()) {
                             bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
@@ -499,6 +508,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         if (bookmarksList == null) {
             bookmarksList = new ArrayList<>();
+
         }
     }
 
@@ -507,9 +517,9 @@ public class QuestionsActivity extends AppCompatActivity {
         boolean matched = false;
         int i = 0;
         for (QuestionModel model : bookmarksList) {
-            if (model.getQuestion().equals(list.get(position).getQuestion())
+            if (model.getQuestion().equals((list.get(position).getQuestion()))
                     && model.getCorrectAns().equals(list.get(position).getCorrectAns())
-                    && model.getSet() == list.get(position).getSet()
+                    && model.getSet().equals(list.get(position).getSet())
             ) {
                 matched = true;
                 matchedQuestionPosition = i;
@@ -717,5 +727,25 @@ public class QuestionsActivity extends AppCompatActivity {
 
             }
         };
+    }
+
+    private boolean isTex(String str) {
+        if (str.contains("\\(") || str.contains("\\)") || str.contains("$") || str.contains("\\begin") || str.contains("\\end") || str.contains("\\ (") || str.contains("\\ )")) {
+            return true;
+        } else
+            return false;
+
+    }
+
+    private String cutString(String str) {
+        if (str.charAt(3) == '.') {
+            return str.substring(3);
+        } else if (str.charAt(4) == '.') {
+            return str.substring(4);
+        } else if (str.charAt(5) == '.') {
+            return str.substring(5);
+        }else
+            return str.substring(6);
+
     }
 }

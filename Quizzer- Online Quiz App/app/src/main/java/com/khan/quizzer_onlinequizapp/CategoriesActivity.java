@@ -26,12 +26,17 @@ import java.util.UUID;
 
 public class CategoriesActivity extends AppCompatActivity {
 
+    public static final int FROM_SUBJECT_WISE_ACTIVITY = 0;
+    public static final int FROM_BOOKMARKS_ACTIVITY = 1;
+
+    private int type;
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
     private RecyclerView recyclerView;
     public static List<CategoryModel> list;
+    private CategoryAdapter adapter;
 
     private ProgressBar progressBar;
 
@@ -43,8 +48,14 @@ public class CategoriesActivity extends AppCompatActivity {
 
         loadAds();
 
+        type = getIntent().getIntExtra("type",0);
+
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Subjects");
+        if(type == FROM_SUBJECT_WISE_ACTIVITY){
+            getSupportActionBar().setTitle("Subjects");
+        }else {
+            getSupportActionBar().setTitle("Bookmarks");
+        }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.rv);
@@ -55,13 +66,19 @@ public class CategoriesActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-
          list = new ArrayList<>();
-        final CategoryAdapter adapter = new CategoryAdapter(list);
-        recyclerView.setAdapter(adapter);
 
+       if(type == FROM_SUBJECT_WISE_ACTIVITY){
+           adapter = new CategoryAdapter(FROM_SUBJECT_WISE_ACTIVITY,list);
+           recyclerView.setAdapter(adapter);
+           loadSubjectForSubjectWiseExam();
+       }
+
+    }
+
+
+    private void loadSubjectForSubjectWiseExam() {
         progressBar.setVisibility(View.VISIBLE);
-
         myRef.child("Categories").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -83,18 +100,16 @@ public class CategoriesActivity extends AppCompatActivity {
                     }
 
                     list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
-                    dataSnapshot1.child("url").getValue().toString(),
+                            dataSnapshot1.child("url").getValue().toString(),
                             dataSnapshot1.getKey(),
                             sets,chapters
                     ));
 
                 }
-
                 adapter.notifyDataSetChanged();
                 progressBar.setVisibility(View.GONE);
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 progressBar.setVisibility(View.GONE);
@@ -102,7 +117,6 @@ public class CategoriesActivity extends AppCompatActivity {
                 Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
     }

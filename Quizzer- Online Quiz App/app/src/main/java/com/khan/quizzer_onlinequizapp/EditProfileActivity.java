@@ -110,7 +110,7 @@ public class EditProfileActivity extends AppCompatActivity {
             instituteName.setText(getIntent().getStringExtra("instituteName"));
             phoneNumber = getIntent().getStringExtra("phone");
 
-            Glide.with(EditProfileActivity.this).load( MainActivity.decodedBytes).placeholder(R.drawable.profile1_home).into(addImage);
+            Glide.with(EditProfileActivity.this).load(MainActivity.decodedBytes).placeholder(R.drawable.profile1_home).into(addImage);
             toolbar.setVisibility(View.VISIBLE);
         }
 
@@ -119,33 +119,16 @@ public class EditProfileActivity extends AppCompatActivity {
         loadingDialog2.setCancelable(true);
 
 
+        camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setImage();
+            }
+        });
         addImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Dexter.withActivity(EditProfileActivity.this)
-                        .withPermissions(
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE
-                        )
-                        .withListener(new MultiplePermissionsListener() {
-
-                            @Override
-                            public void onPermissionsChecked(MultiplePermissionsReport report) {
-                                if (report.areAllPermissionsGranted()) {
-                                    selectCropImage();
-                                } else {
-                                    Toast.makeText(EditProfileActivity.this, "You have denied some permissions permanently, if the app force close try granting permission from settings.\"", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-
-                            @Override
-                            public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                                token.continuePermissionRequest();
-                            }
-                        })
-                        .check();
-
+                setImage();
             }
         });
 
@@ -177,6 +160,31 @@ public class EditProfileActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    private void setImage() {
+        Dexter.withActivity(EditProfileActivity.this)
+                .withPermissions(
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+                .withListener(new MultiplePermissionsListener() {
+
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        if (report.areAllPermissionsGranted()) {
+                            selectCropImage();
+                        } else {
+                            Toast.makeText(EditProfileActivity.this, "You have denied some permissions permanently, if the app force close try granting permission from settings.\"", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .check();
     }
 
     private void selectCropImage() {
@@ -284,7 +292,7 @@ public class EditProfileActivity extends AppCompatActivity {
         map.put("phone", phoneNumber);
 
         //map.put("url", downloadurl);
-        map.put("url",  MainActivity.url);
+        map.put("url", MainActivity.url);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 

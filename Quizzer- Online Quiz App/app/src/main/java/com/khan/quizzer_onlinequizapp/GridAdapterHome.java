@@ -60,6 +60,7 @@ public class GridAdapterHome extends BaseAdapter {
 
                 if(position==0){
                     Intent categoryIntent = new Intent(parent.getContext(), CategoriesActivity.class);
+                    categoryIntent.putExtra("type",0);
                     parent.getContext().startActivity(categoryIntent);
                 }
                 else if(position==1){
@@ -68,6 +69,7 @@ public class GridAdapterHome extends BaseAdapter {
                 }
                 else if(position==2){
                     Intent bookmarkIntent = new Intent(parent.getContext(), BookmarksActivity.class);
+                   // bookmarkIntent.putExtra("type",1);
                     parent.getContext().startActivity(bookmarkIntent);
                 }
                 else if(position==3){
