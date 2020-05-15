@@ -96,9 +96,9 @@ public class BookmarksActivity extends AppCompatActivity {
         bookmarksList = gson.fromJson(json, type);
         if (bookmarksList == null) {
             bookmarksList = new ArrayList<>();
-        }else {
-            Collections.reverse(bookmarksList);
-            for (QuestionModel questionModel:bookmarksList){
+        } else {
+            //Collections.reverse(bookmarksList);
+            for (QuestionModel questionModel : bookmarksList) {
                 questionModel.setQuestion(cutString(questionModel.getQuestion()));
             }
         }
@@ -113,6 +113,7 @@ public class BookmarksActivity extends AppCompatActivity {
         editor.commit();
 
     }
+
     private String cutString(String str) {
         if (str.charAt(3) == '.') {
             return str.substring(3);
@@ -120,8 +121,8 @@ public class BookmarksActivity extends AppCompatActivity {
             return str.substring(4);
         } else if (str.charAt(5) == '.') {
             return str.substring(5);
-        }else
-            return str.substring(6);
+        } else
+            return str;
 
     }
 

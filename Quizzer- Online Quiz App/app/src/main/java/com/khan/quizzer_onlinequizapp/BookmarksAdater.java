@@ -19,13 +19,15 @@ import java.util.List;
 
 import katex.hourglass.in.mathlib.MathView;
 
-public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewholder>{
+public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewholder> {
 
+    private static final int ANSSHEET = 1;
+    private static final int BOOKMARK = 2;
 
-    private List<QuestionModel> list ;
+    private List<QuestionModel> list;
     private int type;
 
-    public BookmarksAdater(List<QuestionModel> list,int type) {
+    public BookmarksAdater(List<QuestionModel> list, int type) {
         this.list = list;
         this.type = type;
     }
@@ -33,7 +35,7 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmarks_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.bookmarks_item, parent, false);
 
 
         return new Viewholder(view);
@@ -41,7 +43,7 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        holder.setData(list.get(position).getQuestion(),list.get(position).getUrl(),list.get(position).getCorrectAns(),list.get(position).getYourAns(),list.get(position).getCorrectAns(),position);
+        holder.setData(list.get(position).getQuestion(), list.get(position).getUrl(), list.get(position).getCorrectAns(), list.get(position).getYourAns(), list.get(position).getCorrectAns(), position);
     }
 
     @Override
@@ -59,9 +61,9 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
         return position;
     }
 
-    class Viewholder extends RecyclerView.ViewHolder{
+    class Viewholder extends RecyclerView.ViewHolder {
 
-        private TextView answer,evaluation,yourAnswer;
+        private TextView answer, evaluation, yourAnswer;
         private ImageView figure;
         private MathView question;
         private TextView quesText;
@@ -81,58 +83,64 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
         }
 
-        private void setData(String question,String url, String answer,String yourAns, String correctAns, final int position){
+        private void setData(String question, String url, String answer, String yourAns, String correctAns, final int position) {
 
-            if(isTex(question)){
+            if (isTex(question)) {
                 this.quesText.setVisibility(View.GONE);
                 this.question.setVisibility(View.VISIBLE);
-                this.question.setDisplayText(position+1+question);
-            }else {
+                if (type == BOOKMARK) {
+                    this.question.setDisplayText(position + 1 + question);
+                } else {
+                    this.question.setDisplayText(question);
+                }
+            } else {
                 this.question.setVisibility(View.GONE);
                 this.quesText.setVisibility(View.VISIBLE);
-                this.quesText.setText(position+1+question);
+                if (type == BOOKMARK) {
+                    this.quesText.setText(position + 1 + question);
+                } else {
+                    this.quesText.setText(question);
+                }
             }
-            if(url.isEmpty()){
+            if (url.isEmpty()) {
                 figure.setVisibility(View.GONE);
-            }else {
+            } else {
                 figure.setVisibility(View.VISIBLE);
                 Glide.with(itemView.getContext()).load(url).placeholder(R.drawable.profile_edit).into(figure);
             }
-            this.answer.setText("Correct Ans : "+answer);
-            this.yourAnswer.setText("Your Ans : "+yourAns);
+            this.answer.setText("Correct Ans : " + answer);
+            this.yourAnswer.setText("Your Ans : " + yourAns);
 
-            if(type==1){
+            if (type == ANSSHEET) {
                 evaluation.setVisibility(View.VISIBLE);
                 deleteBtn.setEnabled(false);
                 deleteBtn.setVisibility(View.GONE);
 
-                if(list.get(position).getYourAns()==null){
+                if (list.get(position).getYourAns() == null) {
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("Blank");
                     //evaluation.setBackgroundColor(Color.parseColor("#50000000"));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#50000000")));
-                }
-                else if(yourAns.equals(correctAns)){
+                } else if (yourAns.equals(correctAns)) {
                     yourAnswer.setVisibility(View.GONE);
-                    evaluation.setText("\u2714"+"  Correct");
-                 //   evaluation.setBackgroundColor(Color.parseColor("#32CD32"));
+                    evaluation.setText("\u2714" + "  Correct");
+                    //   evaluation.setBackgroundColor(Color.parseColor("#32CD32"));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
 
-                }
-                else {
+                } else {
                     yourAnswer.setVisibility(View.VISIBLE);
-                    evaluation.setText("\u2718"+"  Wrong");
-                   // evaluation.setBackgroundColor(Color.parseColor("#FA0000"));
-                      evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                    evaluation.setText("\u2718" + "  Wrong");
+                    // evaluation.setBackgroundColor(Color.parseColor("#FA0000"));
+                    evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
 
                 }
 
-            }else if(type==2) {
+            } else if (type == BOOKMARK) {
                 yourAnswer.setVisibility(View.GONE);
                 evaluation.setVisibility(View.GONE);
                 deleteBtn.setVisibility(View.VISIBLE);
                 deleteBtn.setEnabled(true);
-            }else {
+            } else {
 
                 yourAnswer.setVisibility(View.GONE);
                 evaluation.setVisibility(View.GONE);
@@ -143,17 +151,16 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 @Override
                 public void onClick(View v) {
                     list.remove(position);
-                   // notifyItemRemoved(position);
+                    // notifyItemRemoved(position);
                     notifyDataSetChanged();
                 }
             });
         }
 
-        private boolean isTex(String str)
-        {
-            if(str.contains("\\(") || str.contains("\\)") || str.contains("$") || str.contains("\\begin") || str.contains("\\end") || str.contains("\\ (") || str.contains("\\ )")){
+        private boolean isTex(String str) {
+            if (str.contains("\\(") || str.contains("\\)") || str.contains("$") || str.contains("\\begin") || str.contains("\\end") || str.contains("\\ (") || str.contains("\\ )")) {
                 return true;
-            }else
+            } else
                 return false;
 
         }

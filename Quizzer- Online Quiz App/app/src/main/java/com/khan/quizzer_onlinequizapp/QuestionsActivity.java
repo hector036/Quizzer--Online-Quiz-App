@@ -149,7 +149,7 @@ public class QuestionsActivity extends AppCompatActivity {
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark_border));
                     Toast.makeText(QuestionsActivity.this, "Removed", Toast.LENGTH_SHORT).show();
                 } else {
-                    bookmarksList.add(list.get(position));
+                    bookmarksList.add(0, list.get(position));
                     bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
                     Toast.makeText(QuestionsActivity.this, "Bookmarked", Toast.LENGTH_SHORT).show();
 
@@ -228,7 +228,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
                     if (list.size() > 0) {
                         totalQues = list.size();
-                        totalQuestion.setText("Questions: " + totalQues);
+                        totalQuestion.setText("Full Marks: " + totalQues);
                         tempFunction();
                         setTimer();
                         countdownTimer.start();
@@ -251,7 +251,7 @@ public class QuestionsActivity extends AppCompatActivity {
                             } else {
                                 if (list.size() > 0) {
                                     totalQues = list.size();
-                                    totalQuestion.setText("Questions: " + totalQues);
+                                    totalQuestion.setText("Full Marks: " + totalQues);
                                     tempFunction();
                                     setTimer();
                                     countdownTimer.start();
@@ -517,7 +517,7 @@ public class QuestionsActivity extends AppCompatActivity {
         boolean matched = false;
         int i = 0;
         for (QuestionModel model : bookmarksList) {
-            if (model.getQuestion().equals((list.get(position).getQuestion()))
+            if (model.getQuestion().equals(cutString(list.get(position).getQuestion()))
                     && model.getCorrectAns().equals(list.get(position).getCorrectAns())
                     && model.getSet().equals(list.get(position).getSet())
             ) {
@@ -666,7 +666,7 @@ public class QuestionsActivity extends AppCompatActivity {
                 if (list.size() > 0) {
 
                     totalQues = list.size();
-                    totalQuestion.setText("Questions: " + totalQues);
+                    totalQuestion.setText("Full Marks: " + totalQues);
 
                     tempFunction();
                     setTimer();
@@ -744,8 +744,8 @@ public class QuestionsActivity extends AppCompatActivity {
             return str.substring(4);
         } else if (str.charAt(5) == '.') {
             return str.substring(5);
-        }else
-            return str.substring(6);
+        } else
+            return str;
 
     }
 }
