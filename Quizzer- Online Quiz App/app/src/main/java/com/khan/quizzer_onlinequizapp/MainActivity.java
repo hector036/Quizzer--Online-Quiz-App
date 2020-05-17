@@ -2,28 +2,25 @@ package com.khan.quizzer_onlinequizapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.app.AlertDialog;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.media.AudioAttributes;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.util.Base64;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,14 +30,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.khan.quizzer_onlinequizapp.QuestionsActivity.FILE_NAME;
+import static com.khan.quizzer_onlinequizapp.QuestionsActivity.KEY_NAME;
+
 public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUpdateCheckListener {
 
     private static final String TOPIC_WEEKLY_TEST_NOTIFICATION = "WEEKLYTEST";
+    private static final int FIRST_TIME_LOAD = 0;
+    private static final int SWIPE_REFRESH_LOAD = 1;
 
     public static String url = "";
     public static byte[] decodedBytes;
@@ -50,8 +53,18 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
 
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
+    private Gson gson;
+    private String json;
 
-    private GridView gridView;
+    private MainPageAdapter adapter;
+    private List<MainPageModel> mainPageModelList = new ArrayList<>();
+    private List<HomeModel> listGrid = new ArrayList<>();
+
+    private String setId, title, date, startTime, description;
+    private ProgressBar progressBar;
+    private SwipeRefreshLayout refreshLayout;
 
 
     @Override
@@ -60,34 +73,107 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
+        preferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        gson = new Gson();
+        json = preferences.getString(KEY_NAME, "");
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Smart Quizzer");
+        toolbar.setOverflowIcon(getDrawable(R.drawable.action));
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
 
         UpdateHelper.with(this)
                 .onUpdateCheck(this)
                 .check();
 
-        getUserDetails();
-
-        MobileAds.initialize(this);
-
-//        loadAds();
         postNotification();
 
+        progressBar = findViewById(R.id.mainpage_progress);
+        refreshLayout = findViewById(R.id.mainpage_swipe_refresh);
+        refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLACK, Color.BLACK);
 
-        gridView = findViewById(R.id.gridview);
-        List<HomeModel> list = new ArrayList<>();
+        RecyclerView mainRecyclerView = findViewById(R.id.main_rv);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mainRecyclerView.setLayoutManager(linearLayoutManager);
 
-        list.add(new HomeModel(R.drawable.subjectwise1_home, "Subject-wise Exam"));
-        list.add(new HomeModel(R.drawable.weekly1_home, "Weekly Test"));
-        list.add(new HomeModel(R.drawable.bookmark_home, "Bookmarks"));
-        list.add(new HomeModel(R.drawable.profile2_home, "Profile"));
+        listGrid.add(new HomeModel(R.drawable.mp1, "Subject-wise Exam"));
+        listGrid.add(new HomeModel(R.drawable.mp2, "Weekly Test"));
+        listGrid.add(new HomeModel(R.drawable.mp3, "Bookmarks"));
 
+        adapter = new MainPageAdapter(mainPageModelList);
+        mainRecyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
-        GridAdapterHome adapter = new GridAdapterHome(list);
-        gridView.setAdapter(adapter);
+        progressBar.setVisibility(View.VISIBLE);
+        getUserDetailsAndMainPageData(FIRST_TIME_LOAD);
 
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refreshLayout.setRefreshing(true);
+                getUserDetailsAndMainPageData(SWIPE_REFRESH_LOAD);
+            }
+        });
 
     }
 
+    private void loadMainPage() {
+        myRef.child("tests").limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    setId = snapshot.getKey();
+                    title = snapshot.child("name").getValue().toString();
+                    date = snapshot.child("date").getValue().toString();
+                    startTime = snapshot.child("startTime").getValue().toString();
+                    description = snapshot.child("description").getValue().toString();
+                }
+
+                mainPageModelList.add(new MainPageModel(2,
+                        "Recent Weekly Test", date, title, startTime, description, setId, R.drawable.mp2));
+
+                myRef.child("Banner").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        if (dataSnapshot.child("important_banner").exists()) {
+                            DataSnapshot snapshot = dataSnapshot.child("important_banner").child("1");
+                            String bannerImg = snapshot.child("bannerImg").getValue().toString();
+                            String bannerText = snapshot.child("bannerText").getValue().toString();
+                            String bannerUrl = snapshot.child("bannerUrl").getValue().toString();
+                            mainPageModelList.add(2, new MainPageModel(3,
+                                    bannerImg, bannerText, bannerUrl, true));
+                        }
+
+                        for (DataSnapshot snapshot : dataSnapshot.child("feature_banner").getChildren()) {
+                            String bannerImg = snapshot.child("bannerImg").getValue().toString();
+                            String bannerText = snapshot.child("bannerText").getValue().toString();
+                            String bannerUrl = snapshot.child("bannerUrl").getValue().toString();
+                            mainPageModelList.add(new MainPageModel(3,
+                                    bannerImg, bannerText, bannerUrl, true));
+                        }
+                        progressBar.setVisibility(View.GONE);
+                        refreshLayout.setRefreshing(false);
+                        adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void postNotification() {
 
@@ -99,12 +185,12 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    private void getUserDetails() {
+    private void getUserDetailsAndMainPageData(final int type) {
         myRef.child("Users").child(Objects.requireNonNull(auth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -113,6 +199,19 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                 institute = dataSnapshot.child("instituteName").getValue().toString();
                 phone = dataSnapshot.child("phone").getValue().toString();
                 url = dataSnapshot.child("url").getValue().toString();
+                if (json.equals("") && type == FIRST_TIME_LOAD) {
+                    if (dataSnapshot.child("bookmarks").exists()) {
+                        json = dataSnapshot.child("bookmarks").getValue().toString();
+                        storeBookmarks(json);
+                    }
+                }
+
+                mainPageModelList.clear();
+
+                mainPageModelList.add(0, new MainPageModel(0));
+                mainPageModelList.add(1, new MainPageModel(1, listGrid));
+
+                loadMainPage();
             }
 
             @Override
@@ -123,54 +222,68 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         });
     }
 
-    private void loadAds() {
-
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
+    private void storeBookmarks(String jsonStr) {
+        editor.putString(KEY_NAME, jsonStr);
+        editor.commit();
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        getMenuInflater().inflate(R.menu.menu_app_home, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
 
-        Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        long vibrate[] = {100, 600, 100, 600};
+        if (item.getItemId() == R.id.logout) {
 
-        NotificationChannel channel = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channel = new NotificationChannel("1010", "1010", NotificationManager.IMPORTANCE_DEFAULT);
-            channel.setSound(soundUri, new AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                    .build());
-            channel.setLightColor(Color.GREEN);
-            channel.setVibrationPattern(vibrate);
-            channel.enableVibration(true);
+            new AlertDialog.Builder(MainActivity.this, R.style.Theme_AppCompat_Light_Dialog)
+                    .setTitle("Logout")
+                    .setMessage("Are you sure, you want to logout?")
+                    .setPositiveButton("Logout", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
 
-        }
+                            uploadBookmarksAndSignOut();
+//                            FirebaseAuth.getInstance().signOut();
+//                            Intent intent = new Intent(MainActivity.this, MainActivity.class);
+//                            startActivity(intent);
+//                            finish();
 
-        NotificationManager manager = null;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            manager = getSystemService(NotificationManager.class);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            manager.createNotificationChannel(channel);
-        }
-
-
-        FirebaseMessaging.getInstance().subscribeToTopic("all")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Successfull";
-                        if (!task.isSuccessful()) {
-                            msg = "Failed";
                         }
-                        //Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    })
+                    .setNegativeButton("Cancel", null)
+                    .show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
+    private void uploadBookmarksAndSignOut() {
+
+        String json = preferences.getString(KEY_NAME, "");
+        database.getReference().child("Users").child(Objects.requireNonNull(auth.getUid())).child("bookmarks").setValue(json).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    storeBookmarks("");
+                    firstName = "";
+                    lastName = "";
+                    institute = "";
+                    phone = "";
+                    url = "";
+                    decodedBytes = null;
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+
+            }
+        });
     }
 
     @Override
@@ -183,9 +296,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // Toast.makeText(MainActivity.this, "Update", Toast.LENGTH_SHORT).show();
-
-                        String appName = getPackageName();
-
+                        // String appName = getPackageName();
                         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("" + urlApp)));
                     }
                 }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
@@ -202,7 +313,8 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     @Override
     protected void onStart() {
         super.onStart();
-
+        adapter.notifyDataSetChanged();
+        json = preferences.getString(KEY_NAME, "");
 
     }
 }

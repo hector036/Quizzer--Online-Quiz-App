@@ -106,12 +106,16 @@
 
     <TextView
         android:id="@+id/profile_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:maxLines="1"
         android:text="....  ...."
+        android:ellipsize="end"
+        android:singleLine="true"
         android:textStyle="bold"
-
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/textView9" />
 

@@ -1,0 +1,297 @@
+package com.khan.quizzer_onlinequizapp;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.util.Base64;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
+
+import java.net.URL;
+import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
+
+
+public class MainPageAdapter extends RecyclerView.Adapter {
+
+    private List<MainPageModel> mainPageModelList;
+
+    public MainPageAdapter(List<MainPageModel> mainPageModelList) {
+        this.mainPageModelList = mainPageModelList;
+    }
+
+
+    @NonNull
+    @Override
+    public int getItemViewType(int position) {
+        switch (mainPageModelList.get(position).getType()) {
+            case 0:
+                return MainPageModel.PROFILE_VIEW;
+            case 1:
+                return MainPageModel.GRID_VIEW;
+            case 2:
+                return MainPageModel.WEEKLY_TEST_VIEW;
+            case 3:
+                return MainPageModel.BANNER_VIEW;
+            default:
+                return -1;
+        }
+
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+        switch (viewType) {
+            case MainPageModel.PROFILE_VIEW:
+                View profileView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mainpage_profile_item, viewGroup, false);
+                return new ProfileViewholder(profileView);
+
+            case MainPageModel.GRID_VIEW:
+                View gridView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mainpage_grid_view_layout, viewGroup, false);
+                return new GridViewholder(gridView);
+
+            case MainPageModel.WEEKLY_TEST_VIEW:
+                View weeklyTestView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mainpage_weeklytest_layout, viewGroup, false);
+                return new WeeklyTestViewholder(weeklyTestView);
+
+            case MainPageModel.BANNER_VIEW:
+                View bannerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mainpage_banner_item, viewGroup, false);
+                return new BannerViewholder(bannerView);
+
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+        switch (mainPageModelList.get(i).getType()) {
+
+            case MainPageModel.PROFILE_VIEW:
+                //  String profileImg = mainPageModelList.get(i).getProfileImg();
+                //  String name = mainPageModelList.get(i).getName();
+                //   String instritute = mainPageModelList.get(i).getInstrituteName();
+                ((ProfileViewholder) viewHolder).setProfileLayout();
+                break;
+            case MainPageModel.GRID_VIEW:
+                List<HomeModel> homeModelList = mainPageModelList.get(i).getHomeModelList();
+                ((GridViewholder) viewHolder).setGridLayout(homeModelList);
+                break;
+            case MainPageModel.WEEKLY_TEST_VIEW:
+                int imageWeeklyTest = mainPageModelList.get(i).getImageWeeklyTest();
+                String header = mainPageModelList.get(i).getHeader();
+                String date = mainPageModelList.get(i).getDate();
+                String time = mainPageModelList.get(i).getTime();
+                String title = mainPageModelList.get(i).getTitle();
+                String description = mainPageModelList.get(i).getDescription();
+                String setId = mainPageModelList.get(i).getSetId();
+
+                ((WeeklyTestViewholder) viewHolder).setWeeklyTestLayout(header, date, time, title, description, setId, imageWeeklyTest);
+                break;
+            case MainPageModel.BANNER_VIEW:
+                String bannerImg = mainPageModelList.get(i).getBannerImg();
+                String bannerActionText = mainPageModelList.get(i).getBannerActionText();
+                String bannerUrl = mainPageModelList.get(i).getBannerUrl();
+                boolean bannerEnable = mainPageModelList.get(i).isBannerEnable();
+                ((BannerViewholder) viewHolder).setBannerLayout(bannerImg, bannerActionText, bannerUrl, bannerEnable);
+                break;
+            default:
+                return;
+        }
+    }
+
+    @Override
+    public int getItemCount() {
+        return mainPageModelList.size();
+    }
+
+    public class ProfileViewholder extends RecyclerView.ViewHolder {
+
+        private CircleImageView profileImg;
+        private TextView name, instrituteName;
+
+        public ProfileViewholder(@NonNull View itemView) {
+            super(itemView);
+            profileImg = itemView.findViewById(R.id.profile_image);
+            name = itemView.findViewById(R.id.profile_name);
+            instrituteName = itemView.findViewById(R.id.instritute_name);
+        }
+
+        private void setProfileLayout() {
+
+            byte[] decodedBytes = Base64.decode(MainActivity.url, Base64.DEFAULT);
+            Glide.with(itemView.getContext()).load(decodedBytes).placeholder(R.drawable.profile1_home).into(profileImg);
+
+            this.name.setText(MainActivity.firstName + " " + MainActivity.lastName);
+            this.instrituteName.setText(MainActivity.institute);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), ProfileActivity.class);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+        }
+    }
+
+
+    public class GridViewholder extends RecyclerView.ViewHolder {
+
+        private GridLayout gridLayout;
+
+        public GridViewholder(@NonNull View itemView) {
+            super(itemView);
+
+            gridLayout = itemView.findViewById(R.id.gridview);
+
+        }
+
+        public void setGridLayout(List<HomeModel> homeModelList) {
+
+            for (int x = 0; x < 3; x++) {
+                CircleImageView image = gridLayout.getChildAt(x).findViewById(R.id.iamge_grid_view);
+                TextView title = gridLayout.getChildAt(x).findViewById(R.id.title_grid_view);
+
+                image.setImageResource(homeModelList.get(x).getImage());
+                title.setText(homeModelList.get(x).getTitle());
+            }
+
+            gridLayout.getChildAt(0).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+                    categoryIntent.putExtra("type", 0);
+                    itemView.getContext().startActivity(categoryIntent);
+                }
+            });
+
+            gridLayout.getChildAt(1).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+            gridLayout.getChildAt(2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent bookmarkIntent = new Intent(itemView.getContext(), BookmarksActivity.class);
+                    itemView.getContext().startActivity(bookmarkIntent);
+                }
+            });
+
+        }
+    }
+
+    public class WeeklyTestViewholder extends RecyclerView.ViewHolder {
+
+        private CircleImageView imageWeeklyTest;
+        private TextView header, dateTime, title, description;
+        private LinearLayout attemp;
+
+        public WeeklyTestViewholder(@NonNull View itemView) {
+            super(itemView);
+            imageWeeklyTest = itemView.findViewById(R.id.image_mainpage_weeklytest);
+            header = itemView.findViewById(R.id.header_mainpage_weeklytest);
+            dateTime = itemView.findViewById(R.id.date_time_mainpage_weeeklytest);
+            title = itemView.findViewById(R.id.title_mainpage_weeklytest);
+            description = itemView.findViewById(R.id.description_weeklytest_mainpage);
+            attemp = itemView.findViewById(R.id.attemp_layout);
+        }
+
+        private void setWeeklyTestLayout(String header, String date, String time, final String title, String des, final String setId, int imageWeeklyTest) {
+
+            this.imageWeeklyTest.setImageResource(imageWeeklyTest);
+            this.header.setText(header);
+            this.dateTime.setText(date);
+            this.title.setText(title);
+            this.description.setText(des);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), QuestionsActivity.class);
+                    intent.putExtra("setId", setId);
+                    intent.putExtra("type", 2);
+                    intent.putExtra("test", title);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+//            this.description.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    description.setMaxLines(100);
+//                    seeMore.setVisibility(View.GONE);
+//                }
+//            });
+//            seeMore.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    description.setMaxLines(100);
+//                    seeMore.setVisibility(View.GONE);
+//                }
+//            });
+
+        }
+    }
+
+    public class BannerViewholder extends RecyclerView.ViewHolder {
+
+        private ImageView bannerImg;
+        private TextView bannerText;
+
+        public BannerViewholder(@NonNull View itemView) {
+            super(itemView);
+
+            bannerImg = itemView.findViewById(R.id.banner_img);
+            bannerText = itemView.findViewById(R.id.bannerText);
+        }
+
+        private void setBannerLayout(String url, String bannerActionText, final String bannerUrl, boolean bannerEnable) {
+
+            Glide.with(itemView.getContext()).load(url).transform(new CenterCrop(),new RoundedCorners(12)).placeholder(R.drawable.profile1_home).into(bannerImg);
+            this.bannerText.setText(bannerActionText);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isValidUrl(bannerUrl)) {
+                        itemView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerUrl)));
+                    }
+
+                }
+            });
+
+        }
+    }
+
+    private boolean isValidUrl(String url) {
+        try {
+            new URL(url).toURI();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+}

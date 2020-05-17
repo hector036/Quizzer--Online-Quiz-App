@@ -59,6 +59,8 @@
         android:text="Bir Sreshtho Noor Mohammad collge"
         android:textColor="#6E6D6D"
         android:textSize="12sp"
+        android:ellipsize="end"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/textView5"
         app:layout_constraintStart_toStartOf="@+id/profile_name_leader_board"
@@ -66,13 +68,17 @@
 
     <TextView
         android:id="@+id/profile_name_leader_board"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
         android:text="Md. Nayeem Khan"
         android:textColor="#6E6D6D"
         android:textSize="14sp"
         android:textStyle="bold"
+        android:ellipsize="end"
+        android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@+id/item_textView1"
+        app:layout_constraintEnd_toStartOf="@+id/textView5"
         app:layout_constraintStart_toEndOf="@+id/item_textView1"
         app:layout_constraintTop_toTopOf="@+id/item_textView1" />
 
