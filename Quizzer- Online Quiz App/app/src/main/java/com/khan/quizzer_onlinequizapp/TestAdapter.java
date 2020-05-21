@@ -17,6 +17,7 @@ import androidx.annotation.Nullable;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 class TestAdapter extends ArrayAdapter<Test> implements Filterable {
     private Context mContext;
@@ -41,13 +42,12 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
 //            ((ImageView)listItem.findViewById(R.id.item_imageView)).
         //     setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_appicon));
 
-        ((TextView)listItem.findViewById(R.id.item_textView1))
+        ((TextView) listItem.findViewById(R.id.item_textView1))
                 .setText(dataList.get(position).getName());
-        ((TextView)listItem.findViewById(R.id.date))
-                .setText(dataList.get(position).getDate());
+        ((TextView) listItem.findViewById(R.id.date))
+                .setText(formateDate(dataList.get(position).getDateTime()));
         ((TextView)listItem.findViewById(R.id.start_time))
-                .setText(dataList.get(position).getStartTime());
-
+                .setText(formateTime(dataList.get(position).getDateTime()));
 
         (descripton).setText(dataList.get(position).getDescription());
         (descripton).setOnClickListener(new View.OnClickListener() {
@@ -98,5 +98,76 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
         //   lastPos = position;
 
         return listItem;
+    }
+
+    private String formateDate(long dateInMili) {
+
+        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+        Calendar c = Calendar.getInstance();
+
+        c.setTimeInMillis(dateInMili);
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        String monthS = months[mMonth];
+
+        String finalDate = mDay + " " + monthS + ", " + mYear;
+        return finalDate;
+    }
+
+    private String formateTime(long dateInMili) {
+        String finalTime = "";
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dateInMili);
+        Calendar current = Calendar.getInstance();
+
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        int currentDay = current.get(Calendar.DAY_OF_MONTH);
+
+        int mHour = (c.get(Calendar.HOUR_OF_DAY)) % 12;
+        int mAM_PM = (c.get(Calendar.AM_PM));
+        int mMin = (c.get(Calendar.MINUTE));
+
+        int difDay = currentDay - mDay;
+
+        if (difDay == 0) {
+            StringBuilder str = new StringBuilder();
+            str.append("Today - ");
+            str.append(""+mHour);
+            if(mMin!=0){
+                str.append(":");
+                String s = String.format("%02d", mMin);
+                str.append(s);
+            }
+            if(mAM_PM==0){
+                str.append(" AM");
+            }else {
+                str.append(" PM");
+            }
+            finalTime = str.toString();
+        }
+        else if(difDay==1){
+            StringBuilder str = new StringBuilder();
+            str.append("Yesterday - ");
+            str.append(""+mHour);
+            if(mMin!=0){
+                str.append(":");
+                String s = String.format("%02d", mMin);
+                str.append(s);
+            }
+            if(mAM_PM==0){
+                str.append(" AM");
+            }else {
+                str.append(" PM");
+            }
+            finalTime = str.toString();
+        }
+        else if(difDay > 1 && difDay <8){
+            finalTime = difDay + " days ago";
+        }
+
+        return finalTime;
     }
 }

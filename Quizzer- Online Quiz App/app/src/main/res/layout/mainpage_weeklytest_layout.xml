@@ -31,7 +31,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="Physics 1st (Vector)"
-        android:textColor="#0098E3"
+        android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -104,8 +104,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Attemp"
+
             android:textAlignment="center"
-            android:textColor="#616161" />
+            android:textColor="@color/colorPrimary" />
 
         <ImageView
             android:id="@+id/imageView4"

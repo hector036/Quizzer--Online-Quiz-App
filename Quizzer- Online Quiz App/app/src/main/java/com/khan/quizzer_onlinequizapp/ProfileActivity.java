@@ -41,7 +41,6 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView contactNumber;
     private TextView loading;
     private FloatingActionButton editProfileBtn;
-    private Button signOutBtn;
     private CircleImageView imageView;
     private boolean isFabEnable = false;
 //    private String firstName;
@@ -73,7 +72,7 @@ public class ProfileActivity extends AppCompatActivity {
         imageView = findViewById(R.id.profile_image_2);
         editProfileBtn = findViewById(R.id.edit_profile_btn);
         loading = findViewById(R.id.loading_profile);
-        signOutBtn = findViewById(R.id.sign_out);
+
 
         if(institute.isEmpty()){
             getUserDetails();

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -23,9 +24,15 @@ import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.lang.annotation.Target;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
 
 public class FirebaseMessaging extends FirebaseMessagingService {
 
@@ -54,7 +61,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
                             bitmap[0] = resource;
                             // TODO Do some work: pass this bitmap
-                            showNotification( "" + pTitle, "" + pDescription, bitmap[0]);
+                            showNotification("" + pTitle, "" + pDescription, bitmap[0]);
                         }
 
                         @Override
@@ -63,7 +70,6 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                     });
 
         }
-
 
     }
 
@@ -123,5 +129,4 @@ public class FirebaseMessaging extends FirebaseMessagingService {
         }
 
     }
-
 }

@@ -49,9 +49,6 @@ import static com.khan.quizzer_onlinequizapp.MainActivity.institute;
 
 public class QuestionsActivity extends AppCompatActivity {
 
-    public static final String FILE_NAME = "QUIZZER";
-    public static final String KEY_NAME = "QUESTIONS";
-
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     private FirebaseAuth mAuth;
@@ -110,7 +107,7 @@ public class QuestionsActivity extends AppCompatActivity {
         nextBtn = findViewById(R.id.next_button);
         totalQuestion = findViewById(R.id.total_question);
 
-        preferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("Bookmarks", Context.MODE_PRIVATE);
         editor = preferences.edit();
         gson = new Gson();
 
@@ -336,7 +333,7 @@ public class QuestionsActivity extends AppCompatActivity {
                             ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.GONE);
                         } else {
                             ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.VISIBLE);
-                            Glide.with(QuestionsActivity.this).load(figure).placeholder(R.drawable.profile_edit).into((ImageView) ((LinearLayout) view).getChildAt(2));
+                            Glide.with(QuestionsActivity.this).load(figure).placeholder(R.color.place_holder).into((ImageView) ((LinearLayout) view).getChildAt(2));
                         }
                         if (modelMatch()) {
                             bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
@@ -500,7 +497,7 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     private void getBookmarks() {
-        String json = preferences.getString(KEY_NAME, "");
+        String json = preferences.getString(""+mAuth.getCurrentUser().getUid(), "");
         Type type = new TypeToken<List<QuestionModel>>() {
         }.getType();
 
@@ -535,7 +532,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         String json = gson.toJson(bookmarksList);
 
-        editor.putString(KEY_NAME, json);
+        editor.putString(""+mAuth.getCurrentUser().getUid(), json);
 
         editor.commit();
 

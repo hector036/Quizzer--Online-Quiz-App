@@ -22,7 +22,7 @@
             android:layout_height="55dp"
             android:layout_marginStart="16dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/profile1_home"
+            android:src="@drawable/profile_edit"
             app:civ_border_color="@android:color/darker_gray"
             app:civ_border_width="2dp"
             app:layout_constraintBottom_toBottomOf="parent"

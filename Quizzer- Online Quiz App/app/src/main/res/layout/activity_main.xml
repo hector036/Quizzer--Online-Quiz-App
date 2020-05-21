@@ -21,19 +21,20 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/colorPrimary"
-            app:layout_scrollFlags="scroll|enterAlways|snap"
             android:theme="@style/ThemeOverlay.AppCompat.Light" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/mainpage_swipe_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_rv"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="8dp" />
+
+               />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 

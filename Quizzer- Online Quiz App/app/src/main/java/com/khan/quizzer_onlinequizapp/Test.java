@@ -1,18 +1,23 @@
 package com.khan.quizzer_onlinequizapp;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class Test implements Serializable {
     String Name;
-   // ArrayList<Question> Questions;
+    // ArrayList<Question> Questions;
     Long time;
-    String date;
-    String startTime;
+    Long dateTime;
     String description;
     String setId;
 
     public Test() {
+    }
+
+    public Test(String name, Long dateTime, String description, String setId) {
+        this.Name = name;
+        this.dateTime = dateTime;
+        this.description = description;
+        this.setId = setId;
     }
 
     public String getSetId() {
@@ -23,20 +28,12 @@ public class Test implements Serializable {
         this.setId = setId;
     }
 
-    public String getDate() {
-        return date;
+    public Long getDateTime() {
+        return dateTime;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(String startTime) {
-        this.startTime = startTime;
+    public void setDateTime(Long dateTime) {
+        this.dateTime = dateTime;
     }
 
     public String getDescription() {

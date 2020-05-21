@@ -25,8 +25,6 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.khan.quizzer_onlinequizapp.QuestionsActivity.FILE_NAME;
-import static com.khan.quizzer_onlinequizapp.QuestionsActivity.KEY_NAME;
 
 public class AnsSheetActivity extends AppCompatActivity {
 

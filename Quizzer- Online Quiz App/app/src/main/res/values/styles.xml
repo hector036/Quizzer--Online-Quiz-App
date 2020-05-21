@@ -27,7 +27,7 @@
 
     <style name="dialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!-- Customize your theme here. -->
-        <item name="colorAccent">#55D394</item>
+        <item name="colorAccent">@color/colorPrimary</item>
         <item name="android:textSize">16sp</item>
     </style>
 

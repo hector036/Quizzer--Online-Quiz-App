@@ -80,18 +80,26 @@ public class MainPageModel {
 
     ////////////// WEEKLY_TEST_VIEW ////////////
 
-    private String header,date,title,time,description,setId;
+    private String header,title,description,setId;
+    private long date;
     private int imageWeeklyTest;
 
-    public MainPageModel(int type,String header,String date, String title, String time, String description, String setId,int imageWeeklyTest) {
+    public MainPageModel(int type,String header,long date, String title, String description, String setId,int imageWeeklyTest) {
         this.type = type;
         this.header = header;
         this.date = date;
         this.title = title;
-        this.time = time;
         this.description = description;
         this.setId = setId;
         this.imageWeeklyTest = imageWeeklyTest;
+    }
+
+    public long getDate() {
+        return date;
+    }
+
+    public void setDate(long date) {
+        this.date = date;
     }
 
     public int getImageWeeklyTest() {
@@ -110,13 +118,7 @@ public class MainPageModel {
         this.header = header;
     }
 
-    public String getDate() {
-        return date;
-    }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
 
     public String getTitle() {
         return title;
@@ -126,13 +128,7 @@ public class MainPageModel {
         this.title = title;
     }
 
-    public String getTime() {
-        return time;
-    }
 
-    public void setTime(String time) {
-        this.time = time;
-    }
 
     public String getDescription() {
         return description;

@@ -23,6 +23,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.net.URL;
+import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -97,13 +98,12 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             case MainPageModel.WEEKLY_TEST_VIEW:
                 int imageWeeklyTest = mainPageModelList.get(i).getImageWeeklyTest();
                 String header = mainPageModelList.get(i).getHeader();
-                String date = mainPageModelList.get(i).getDate();
-                String time = mainPageModelList.get(i).getTime();
+                long date = mainPageModelList.get(i).getDate();
                 String title = mainPageModelList.get(i).getTitle();
                 String description = mainPageModelList.get(i).getDescription();
                 String setId = mainPageModelList.get(i).getSetId();
 
-                ((WeeklyTestViewholder) viewHolder).setWeeklyTestLayout(header, date, time, title, description, setId, imageWeeklyTest);
+                ((WeeklyTestViewholder) viewHolder).setWeeklyTestLayout(header, date, title, description, setId, imageWeeklyTest);
                 break;
             case MainPageModel.BANNER_VIEW:
                 String bannerImg = mainPageModelList.get(i).getBannerImg();
@@ -218,11 +218,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             attemp = itemView.findViewById(R.id.attemp_layout);
         }
 
-        private void setWeeklyTestLayout(String header, String date, String time, final String title, String des, final String setId, int imageWeeklyTest) {
+        private void setWeeklyTestLayout(String header, long date, final String title, String des, final String setId, int imageWeeklyTest) {
 
             this.imageWeeklyTest.setImageResource(imageWeeklyTest);
             this.header.setText(header);
-            this.dateTime.setText(date);
+            this.dateTime.setText(formateTime(date));
             this.title.setText(title);
             this.description.setText(des);
 
@@ -269,7 +269,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
         private void setBannerLayout(String url, String bannerActionText, final String bannerUrl, boolean bannerEnable) {
 
-            Glide.with(itemView.getContext()).load(url).transform(new CenterCrop(),new RoundedCorners(12)).placeholder(R.drawable.profile1_home).into(bannerImg);
+            Glide.with(itemView.getContext()).load(url).transform(new CenterCrop(), new RoundedCorners(12)).placeholder(R.color.place_holder).into(bannerImg);
             this.bannerText.setText(bannerActionText);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -291,6 +291,64 @@ public class MainPageAdapter extends RecyclerView.Adapter {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    private String formateTime(long dateInMili) {
+        String finalTime = "";
+        String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+
+        Calendar c = Calendar.getInstance();
+        c.setTimeInMillis(dateInMili);
+        Calendar current = Calendar.getInstance();
+
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        int currentDay = current.get(Calendar.DAY_OF_MONTH);
+
+        int mMonth = c.get(Calendar.MONTH);
+        String monthS = months[mMonth];
+        int mHour = (c.get(Calendar.HOUR_OF_DAY)) % 12;
+        int mAM_PM = (c.get(Calendar.AM_PM));
+        int mMin = (c.get(Calendar.MINUTE));
+
+        int difDay = currentDay - mDay;
+
+        if (difDay == 0) {
+            StringBuilder str = new StringBuilder();
+            str.append("Today - ");
+            str.append("" + mHour);
+            if (mMin != 0) {
+                str.append(":");
+                String s = String.format("%02d", mMin);
+                str.append(s);
+            }
+            if (mAM_PM == 0) {
+                str.append(" AM");
+            } else {
+                str.append(" PM");
+            }
+            finalTime = str.toString();
+        } else if (difDay == 1) {
+            StringBuilder str = new StringBuilder();
+            str.append("Yesterday - ");
+            str.append("" + mHour);
+            if (mMin != 0) {
+                str.append(":");
+                String s = String.format("%02d", mMin);
+                str.append(s);
+            }
+            if (mAM_PM == 0) {
+                str.append(" AM");
+            } else {
+                str.append(" PM");
+            }
+            finalTime = str.toString();
+        } else if (difDay > 1 && difDay < 8) {
+            finalTime = difDay + " days ago";
+        } else {
+            finalTime = mDay + " " + monthS;
+        }
+
+        return finalTime;
     }
 
 

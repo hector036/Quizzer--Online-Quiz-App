@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,11 +25,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import static com.khan.quizzer_onlinequizapp.QuestionsActivity.FILE_NAME;
-import static com.khan.quizzer_onlinequizapp.QuestionsActivity.KEY_NAME;
-
 public class BookmarksActivity extends AppCompatActivity {
 
+    private FirebaseAuth mAuth;
     private RecyclerView recyclerView;
 
     private List<QuestionModel> bookmarksList;
@@ -44,6 +43,7 @@ public class BookmarksActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bookmarks);
 
+        mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         loadAds();
@@ -56,7 +56,7 @@ public class BookmarksActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.rv_bookmarks);
 
-        preferences = getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE);
+        preferences = getSharedPreferences("Bookmarks", Context.MODE_PRIVATE);
         editor = preferences.edit();
         gson = new Gson();
 
@@ -90,7 +90,7 @@ public class BookmarksActivity extends AppCompatActivity {
     }
 
     private void getBookmarks() {
-        String json = preferences.getString(KEY_NAME, "");
+        String json = preferences.getString(""+mAuth.getCurrentUser().getUid(), "");
         Type type = new TypeToken<List<QuestionModel>>() {
         }.getType();
         bookmarksList = gson.fromJson(json, type);
@@ -108,7 +108,7 @@ public class BookmarksActivity extends AppCompatActivity {
 
         String json = gson.toJson(bookmarksList);
 
-        editor.putString(KEY_NAME, json);
+        editor.putString(""+mAuth.getCurrentUser().getUid(), json);
 
         editor.commit();
 

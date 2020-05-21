@@ -61,7 +61,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewho
 
         private void setData(String url, final String title, final String key, final int position){
 
-            Glide.with(itemView.getContext()).load(url).into(imageView);
+            Glide.with(itemView.getContext()).load(url).placeholder(R.color.place_holder).into(imageView);
             this.title.setText(title);
 
             itemView.setOnClickListener(new View.OnClickListener() {

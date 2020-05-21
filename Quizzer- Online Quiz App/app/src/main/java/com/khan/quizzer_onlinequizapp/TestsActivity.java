@@ -75,9 +75,7 @@ public class TestsActivity extends AppCompatActivity {
                     Test t = new Test();
                     t.setSetId(snapshot.getKey());
                     t.setName(snapshot.child("name").getValue().toString());
-//                    t.setTime(Long.parseLong(snapshot.child("Time").getValue().toString()));
-                    t.setDate(snapshot.child("date").getValue().toString());
-                    t.setStartTime(snapshot.child("startTime").getValue().toString());
+                    t.setDateTime((Long) snapshot.child("date").getValue());
                     t.setDescription(snapshot.child("description").getValue().toString());
                     tests.add(t);
 

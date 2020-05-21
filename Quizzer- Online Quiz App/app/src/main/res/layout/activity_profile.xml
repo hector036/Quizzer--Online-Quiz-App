@@ -21,21 +21,6 @@
 
             <include layout="@layout/profile_info" />
 
-            <Button
-                android:id="@+id/sign_out"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="64dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-
-                android:background="@drawable/rounded_box"
-                android:backgroundTint="#F3F3F3"
-                android:text="Sign Out"
-                android:textAllCaps="false"
-                android:visibility="gone" />
-
         </LinearLayout>
 
     </ScrollView>

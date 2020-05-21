@@ -273,6 +273,8 @@ public class EditProfileActivity extends AppCompatActivity {
                 byte[] byteArray = outputStream.toByteArray();
                 //Use your Base64 String as you wish
                 MainActivity.url = Base64.encodeToString(byteArray, Base64.DEFAULT);
+                getSharedPreferences("PhotoUrl",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),MainActivity.url).apply();
+
                 //********************* ussing bitmap ***********************//
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -319,6 +321,11 @@ public class EditProfileActivity extends AppCompatActivity {
                                             MainActivity.firstName = firstName.getText().toString();
                                             MainActivity.lastName = lastName.getText().toString();
                                             MainActivity.institute = instituteName.getText().toString();
+
+                                            getSharedPreferences("FirstName",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),MainActivity.firstName).apply();
+                                            getSharedPreferences("LastName",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),MainActivity.lastName).apply();
+                                            getSharedPreferences("Institute",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),MainActivity.institute).apply();
+
                                             loadingDialog.dismiss();
                                             finish();
                                         }
