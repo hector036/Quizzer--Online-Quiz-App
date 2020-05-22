@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    android:background="@color/colorWhite"
     android:orientation="vertical">
 
     <TextView
@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Weekly Test Notification"
-                    android:textColor="@android:color/black"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
                 <Switch
@@ -65,6 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:theme="@style/dialogStyle"
+                    android:textColor="@color/colorBlack"
 
                     tools:layout_editor_absoluteY="9dp" />
             </LinearLayout>

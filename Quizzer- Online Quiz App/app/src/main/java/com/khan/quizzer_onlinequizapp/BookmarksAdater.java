@@ -120,7 +120,8 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("Blank");
                     //evaluation.setBackgroundColor(Color.parseColor("#50000000"));
-                    evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#50000000")));
+                    //evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#50000000")));
+                    evaluation.setBackgroundTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.evaluationBgTint_blank)));
                 } else if (yourAns.equals(correctAns)) {
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("\u2714" + "  Correct");

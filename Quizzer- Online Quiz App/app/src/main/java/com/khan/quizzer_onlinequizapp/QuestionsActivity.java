@@ -371,7 +371,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
         if (selectOption.getText().toString().equals(list.get(position).getCorrectAns())) {
 
-            selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+           // selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+            selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
             listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
             score++;
 
@@ -379,7 +380,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
             listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
 
-            selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+            selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+
             //Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
             //currectoption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
 
@@ -390,7 +392,7 @@ public class QuestionsActivity extends AppCompatActivity {
         for (int i = 0; i < 4; i++) {
             optionContrainer.getChildAt(i).setEnabled(enable);
             if (enable) {
-                optionContrainer.getChildAt(i).setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#989898")));
+                optionContrainer.getChildAt(i).setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.optionButtonBgTint)));
             }
         }
     }
@@ -422,7 +424,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
                     //shareBtn.setEnabled(true);
                     btnEnable = true;
-                    shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                    //shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")));
+                    shareBtn.setTextColor(getResources().getColor(R.color.colorWhite));
 
                 }
                 if (position == list.size() - 1) {
@@ -466,7 +469,8 @@ public class QuestionsActivity extends AppCompatActivity {
                     position--;
                     if (position == 0) {
                         btnEnable = false;
-                        shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
+                       // shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
+                        shareBtn.setTextColor(getResources().getColor(R.color.question_previousBtn_textColor));
                     }
                     if (position != list.size()) {
                         nextBtn.setText("Next  ›");

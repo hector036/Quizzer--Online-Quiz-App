@@ -34,7 +34,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final int FROM_NOTIFICATION = 1;
     public static final int FROM_SETTINGS = 0;
-    private static final String privacy_link = "https://www.youtube.com/watch?v=9l4HFOAY6sY";
+    private static final String privacy_link = "https://hector036.github.io/";
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();

@@ -158,13 +158,17 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             public void onValidityChanged(boolean isValidNumber) {
                 if(isValidNumber){
                     nextButton.setEnabled(true);
-                    nextButton.setTextColor(Color.rgb(255,255,255));
-                    nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+                   // nextButton.setTextColor(Color.rgb(255,255,255));
+                    nextButton.setTextColor(getResources().getColor(R.color.colorWhite));
+                  //  nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+                    nextButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
 
                 }else{
                     nextButton.setEnabled(false);
-                    nextButton.setTextColor(Color.parseColor("#99FFFFFF"));
-                    nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#C6C6C6")));
+                   // nextButton.setTextColor(Color.parseColor("#99FFFFFF"));
+                    nextButton.setTextColor(getResources().getColor(R.color.otp_nextButton_disable_textColor));
+                   // nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#C6C6C6")));
+                    nextButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.otp_nextButton_disable_bg)));
 
                 }
             }
@@ -437,11 +441,13 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             refreshIcon.setVisibility(View.VISIBLE);
             mResend.setEnabled(true);
             mResend.setText("Resend Code");
-            mResend.setTextColor(Color.rgb(0,0,0));
+            //mResend.setTextColor(Color.rgb(0,0,0));
+            mResend.setTextColor(getResources().getColor(R.color.colorBlack));
         } else {
             refreshIcon.setVisibility(View.GONE);
             mResend.setEnabled(false);
-            mResend.setTextColor(Color.rgb(214,214,214));
+           // mResend.setTextColor(Color.rgb(214,214,214));
+            mResend.setTextColor(getResources().getColor(R.color.otp_resentButton_disable_textColor));
         }
     }
 
@@ -488,13 +494,15 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.tv_resend_code:
                 resendVerificationCode(mPhoneNumber, mResendToken);
                 mResend.setEnabled(false);
-                mResend.setTextColor(Color.rgb(214,214,214));
+             //   mResend.setTextColor(Color.rgb(214,214,214));
+                mResend.setTextColor(getResources().getColor(R.color.otp_resentButton_disable_textColor));
                 refreshIcon.setVisibility(View.GONE);
                 break;
             case R.id.refresh_icon:
                 resendVerificationCode(mPhoneNumber, mResendToken);
                 mResend.setEnabled(false);
-                mResend.setTextColor(Color.rgb(214,214,214));
+            //    mResend.setTextColor(Color.rgb(214,214,214));
+                mResend.setTextColor(getResources().getColor(R.color.otp_resentButton_disable_textColor));
                 refreshIcon.setVisibility(View.GONE);
                 break;
         }

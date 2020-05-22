@@ -22,7 +22,7 @@
         android:text="Select Set"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorBlack"
         android:padding="16dp"
         />
 

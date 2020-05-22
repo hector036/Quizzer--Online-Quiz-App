@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".OtpActivity"
+    android:background="@color/colorWhite"
 
-    android:background="@color/colorAccent">
+    tools:context=".OtpActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/const_layout_phone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <Button
             android:id="@+id/next_button"
@@ -27,7 +26,7 @@
             android:enabled="false"
             android:text="Next"
             android:textAllCaps="false"
-            android:textColor="#99FFFFFF"
+            android:textColor="@color/otp_nextButton_disable_textColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/phone_login_phne_number" />
@@ -38,16 +37,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            app:ccp_customMasterCountries="BD"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             app:ccp_autoDetectCountry="true"
-            app:ccp_contentColor="@android:color/black"
+            app:ccp_contentColor="@color/colorBlack"
+            app:ccp_customMasterCountries="BD"
             app:ccp_defaultNameCode="BD"
+            app:ccp_hintExampleNumber="true"
             app:ccp_rememberLastSelection="true"
             app:ccp_showArrow="false"
             app:ccp_showFlag="true"
-            app:ccp_hintExampleNumber="true"
 
 
             app:ccp_showNameCode="false"
@@ -64,12 +63,14 @@
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
-            android:backgroundTint="#4E4E4E"
-            android:inputType="phone"
-            android:singleLine="true"
-            android:textColor="@android:color/black"
 
-            android:textColorHint="#D6D6D6"
+            android:backgroundTint="@color/otp_phone_bg_tint"
+            android:inputType="phone"
+
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/otp_phone_textColor_hint"
+
             android:textSize="17sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/countryCodePicker"
@@ -87,7 +88,7 @@
             android:layout_marginBottom="8dp"
             android:text="@string/terms_policy_text_next"
             android:textAlignment="center"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -106,7 +107,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:text="Enter your phone number "
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -120,8 +121,7 @@
         android:id="@+id/const_layout_otp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
 
         <com.poovam.pinedittextfield.SquarePinField
@@ -133,13 +133,15 @@
             android:layout_marginEnd="32dp"
             android:height="48dp"
             android:inputType="number"
-            android:textColor="#4E4E4E"
             android:textSize="16sp"
             app:cornerRadius="2dp"
             app:distanceInBetween="6dp"
-            app:fieldBgColor="@android:color/white"
-            app:fieldColor="#8c8c8c"
-            app:highlightColor="#4E4E4E"
+
+            android:textColor="@color/otp_phone_bg_tint"
+            app:fieldBgColor="@color/colorWhite"
+            app:fieldColor="@color/otp_pinview_fieldColor"
+            app:highlightColor="@color/otp_phone_bg_tint"
+
             app:highlightType="currentField"
             app:isCursorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
@@ -171,9 +173,10 @@
             android:layout_marginTop="16dp"
             android:enabled="false"
             android:text="Resend Code"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             app:layout_constraintStart_toStartOf="@+id/pinview"
             app:layout_constraintTop_toBottomOf="@+id/pinview" />
+
         <TextView
             android:id="@+id/textViewVarification"
             android:layout_width="wrap_content"
@@ -184,7 +187,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="Verification Code"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             android:textSize="21sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -200,7 +203,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:text="Please type the verification code sent to"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
 
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -212,14 +215,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="+8801*******00"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="@+id/textView5Fragment"
             app:layout_constraintStart_toStartOf="@+id/textView5Fragment"
             app:layout_constraintTop_toBottomOf="@+id/textView5Fragment" />
-
-
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

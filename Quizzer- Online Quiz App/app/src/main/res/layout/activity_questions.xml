@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context=".QuestionsActivity">
 
@@ -24,7 +24,7 @@
             android:paddingRight="0dp"
             android:text="Full Marks: ..."
             android:gravity="center"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             android:textSize="13sp" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:gravity="center"
             android:padding="16dp"
             android:text="00:00"
-            android:textColor="@android:color/black"
+            android:textColor="@color/colorBlack"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -50,7 +50,7 @@
             android:paddingBottom="16dp"
             android:paddingRight="28dp"
             android:scaleType="fitEnd"
-            android:background="@color/colorAccent"
+            android:background="@color/colorWhite"
             app:srcCompat="@drawable/bookmark_border" />
 
 
@@ -71,7 +71,7 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorAccent"
+                android:background="@color/colorWhite"
                 android:orientation="vertical"
 
                 app:layout_constraintEnd_toEndOf="parent"
@@ -94,7 +94,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         app:setClickable="true"
-                        app:setTextColor="@android:color/black"
+                        app:setTextColor="@color/colorBlack"
                         />
                     <TextView
                         android:id="@+id/quesText"
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:textSize="18sp"
-                        android:textColor="@android:color/black"
+                        android:textColor="@color/colorBlack"
                         android:visibility="gone"
                         />
 
@@ -138,9 +138,9 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_borders"
-                    android:backgroundTint="#989898"
+                    android:backgroundTint="@color/optionButtonBgTint"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/colorBlack" />
 
                 <Button
                     android:id="@+id/button2"
@@ -148,7 +148,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_borders"
-                    android:backgroundTint="#989898"
+                    android:backgroundTint="@color/optionButtonBgTint"
 
                     android:textAllCaps="false"
                     android:textColor="@android:color/black" />
@@ -160,9 +160,9 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_borders"
 
-                    android:backgroundTint="#989898"
+                    android:backgroundTint="@color/optionButtonBgTint"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/colorBlack" />
 
                 <Button
                     android:id="@+id/button4"
@@ -171,9 +171,9 @@
                     android:layout_margin="8dp"
                     android:background="@drawable/rounded_borders"
 
-                    android:backgroundTint="#989898"
+                    android:backgroundTint="@color/optionButtonBgTint"
                     android:textAllCaps="false"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/colorBlack" />
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -216,7 +216,7 @@
             android:text="Next  ›"
             android:textAlignment="textEnd"
             android:textAllCaps="false"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorWhite"
             android:textSize="16dp" />
     </LinearLayout>
 

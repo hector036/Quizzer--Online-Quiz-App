@@ -6,7 +6,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="8dp"
-    android:background="@color/colorAccent">
+    android:background="@color/colorWhite">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iamge_grid_view"
@@ -24,7 +24,7 @@
         android:layout_marginTop="8dp"
         android:text="Subject-Wise Exam"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorBlack"
         android:textSize="11sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

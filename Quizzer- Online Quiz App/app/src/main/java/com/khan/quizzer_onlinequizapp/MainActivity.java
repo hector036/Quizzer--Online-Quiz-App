@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Smart Quizzer");
         toolbar.setOverflowIcon(getDrawable(R.drawable.action));
-        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
 
         UpdateHelper.with(this)
                 .onUpdateCheck(this)
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
         progressBar = findViewById(R.id.mainpage_progress);
         refreshLayout = findViewById(R.id.mainpage_swipe_refresh);
-        refreshLayout.setColorSchemeColors(Color.BLACK, Color.BLACK, Color.BLACK);
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorBlack),getResources().getColor(R.color.colorBlack));
 
         RecyclerView mainRecyclerView = findViewById(R.id.main_rv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorAccent"
+    android:background="@color/colorWhite"
     tools:context=".AnsSheetActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,7 +19,7 @@
         android:id="@+id/score_board_layout"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorAccent"
+        android:background="@color/colorWhite"
         android:elevation="3dp"
         android:orientation="horizontal"
         >
@@ -46,7 +46,7 @@
             android:text="View Ranking"
             android:textAllCaps="false"
             android:textSize="13sp"
-            android:textColor="@color/colorAccent" />
+            android:textColor="@color/colorWhite" />
 
     </LinearLayout>
 
@@ -55,7 +55,7 @@
         android:id="@+id/rv_answersheet"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/colorAccent"
+        android:background="@color/colorWhite"
         android:layout_weight="1" />
 
     <com.google.android.gms.ads.AdView

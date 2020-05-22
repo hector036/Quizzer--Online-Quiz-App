@@ -30,7 +30,7 @@
         android:paddingRight="8dp"
         android:paddingBottom="8dp"
         android:text="Title"
-        android:textColor="@android:color/black"
+        android:textColor="@color/colorBlack"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/image_view"
