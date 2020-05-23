@@ -12,10 +12,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorPrimary"
+        android:background="@color/actionBarColor"
         android:elevation="3dp"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:titleTextColor="@color/colorWhite" />
+         />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -49,10 +49,10 @@
             android:layout_height="match_parent"
             android:textAllCaps="false"
             android:layout_weight="1"
-            android:background="@color/colorPrimary"
+            android:background="@color/buttonColor"
             android:text="Model Test"
             android:drawableEnd="@drawable/next"
-            android:textColor="@color/colorWhite" />
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 

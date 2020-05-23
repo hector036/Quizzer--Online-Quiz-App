@@ -51,7 +51,7 @@ public class SplashActivity extends AppCompatActivity {
 
         }else {
             SystemClock.sleep(2000);
-            Intent loginIntent = new Intent(SplashActivity.this,OtpActivity.class);
+            Intent loginIntent = new Intent(SplashActivity.this,LoginActivity.class);
             startActivity(loginIntent);
             finish();
         }

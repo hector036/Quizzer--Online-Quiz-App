@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/mainPageBg"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -20,8 +21,8 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Light" />
+            android:background="@color/actionBarColor"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/mainpage_swipe_refresh"

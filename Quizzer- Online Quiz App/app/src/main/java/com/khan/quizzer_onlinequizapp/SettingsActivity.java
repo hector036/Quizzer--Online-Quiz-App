@@ -2,6 +2,7 @@ package com.khan.quizzer_onlinequizapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -54,6 +55,15 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAuth = FirebaseAuth.getInstance();
+        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(mAuth.getCurrentUser().getUid(), false);
+
+        if(isDarkMode){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+          //  toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
+        }else {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            //toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
+        }
 
         type = getIntent().getIntExtra("type", 0);
 
@@ -108,7 +118,7 @@ public class SettingsActivity extends AppCompatActivity {
         boolean isWeeklyTestEnable = getSharedPreferences("Settings:"+"Weekly Test Notification", MODE_PRIVATE).getBoolean(mAuth.getCurrentUser().getUid(), true);
         boolean isEducationalNewsEnable = getSharedPreferences("Settings:"+"Educational News", MODE_PRIVATE).getBoolean(mAuth.getCurrentUser().getUid(), true);
 
-       // list.add(new SettingsModel(SETTINGS_ITEM_WITH_SWITCH, R.drawable.s1, "Dark Mode", isDarkMode));
+        list.add(new SettingsModel(SETTINGS_ITEM_WITH_SWITCH, R.drawable.s1, "Dark Mode", isDarkMode));
         list.add(new SettingsModel(SETTINGS_HEADER, "Notification Center"));
         list.add(new SettingsModel(SETTINGS_ITEM_WITH_SWITCH, R.drawable.mp2, "Weekly Test Notification", isWeeklyTestEnable));
         list.add(new SettingsModel(SETTINGS_ITEM_WITH_SWITCH, R.drawable.s3, "Educational News", isEducationalNewsEnable));

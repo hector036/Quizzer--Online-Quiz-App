@@ -2,6 +2,7 @@ package com.khan.quizzer_onlinequizapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -70,13 +71,20 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
+        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Smart Quizzer");
+        getSupportActionBar().setTitle("Quizzer");
         toolbar.setOverflowIcon(getDrawable(R.drawable.action));
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
-
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+        if(isDarkMode){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
+        }else {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
+        }
         UpdateHelper.with(this)
                 .onUpdateCheck(this)
                 .check();
@@ -91,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         progressBar = findViewById(R.id.mainpage_progress);
         refreshLayout = findViewById(R.id.mainpage_swipe_refresh);
         refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorBlack),getResources().getColor(R.color.colorBlack));
+        refreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.swipeRefreshColor));
 
         RecyclerView mainRecyclerView = findViewById(R.id.main_rv);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

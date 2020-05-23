@@ -33,7 +33,7 @@
                 android:textSize="36sp"
                 android:gravity="center"
                 android:textStyle="bold"
-
+                android:textColor="@color/defoultTextColor"
                 android:text="" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:gravity="center"
                 android:textSize="12sp"
                 android:layout_marginTop="6dp"
-                android:textColor="#353535"
+                android:textColor="@color/weeklyTestTile_textColor"
 
                 android:text="Your Score" />
         </LinearLayout>
@@ -64,6 +64,7 @@
                 android:textSize="36sp"
                 android:gravity="center"
                 android:textStyle="bold"
+                android:textColor="@color/defoultTextColor"
 
                 android:text="" />
 
@@ -74,7 +75,8 @@
                 android:gravity="center"
                 android:textSize="12sp"
                 android:layout_marginTop="6dp"
-                android:textColor="#353535"
+                android:textColor="@color/weeklyTestTile_textColor"
+
 
                 android:text="Your Ranking" />
         </LinearLayout>
@@ -95,6 +97,8 @@
                 android:textSize="36sp"
                 android:gravity="center"
                 android:textStyle="bold"
+                android:textColor="@color/defoultTextColor"
+
                 android:text="" />
 
             <TextView
@@ -104,7 +108,7 @@
                 android:gravity="center"
                 android:textSize="12sp"
                 android:layout_marginTop="6dp"
-                android:textColor="#353535"
+                android:textColor="@color/weeklyTestTile_textColor"
 
                 android:text="Participants" />
         </LinearLayout>

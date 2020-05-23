@@ -119,14 +119,13 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 if (list.get(position).getYourAns() == null) {
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("Blank");
-                    //evaluation.setBackgroundColor(Color.parseColor("#50000000"));
                     //evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#50000000")));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.evaluationBgTint_blank)));
                 } else if (yourAns.equals(correctAns)) {
                     yourAnswer.setVisibility(View.GONE);
                     evaluation.setText("\u2714" + "  Correct");
-                    //   evaluation.setBackgroundColor(Color.parseColor("#32CD32"));
-                    evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
+                   // evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
+                    evaluation.setBackgroundTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.evaluationBgTint_green)));
 
                 } else {
                     yourAnswer.setVisibility(View.VISIBLE);

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:background="@color/colorWhite"
     tools:context=".TestsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -18,7 +18,7 @@
             android:layout_width="match_parent"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="?android:attr/colorPrimary">
+            android:background="@color/actionBarColor">
 
         </androidx.appcompat.widget.Toolbar>
 

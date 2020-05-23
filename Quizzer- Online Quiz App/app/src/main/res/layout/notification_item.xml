@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Weekly Test"
-
+            android:textColor="@color/defoultTextColor"
             android:textSize="14sp"
             android:textStyle="bold" />
 
@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:textSize="12sp"
+            android:textColor="@color/defoultTextColor"
             android:text="Get prepared for the upcomming weekly test" />
 
         <TextView
@@ -69,6 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:textSize="10sp"
+            android:textColor="@color/defoultTextColor"
             android:text="2 days ago" />
 
 

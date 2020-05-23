@@ -1,11 +1,13 @@
 package com.khan.quizzer_onlinequizapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 
@@ -54,9 +56,18 @@ public class ViewResultsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_results);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
+        toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(FirebaseAuth.getInstance().getCurrentUser().getUid(), false);
+
+        if(isDarkMode){
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            //toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
+        }else {
+            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            // toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
+        }
 
         progressBar = findViewById(R.id.progress_bar_test);
         progressBar.setVisibility(View.VISIBLE);

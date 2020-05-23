@@ -16,6 +16,7 @@
         android:paddingRight="16dp"
         android:paddingBottom="8dp"
         android:text="Notification Center"
+        android:textColor="@color/defoultTextColor"
         android:textSize="16sp" />
 
     <LinearLayout
