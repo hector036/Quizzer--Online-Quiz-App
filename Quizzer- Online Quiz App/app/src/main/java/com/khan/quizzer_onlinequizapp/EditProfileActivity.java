@@ -95,16 +95,6 @@ public class EditProfileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Edit Profile");
 
-        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
-
-        if(isDarkMode){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            //toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }else {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-           // toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
-        }
-
         type = getIntent().getIntExtra("type", 0);
 
 

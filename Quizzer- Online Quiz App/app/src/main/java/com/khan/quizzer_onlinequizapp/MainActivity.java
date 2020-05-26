@@ -20,12 +20,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -44,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     private static final String TOPIC_WEEKLY_TEST_NOTIFICATION = "WEEKLYTEST";
     private static final int FIRST_TIME_LOAD = 0;
     private static final int SWIPE_REFRESH_LOAD = 1;
+    public static boolean isDark;
 
     public static String url = "";
     public static byte[] decodedBytes;
@@ -62,7 +66,10 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     private int count, size;
     private long date;
     private ProgressBar progressBar;
+    private LinearLayout linearLayout;
     private SwipeRefreshLayout refreshLayout;
+    private Toolbar toolbar;
+    private int mLastDayNightMode;
 
 
     @Override
@@ -71,34 +78,41 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
-        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Quizzer");
         toolbar.setOverflowIcon(getDrawable(R.drawable.action));
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
-        if(isDarkMode){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }else {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
-        }
-        UpdateHelper.with(this)
-                .onUpdateCheck(this)
-                .check();
+        boolean isDarkMode = getSharedPreferences("Settings:" + "Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
 
-        boolean isWeeklyTestEnable = getSharedPreferences("Settings:"+"Weekly Test Notification", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), true);
-        if(isWeeklyTestEnable){
+        if (savedInstanceState == null) {
+            if(isDarkMode){
+                mLastDayNightMode = AppCompatDelegate.MODE_NIGHT_YES;
+            }else {
+                mLastDayNightMode = AppCompatDelegate.MODE_NIGHT_NO;
+            }
+            AppCompatDelegate.setDefaultNightMode(mLastDayNightMode);
+        } else {
+            mLastDayNightMode = AppCompatDelegate.getDefaultNightMode();
+
+        }
+
+//        UpdateHelper.with(this)
+//                .onUpdateCheck(this)
+//                .check();
+
+        boolean isWeeklyTestEnable = getSharedPreferences("Settings:" + "Weekly Test Notification", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), true);
+        if (isWeeklyTestEnable) {
             subscribePostNotification();
-        }else {
+        } else {
             unsubscripbePostNotification();
         }
 
         progressBar = findViewById(R.id.mainpage_progress);
+        linearLayout = findViewById(R.id.progress_bar_layout);
         refreshLayout = findViewById(R.id.mainpage_swipe_refresh);
-        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorBlack),getResources().getColor(R.color.colorBlack));
+        refreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorBlack), getResources().getColor(R.color.colorBlack));
         refreshLayout.setProgressBackgroundColorSchemeColor(getResources().getColor(R.color.swipeRefreshColor));
 
         RecyclerView mainRecyclerView = findViewById(R.id.main_rv);
@@ -114,6 +128,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         mainRecyclerView.setAdapter(adapter);
 
         progressBar.setVisibility(View.VISIBLE);
+        linearLayout.setVisibility(View.VISIBLE);
         getUserDetailsAndMainPageData(FIRST_TIME_LOAD);
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -136,17 +151,18 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     date = (long) snapshot.child("date").getValue();
                     description = snapshot.child("description").getValue().toString();
                 }
-                mainPageModelList.clear();
-
-                mainPageModelList.add(0, new MainPageModel(0));
-                mainPageModelList.add(1, new MainPageModel(1, listGrid));
-
-                mainPageModelList.add(new MainPageModel(2,
-                        "Recent Weekly Test", date, title, description, setId, R.drawable.mp2));
 
                 myRef.child("Banner").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        mainPageModelList.clear();
+
+                        mainPageModelList.add(0, new MainPageModel(0));
+                        mainPageModelList.add(1, new MainPageModel(1, listGrid));
+
+                        mainPageModelList.add(new MainPageModel(2,
+                                "Recent Weekly Test", date, title, description, setId, R.drawable.mp2));
 
                         if (dataSnapshot.child("important_banner").exists()) {
                             DataSnapshot snapshot = dataSnapshot.child("important_banner").child("1");
@@ -165,6 +181,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                                     bannerImg, bannerText, bannerUrl, true));
                         }
                         progressBar.setVisibility(View.GONE);
+                        linearLayout.setVisibility(View.GONE);
                         refreshLayout.setRefreshing(false);
                         adapter.notifyDataSetChanged();
 
@@ -194,10 +211,11 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
+
     private void subscribePostNotification() {
 
         FirebaseMessaging.getInstance().subscribeToTopic("" + TOPIC_WEEKLY_TEST_NOTIFICATION)
@@ -208,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -233,11 +251,11 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     url = dataSnapshot.child("url").getValue().toString();
                     loadMainPage();
 
-                    getSharedPreferences("FirstName",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),firstName).apply();
-                    getSharedPreferences("LastName",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),lastName).apply();
-                    getSharedPreferences("Institute",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),institute).apply();
-                    getSharedPreferences("Phone",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),phone).apply();
-                    getSharedPreferences("PhotoUrl",MODE_PRIVATE).edit().putString(""+auth.getCurrentUser().getUid(),url).apply();
+                    getSharedPreferences("FirstName", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), firstName).apply();
+                    getSharedPreferences("LastName", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), lastName).apply();
+                    getSharedPreferences("Institute", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), institute).apply();
+                    getSharedPreferences("Phone", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), phone).apply();
+                    getSharedPreferences("PhotoUrl", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), url).apply();
                     Toast.makeText(MainActivity.this, "FROM DATABASE", Toast.LENGTH_SHORT).show();
                 }
 
@@ -247,10 +265,9 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     Toast.makeText(MainActivity.this, "Something Went Wrong", Toast.LENGTH_SHORT).show();
                 }
             });
-        }
-        else {
+        } else {
             firstName = pFirstName;
-            lastName =pLastName;
+            lastName = pLastName;
             institute = pInstitute;
             phone = pPhone;
             url = pUrl;
@@ -292,6 +309,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     badge_count.setVisibility(View.GONE);
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
@@ -345,32 +363,68 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     }
 
     @Override
-    public void onUpdateCheckListener(final String urlApp) {
+    public void onUpdateCheckListener(final String urlApp,String updateMsg, boolean setCancelable) {
 
-        AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialogStyle)
-                .setTitle("jQuizzer Update")
-                .setMessage("There is a new version available. Please update to new version to continue")
-                .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        // Toast.makeText(MainActivity.this, "Update", Toast.LENGTH_SHORT).show();
-                        // String appName = getPackageName();
-                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("" + urlApp)));
-                    }
-                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).create();
 
-        alertDialog.show();
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this,R.style.bottomSheetTheme);
+        bottomSheetDialog.setContentView(R.layout.update_dialog);
+        bottomSheetDialog.setCanceledOnTouchOutside(setCancelable);
+
+        Button cancel = bottomSheetDialog.findViewById(R.id.update_cancelBtn);
+        Button update = bottomSheetDialog.findViewById(R.id.update_updateBtn);
+
+        if(!setCancelable){
+            cancel.setVisibility(View.GONE);
+        }else
+            cancel.setVisibility(View.VISIBLE);
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("" + urlApp)));
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheetDialog.cancel();
+            }
+        });
+
+        bottomSheetDialog.show();
+
+//        AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialogStyle)
+//                .setTitle("jQuizzer Update")
+//                .setMessage("There is a new version available. Please update to new version to continue")
+//                .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        // Toast.makeText(MainActivity.this, "Update", Toast.LENGTH_SHORT).show();
+//                        // String appName = getPackageName();
+//                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("" + urlApp)));
+//                    }
+//                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        dialog.dismiss();
+//                    }
+//                }).create();
+//
+//        alertDialog.show();
 
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (AppCompatDelegate.getDefaultNightMode() != mLastDayNightMode) {
+            recreate();
+        }
+    }
+    @Override
     protected void onStart() {
         super.onStart();
+
         adapter.notifyDataSetChanged();
     }
 }

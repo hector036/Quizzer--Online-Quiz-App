@@ -8,6 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="MainActionBarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
@@ -30,11 +37,31 @@
         <item name="colorAccent">@color/colorBlueApp</item>
         <item name="android:textSize">16sp</item>
     </style>
-
-    <style name="editLayoutStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+    <style name="alertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
         <!-- Customize your theme here. -->
         <item name="colorAccent">@color/colorBlueApp</item>
         <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="progressStyle" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorBlueApp</item>
+    </style>
+
+    <style name="editLayoutStyle" parent="Theme.AppCompat.Light">
+        <!-- Customize your theme here. -->
+        <item name="colorAccent">@color/colorBlueApp</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="bottomSheetTheme" parent="Theme.Design.Light.BottomSheetDialog">
+        <!-- Customize your theme here. -->
+        <item name="bottomSheetStyle">@style/bottomSheetStyle</item>
+    </style>
+
+    <style name="bottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
+        <!-- Customize your theme here. -->
+        <item name="android:background">@android:color/transparent</item>
     </style>
 
 </resources>

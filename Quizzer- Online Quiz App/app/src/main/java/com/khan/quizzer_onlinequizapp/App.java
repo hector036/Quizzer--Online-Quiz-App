@@ -17,19 +17,20 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+        final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
 
-        final FirebaseRemoteConfig remoteConfig  = FirebaseRemoteConfig.getInstance();
-
-        Map<String,Object> defaultvalue = new HashMap<>();
-        defaultvalue.put(UpdateHelper.KEY_UPDATE_ENABLE,false);
-        defaultvalue.put(UpdateHelper.KEY_UPDATE_VERSION,"1.0");
-        defaultvalue.put(UpdateHelper.KEY_UPDATE_URL,"link");
+        Map<String, Object> defaultvalue = new HashMap<>();
+        defaultvalue.put(UpdateHelper.KEY_UPDATE_ENABLE, false);
+        defaultvalue.put(UpdateHelper.KEY_UPDATE_VERSION, "1.0");
+        defaultvalue.put(UpdateHelper.KEY_UPDATE_URL, "link");
+        defaultvalue.put(UpdateHelper.KEY_UPDATE_MESSAGE, "link");
+        defaultvalue.put(UpdateHelper.KEY_UPDATE_SET_DIALOG_CANCELABLE, true);
 
         remoteConfig.setDefaults(defaultvalue);
         remoteConfig.fetch(60).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     remoteConfig.activateFetched();
                 }
             }

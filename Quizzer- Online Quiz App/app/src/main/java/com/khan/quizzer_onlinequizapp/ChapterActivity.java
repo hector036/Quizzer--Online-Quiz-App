@@ -35,15 +35,6 @@ public class ChapterActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
-        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(FirebaseAuth.getInstance().getCurrentUser().getUid(), false);
-
-        if(isDarkMode){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            //toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }else {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            // toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
-        }
 
         recyclerView = findViewById(R.id.recycler_view);
         modelTestBtn = findViewById(R.id.model_test_btn);

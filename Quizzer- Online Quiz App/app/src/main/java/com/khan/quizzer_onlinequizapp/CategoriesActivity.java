@@ -48,16 +48,6 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(FirebaseAuth.getInstance().getCurrentUser().getUid(), false);
-
-        if(isDarkMode){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            //toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }else {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            // toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
-        }
-
         loadAds();
 
         type = getIntent().getIntExtra("type",0);

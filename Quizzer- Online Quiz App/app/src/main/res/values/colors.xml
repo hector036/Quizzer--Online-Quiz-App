@@ -14,7 +14,7 @@
 
     <color name="swipeRefreshColor">#ffffff</color>
 
-    <color name="mainPageBg">#FAFAFA</color>
+    <color name="mainPageBg">#E6EDF3</color>
     <color name="mainPageProfileBg">#0097E4</color>
     <color name="defoultTextColor">#808080</color>
 
@@ -44,9 +44,11 @@
 
     <color name="evaluationBgTint_green">#1ABC1A</color>
     <color name="evaluationBgTint_blank">#50000000</color>
+    <color name="bookmark_backgroundTint">#ffffff</color>
 
     <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>
     <color name="redButtonDisabled">#50ffffff</color>
     <color name="place_holder">#E5E5E5</color>
+
 </resources>

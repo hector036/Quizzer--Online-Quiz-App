@@ -44,11 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
     private FloatingActionButton editProfileBtn;
     private CircleImageView imageView;
     private boolean isFabEnable = false;
-//    private String firstName;
-//    private String lastName;
-//    private String institute;
- //   private String phone;
-//    private Bitmap decodedBitmap;
     private FirebaseAuth auth;
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -67,14 +62,6 @@ public class ProfileActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Profile");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
-        if(isDarkMode){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-          //  toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }else {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-           // toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
-        }
         profileName = findViewById(R.id.profile_name);
         instituteName = findViewById(R.id.institue_text);
         contactNumber = findViewById(R.id.contact_number);

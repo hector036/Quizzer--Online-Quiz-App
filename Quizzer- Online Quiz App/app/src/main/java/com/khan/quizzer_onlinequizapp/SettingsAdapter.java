@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.gridlayout.widget.GridLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -171,6 +172,14 @@ public class SettingsAdapter extends RecyclerView.Adapter {
 
             itemView.getContext().getSharedPreferences("Settings:"+title, Context.MODE_PRIVATE).edit().putBoolean(FirebaseAuth.getInstance().getCurrentUser().getUid(),isChecked).apply();
             Toast.makeText(itemView.getContext(), title+" - "+ isChecked, Toast.LENGTH_SHORT).show();
+            if(title.equals("Dark Mode")){
+                if(isChecked){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+
+            }
         }
     }
 

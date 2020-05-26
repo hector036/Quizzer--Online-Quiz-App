@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#121212</color>
+    <color name="colorPrimary">#2E2E2E</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffffff</color>
     <color name="colorWhite">#000000</color>
     <color name="colorBlack">#ffffff</color>
     <color name="colorDarkGrey">#121212</color>
     <color name="colorBlueApp">#0097E4</color>
-    <color name="buttonColor">#121212</color>
+    <color name="buttonColor">#2E2E2E</color>
 
-    <color name="actionBarColor">#121212</color>
-    <color name="dividerColor">#12ffffff</color>
+    <color name="actionBarColor">#2E2E2E</color>
+    <color name="dividerColor">#36ffffff</color>
     <color name="swipeRefreshColor">#2E2E2E</color>
 
-    <color name="mainPageBg">#000000</color>
-    <color name="mainPageProfileBg">#121212</color>
+    <color name="mainPageBg">#121212</color>
+    <color name="mainPageProfileBg">#2E2E2E</color>
     <color name="defoultTextColor">#FFFFFF</color>
 
     <color name="otp_nextButton_disable_textColor">#99FFFFFF</color>
@@ -27,7 +27,7 @@
     <color name="optionButtonBgTint">#989898</color>
     <color name="question_previousBtn_textColor">#45ffffff</color>
 
-    <color name="setItemBgTint">#121212</color>
+    <color name="setItemBgTint">#2E2E2E</color>
 
     <color name="weeklyTestDes_textColor">#909090</color>
     <color name="weeklyTestDate_textColor">#ffffff</color>
@@ -37,15 +37,17 @@
     <color name="scoreBoard_dintAttemp_textColor">#E40E0E</color>
     <color name="scoreBoard_rankingboard_textColor">#ffffff</color>
 
-    <color name="profileFab_bg">#121212</color>
+    <color name="profileFab_bg">#2E2E2E</color>
 
     <color name="leaderBoardItemTextColor">#ffffff</color>
 
     <color name="evaluationBgTint_green">#1ABC1A</color>
-    <color name="evaluationBgTint_blank">#50000000</color>
+    <color name="evaluationBgTint_blank">#50ffffff</color>
+
+    <color name="bookmark_backgroundTint">#2E2E2E</color>
 
     <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>
     <color name="redButtonDisabled">#50ffffff</color>
-    <color name="place_holder">#E5E5E5</color>
+    <color name="place_holder">#3E3E3E</color>
 </resources>

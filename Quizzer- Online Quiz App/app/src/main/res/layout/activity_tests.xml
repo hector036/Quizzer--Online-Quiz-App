@@ -16,14 +16,16 @@
 
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/actionBarColor">
+            android:background="@color/actionBarColor"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_tests" />
+
+
 
 </RelativeLayout>

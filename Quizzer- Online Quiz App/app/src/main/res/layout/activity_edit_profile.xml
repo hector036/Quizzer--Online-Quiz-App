@@ -110,7 +110,7 @@
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/colorBlack"
-                    android:theme="@style/dialogStyle" />
+                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 

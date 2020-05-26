@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="@drawable/bookmark_bg"
+    android:backgroundTint="@color/bookmark_backgroundTint"
     android:elevation="2dp"
     >
 
@@ -90,7 +91,7 @@
         android:padding="3dp"
         android:text="✔ Correct"
         android:textAlignment="center"
-        android:textColor="@color/colorWhite"
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

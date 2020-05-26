@@ -371,8 +371,8 @@ public class QuestionsActivity extends AppCompatActivity {
 
         if (selectOption.getText().toString().equals(list.get(position).getCorrectAns())) {
 
-           // selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
-            selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+            // selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+            selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorBlueApp)));
             listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
             score++;
 
@@ -380,7 +380,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
             listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
 
-            selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
+            selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorBlueApp)));
 
             //Button currectoption = (Button) optionContrainer.findViewWithTag(list.get(position).getCorrectAns());
             //currectoption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
@@ -425,7 +425,7 @@ public class QuestionsActivity extends AppCompatActivity {
                     //shareBtn.setEnabled(true);
                     btnEnable = true;
                     //shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#ffffff")));
-                    shareBtn.setTextColor(getResources().getColor(R.color.colorWhite));
+                    shareBtn.setTextColor(Color.parseColor("#ffffff"));
 
                 }
                 if (position == list.size() - 1) {
@@ -469,7 +469,7 @@ public class QuestionsActivity extends AppCompatActivity {
                     position--;
                     if (position == 0) {
                         btnEnable = false;
-                       // shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
+                        // shareBtn.setTextColor(ColorStateList.valueOf(Color.parseColor("#45ffffff")));
                         shareBtn.setTextColor(getResources().getColor(R.color.question_previousBtn_textColor));
                     }
                     if (position != list.size()) {
@@ -501,7 +501,7 @@ public class QuestionsActivity extends AppCompatActivity {
     }
 
     private void getBookmarks() {
-        String json = preferences.getString(""+mAuth.getCurrentUser().getUid(), "");
+        String json = preferences.getString("" + mAuth.getCurrentUser().getUid(), "");
         Type type = new TypeToken<List<QuestionModel>>() {
         }.getType();
 
@@ -518,7 +518,7 @@ public class QuestionsActivity extends AppCompatActivity {
         boolean matched = false;
         int i = 0;
         for (QuestionModel model : bookmarksList) {
-            if (model.getQuestion().equals(cutString(list.get(position).getQuestion()))
+            if ((model.getQuestion().equals(cutString(list.get(position).getQuestion())) || model.getQuestion().equals(list.get(position).getQuestion()))
                     && model.getCorrectAns().equals(list.get(position).getCorrectAns())
                     && model.getSet().equals(list.get(position).getSet())
             ) {
@@ -536,7 +536,7 @@ public class QuestionsActivity extends AppCompatActivity {
 
         String json = gson.toJson(bookmarksList);
 
-        editor.putString(""+mAuth.getCurrentUser().getUid(), json);
+        editor.putString("" + mAuth.getCurrentUser().getUid(), json);
 
         editor.commit();
 
@@ -545,7 +545,7 @@ public class QuestionsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        alertDialog = new AlertDialog.Builder(this, R.style.dialogStyle)
+        alertDialog = new AlertDialog.Builder(this, R.style.alertDialogStyle)
                 .setTitle("Quit Exam")
                 .setPositiveButton("QUIT", new DialogInterface.OnClickListener() {
                     @Override

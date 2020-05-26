@@ -97,7 +97,6 @@ public class BookmarksActivity extends AppCompatActivity {
         if (bookmarksList == null) {
             bookmarksList = new ArrayList<>();
         } else {
-            //Collections.reverse(bookmarksList);
             for (QuestionModel questionModel : bookmarksList) {
                 questionModel.setQuestion(cutString(questionModel.getQuestion()));
             }

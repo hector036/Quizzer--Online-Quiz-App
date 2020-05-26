@@ -45,7 +45,8 @@
             android:screenOrientation="fullSensor" />
         <activity android:name=".SetsActivity" />
         <activity android:name=".CategoriesActivity" />
-        <activity android:name=".MainActivity" /> <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
+        <activity android:name=".MainActivity" />
+        <!-- Sample AdMob App ID: ca-app-pub-3940256099942544~3347511713 -->
         <!-- My App ID: ca-app-pub-3339496054642989~6621653407 -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -55,15 +55,6 @@ public class SettingsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mAuth = FirebaseAuth.getInstance();
-        boolean isDarkMode = getSharedPreferences("Settings:"+"Dark Mode", MODE_PRIVATE).getBoolean(mAuth.getCurrentUser().getUid(), false);
-
-        if(isDarkMode){
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-          //  toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Dark);
-        }else {
-            getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            //toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
-        }
 
         type = getIntent().getIntExtra("type", 0);
 
@@ -75,6 +66,8 @@ public class SettingsActivity extends AppCompatActivity {
         adapter = new SettingsAdapter(list);
         recyclerView.setAdapter(adapter);
 
+
+
         if (type == FROM_NOTIFICATION) {
             getSupportActionBar().setTitle("Notification");
             getNotification();
@@ -84,6 +77,8 @@ public class SettingsActivity extends AppCompatActivity {
             getSettings();
 
         }
+
+
     }
 
     private void getNotification() {
@@ -137,4 +132,5 @@ public class SettingsActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
