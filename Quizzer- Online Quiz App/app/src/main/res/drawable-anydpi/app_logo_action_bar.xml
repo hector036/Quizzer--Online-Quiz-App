@@ -1,0 +1,26 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="28dp"
+    android:height="28dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24"
+    android:alpha="1">
+  <group android:scaleX="0.047944386"
+      android:scaleY="0.047944386"
+      android:translateX="1.4639817">
+    <path
+        android:pathData="M160.12,16 L3.7,466.24c-6.89,19.83 17.39,35.64 32.74,21.31l129,-120.36a20.13,20.13 0,0 1,27.46 0l129,120.36c15.34,14.33 39.62,-1.48 32.73,-21.31L198.14,16C191.87,-2 166.38,-2 160.12,16Z"
+        android:strokeWidth="5"
+        android:fillColor="#fff"
+        android:strokeColor="@color/actionBarColor"/>
+    <path
+        android:pathData="M241.37,21 L85,471.24c-6.89,19.83 17.38,35.64 32.73,21.31l129,-120.36a20.13,20.13 0,0 1,27.46 0l129,120.36c15.35,14.33 39.63,-1.48 32.74,-21.31L279.39,21C273.13,3 247.64,3 241.37,21Z"
+        android:strokeWidth="5"
+        android:fillColor="#fff"
+        android:strokeColor="@color/actionBarColor"/>
+    <path
+        android:pathData="M252.42,178.26 L205.5,313.33a6,6 0,0 0,9.82 6.39L254,283.61a6,6 0,0 1,8.24 0l38.68,36.11a6,6 0,0 0,9.82 -6.39L263.83,178.26A6,6 0,0 0,252.42 178.26Z"
+        android:strokeWidth="5"
+        android:fillColor="@color/actionBarColor"
+        android:strokeColor="@color/actionBarColor"/>
+  </group>
+</vector>

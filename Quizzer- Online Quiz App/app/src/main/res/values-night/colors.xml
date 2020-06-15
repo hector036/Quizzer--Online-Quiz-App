@@ -44,7 +44,13 @@
     <color name="evaluationBgTint_green">#1ABC1A</color>
     <color name="evaluationBgTint_blank">#50ffffff</color>
 
-    <color name="bookmark_backgroundTint">#2E2E2E</color>
+    <color name="bookmark_backgroundTint">#121212</color>
+
+    <color name="question_dialog_bg">#2E2E2E</color>
+
+    <color name="circular_bg">#121212</color>
+    <color name="black_figure_color">#7D7D7D</color>
+
 
     <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>

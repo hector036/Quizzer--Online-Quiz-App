@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:background="@drawable/home_page_profile_bg"
-android:backgroundTint="@color/colorWhite"
+android:backgroundTint="@color/question_dialog_bg"
     android:layout_height="wrap_content">
 
     <LinearLayout
@@ -24,14 +24,14 @@ android:backgroundTint="@color/colorWhite"
             android:id="@+id/imageView"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:src="@color/colorBlueApp" />
+            android:src="@mipmap/temp_round" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="12dp"
+            android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:text="New Version"
             android:textColor="@color/colorBlack"
@@ -71,7 +71,7 @@ android:backgroundTint="@color/colorWhite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:background="@color/colorWhite"
+            android:background="@color/question_dialog_bg"
             android:stateListAnimator="@null"
             android:text="Cancel"
             android:textAllCaps="false"

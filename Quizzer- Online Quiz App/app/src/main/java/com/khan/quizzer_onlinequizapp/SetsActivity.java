@@ -39,8 +39,6 @@ public class SetsActivity extends AppCompatActivity {
             // toolbar.getContext().setTheme(R.style.ThemeOverlay_AppCompat_Light);
         }
 
-        loadAds();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
 
@@ -60,16 +58,4 @@ public class SetsActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void loadAds() {
-
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitialAd_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-    }
 }

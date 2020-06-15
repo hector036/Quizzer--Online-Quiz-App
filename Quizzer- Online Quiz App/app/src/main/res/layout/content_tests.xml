@@ -17,6 +17,38 @@
 
 
     </ListView>
+    <LinearLayout
+        android:id="@+id/black_image_linear_layout_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        >
+
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center"
+            android:background="@drawable/circular_background"
+            android:padding="24dp"
+            app:srcCompat="@drawable/blank_raking" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="6dp"
+            android:padding="8dp"
+            android:text="No one has attempted yet"
+            android:textColor="@color/black_figure_color"
+            android:textStyle="bold" />
+    </LinearLayout>
     <ProgressBar
         android:theme="@style/progressStyle"
         android:id="@+id/progress_bar_test"

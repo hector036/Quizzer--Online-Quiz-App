@@ -50,6 +50,11 @@ public class TestsActivity extends AppCompatActivity {
                 .setDisplayHomeAsUpEnabled(true);
         toolbar.setTitle("Weekly Test");
 
+        if(FirebaseAuth.getInstance().getCurrentUser()==null){
+            startActivity(new Intent(TestsActivity.this, OtpActivity.class));
+            finish();
+        }
+
         progressBar = findViewById(R.id.progress_bar_test);
         progressBar.setVisibility(View.VISIBLE);
 

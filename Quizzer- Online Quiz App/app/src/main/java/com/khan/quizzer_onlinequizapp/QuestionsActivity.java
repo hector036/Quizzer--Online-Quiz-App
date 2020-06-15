@@ -12,10 +12,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -334,6 +337,13 @@ public class QuestionsActivity extends AppCompatActivity {
                         } else {
                             ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.VISIBLE);
                             Glide.with(QuestionsActivity.this).load(figure).placeholder(R.color.place_holder).into((ImageView) ((LinearLayout) view).getChildAt(2));
+                            ((ImageView) ((LinearLayout) view).getChildAt(2)).setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                  showFigureFullViewDialog(figure);
+                                }
+                            });
+
                         }
                         if (modelMatch()) {
                             bookmarks.setImageDrawable(getDrawable(R.drawable.bookmark));
@@ -639,7 +649,7 @@ public class QuestionsActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setView(dialogView);
         final AlertDialog alertDialog = builder.create();
-
+        alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         alertDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
@@ -748,5 +758,22 @@ public class QuestionsActivity extends AppCompatActivity {
         } else
             return str;
 
+    }
+
+    private void showFigureFullViewDialog(String figureUrl){
+        View dialogView = LayoutInflater.from(QuestionsActivity.this).inflate(R.layout.question_figure_full_view_dialog, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(QuestionsActivity.this,android.R.style.Theme_DeviceDefault_Light_NoActionBar_Fullscreen);
+        builder.setView(dialogView);
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+        PhotoView photoView = dialogView.findViewById(R.id.photo_view);
+        ImageView backArrow = dialogView.findViewById(R.id.arrow_question_figure_dialog);
+        backArrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+        Glide.with(QuestionsActivity.this).load(figureUrl).into(photoView);
     }
 }

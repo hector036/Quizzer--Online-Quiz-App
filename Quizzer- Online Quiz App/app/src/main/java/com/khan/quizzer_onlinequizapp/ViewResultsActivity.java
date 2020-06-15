@@ -47,6 +47,7 @@ public class ViewResultsActivity extends AppCompatActivity {
     private String setId;
     private int lastPos = -1;
     private ProgressBar progressBar;
+    private LinearLayout blankFigureLinearLayout;
 
 
     @Override
@@ -54,6 +55,8 @@ public class ViewResultsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_results);
+
+        blankFigureLinearLayout = findViewById(R.id.black_image_linear_layout_result);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
@@ -102,6 +105,12 @@ public class ViewResultsActivity extends AppCompatActivity {
                     t.institute = snapshot.child("instituteName").getValue().toString();
                     t.type = 1;
                     result.add(t);
+                }
+
+                if(result.isEmpty()){
+                    blankFigureLinearLayout.setVisibility(View.VISIBLE);
+                }else {
+                    blankFigureLinearLayout.setVisibility(View.GONE);
                 }
 
                 Collections.sort(result, new Comparator<TestResults>() {

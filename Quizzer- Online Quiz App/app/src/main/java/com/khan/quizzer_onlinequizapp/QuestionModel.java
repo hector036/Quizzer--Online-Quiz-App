@@ -7,9 +7,10 @@ public class QuestionModel {
 
     }
 
-    private String id,question, optionA,optionB,optionC,optionD,correctAns,set,url;
+    private String id,question, optionA,optionB,optionC,optionD,optionE,correctAns,set,url;
     private String yourAns,category;
     private int initPosition;
+    private int ansPosition=-1;
     //private String id,question,A,B,C,D,answer,set;
 
 
@@ -23,6 +24,35 @@ public class QuestionModel {
         this.correctAns = correctAns;
         this.set = set;
         this.url = url;
+    }
+
+    public QuestionModel(String id, String question, String optionA, String optionB, String optionC, String optionD,String optionE, String correctAns, String set,String url) {
+        this.id = id;
+        this.question = question;
+        this.optionA = optionA;
+        this.optionB = optionB;
+        this.optionC = optionC;
+        this.optionD = optionD;
+        this.optionE = optionE;
+        this.correctAns = correctAns;
+        this.set = set;
+        this.url = url;
+    }
+
+    public int getAnsPosition() {
+        return ansPosition;
+    }
+
+    public void setAnsPosition(int ansPosition) {
+        this.ansPosition = ansPosition;
+    }
+
+    public String getOptionE() {
+        return optionE;
+    }
+
+    public void setOptionE(String optionE) {
+        this.optionE = optionE;
     }
 
     public String getCategory() {

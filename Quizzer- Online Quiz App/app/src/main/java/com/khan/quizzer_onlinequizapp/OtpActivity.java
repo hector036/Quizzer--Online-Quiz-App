@@ -54,6 +54,8 @@ import java.util.concurrent.TimeUnit;
 
 public class OtpActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int FROM_WEEKLY_TEST_NOTIFICATION = 1;
+
     FirebaseAuth mAuth;
 
     private DatabaseReference myRef;
@@ -66,6 +68,9 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
     private static final int STATE_VERIFY_SUCCESS = 4;
     private static final int STATE_SIGNIN_FAILED = 5;
     private static final int STATE_SIGNIN_SUCCESS = 6;
+
+    private String privacyLink = "https://anunad001.github.io/anunad/";
+
 
     private boolean mVerificationInProgress = false;
     private String mVerificationId,mPhoneNumber,myCCP;
@@ -87,12 +92,12 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
 
     private boolean onPhoneLayout=true;
     private boolean onOtpLayout=false;
+    private int type;
 
    private SquarePinField linePinField;
 
     private ConstraintLayout constraintLayoutPhone, constraintLayoutOtp;
 
-    private String privacyLink = "https://hector036.github.io/";
 
     @Override
     protected void onDestroy() {
@@ -110,6 +115,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
+        type = getIntent().getIntExtra("type",0);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -290,6 +296,11 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
+
+                            if(type == FROM_WEEKLY_TEST_NOTIFICATION){
+                                startActivity(new Intent(OtpActivity.this, TestsActivity.class));
+                                finish();
+                            }
 
                             if(mAuth.getCurrentUser().getDisplayName()!=null){
                                 startActivity(new Intent(OtpActivity.this, MainActivity.class));

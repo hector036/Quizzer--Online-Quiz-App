@@ -198,6 +198,14 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     itemView.getContext().startActivity(bookmarkIntent);
                 }
             });
+//            gridLayout.getChildAt(3).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+//                    categoryIntent.putExtra("type", 2);
+//                    itemView.getContext().startActivity(categoryIntent);
+//                }
+//            });
 
         }
     }

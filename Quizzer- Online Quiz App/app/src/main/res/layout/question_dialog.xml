@@ -1,61 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
-
-<TextView
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:text="Already Attemped !!"
-    android:textStyle="bold"
-    android:textAlignment="center"
-    android:padding="8dp"
-    android:textSize="20sp"
-    />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:text="You have already attempted to this test. You can view the answer
-sheet or can attempt it again but the score will not upload in the server."
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+    android:background="@drawable/border_5_c_primary"
+    android:backgroundTint="@color/question_dialog_bg"
+    android:orientation="vertical"
+    android:padding="8dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:gravity="right"
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:text="Already Attemped !!"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
 
-            android:layout_height="wrap_content">
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="1dp"
+        android:background="@color/dividerColor" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="You have already attempted to this test. You can view the solution or can attempt it again but the score will not upload in the server."
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right"
+
+        android:orientation="horizontal">
+
         <Button
             android:id="@+id/view_ans_sheet"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:stateListAnimator="@null"
-            android:textAllCaps="false"
             android:layout_marginEnd="24dp"
-            android:textSize="16sp"
-            android:background="@color/colorWhite"
-            android:text="Answer Sheet"
-            android:textColor="@color/colorPrimary" />
+            android:background="@color/question_dialog_bg"
+            android:stateListAnimator="@null"
+            android:text="View Solution"
+            android:textAllCaps="false"
+            android:textColor="@color/colorBlueApp"
+            android:textSize="16sp" />
+
         <Button
             android:id="@+id/start_question"
             android:layout_width="wrap_content"
             android:layout_height="38dp"
             android:layout_gravity="center"
-          android:stateListAnimator="@null"
-            android:textAllCaps="false"
-            android:textSize="16sp"
             android:layout_marginEnd="16dp"
-            android:background="@color/colorPrimary"
+            android:background="@color/colorBlueApp"
+            android:stateListAnimator="@null"
             android:text="Start"
-            android:textColor="@color/colorWhite" />
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
 
-        </LinearLayout>
+    </LinearLayout>
 
 
 </LinearLayout>

@@ -29,7 +29,9 @@ import java.util.UUID;
 public class CategoriesActivity extends AppCompatActivity {
 
     public static final int FROM_SUBJECT_WISE_ACTIVITY = 0;
-    public static final int FROM_BOOKMARKS_ACTIVITY = 1;
+    public static final int FROM_BOARD_QUESTION_BANK_ACTIVITY = 1;
+    public static final int FROM_ADMISSION_QUESTION_BANK_ACTIVITY = 2;
+    public static final int FROM_ADMISSION_PREPARATION_ACTIVITY = 3;
 
     private int type;
 
@@ -48,15 +50,13 @@ public class CategoriesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_categories);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        loadAds();
-
-        type = getIntent().getIntExtra("type",0);
+        type = getIntent().getIntExtra("type", 0);
 
         setSupportActionBar(toolbar);
-        if(type == FROM_SUBJECT_WISE_ACTIVITY){
+        if (type == FROM_SUBJECT_WISE_ACTIVITY) {
             getSupportActionBar().setTitle("Subjects");
-        }else {
-            getSupportActionBar().setTitle("Bookmarks");
+        } else if (type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY) {
+            getSupportActionBar().setTitle("Universities");
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -68,13 +68,61 @@ public class CategoriesActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-         list = new ArrayList<>();
+        list = new ArrayList<>();
 
-       if(type == FROM_SUBJECT_WISE_ACTIVITY){
-           adapter = new CategoryAdapter(FROM_SUBJECT_WISE_ACTIVITY,list);
-           recyclerView.setAdapter(adapter);
-           loadSubjectForSubjectWiseExam();
-       }
+        if (type == FROM_SUBJECT_WISE_ACTIVITY) {
+            adapter = new CategoryAdapter(FROM_SUBJECT_WISE_ACTIVITY, list);
+            recyclerView.setAdapter(adapter);
+            loadSubjectForSubjectWiseExam();
+        } else if (type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY) {
+            adapter = new CategoryAdapter(FROM_ADMISSION_QUESTION_BANK_ACTIVITY, list);
+            recyclerView.setAdapter(adapter);
+            loadAdmissionQuestionBank();
+        }
+
+    }
+
+    private void loadAdmissionQuestionBank() {
+        progressBar.setVisibility(View.VISIBLE);
+        myRef.child("AdmissionQuesBank").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    List<TestClass> sets = new ArrayList<>();
+                    List<TestClass> quesSets = new ArrayList<>();
+
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("quesSets").getChildren()) {
+
+                        quesSets.add(new TestClass(dataSnapshot2.getKey().toString(),
+                                dataSnapshot2.child("name").getValue().toString(),
+                                (Long) dataSnapshot2.child("order").getValue(),
+                                Double.parseDouble(dataSnapshot2.child("socreInc").getValue().toString()),
+                                Double.parseDouble(dataSnapshot2.child("socreDe").getValue().toString()),
+                                (Long) dataSnapshot2.child("time").getValue(),
+                                dataSnapshot2.child("mcqUrl").getValue().toString(),
+                                dataSnapshot2.child("cqUrl").getValue().toString()
+                        ));
+                    }
+                    list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
+                            dataSnapshot1.child("url").getValue().toString(),
+                            dataSnapshot1.getKey(),
+                            sets, quesSets
+                    ));
+
+                }
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressBar.setVisibility(View.GONE);
+
+                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -84,27 +132,27 @@ public class CategoriesActivity extends AppCompatActivity {
         myRef.child("Categories").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()){
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                    List<TestClass> sets =new ArrayList<>();
-                    List<TestClass> chapters =new ArrayList<>();
+                    List<TestClass> sets = new ArrayList<>();
+                    List<TestClass> chapters = new ArrayList<>();
 
-                    for(DataSnapshot dataSnapshot2: dataSnapshot1.child("sets").getChildren()){
-                        sets.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot2.getValue().toString(),1));
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("sets").getChildren()) {
+                        sets.add(new TestClass(dataSnapshot2.getKey().toString(), dataSnapshot2.getValue().toString(), 1));
                     }
 
-                    for(DataSnapshot dataSnapshot2: dataSnapshot1.child("chapters").getChildren()){
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("chapters").getChildren()) {
 
                         DataSnapshot dataSnapshot3 = dataSnapshot2.child("name");
                         DataSnapshot dataSnapshot4 = dataSnapshot2.child("order");
-                        chapters.add(new TestClass(dataSnapshot2.getKey().toString(),dataSnapshot3.getValue().toString(), (Long) dataSnapshot4.getValue()));
+                        chapters.add(new TestClass(dataSnapshot2.getKey().toString(), dataSnapshot3.getValue().toString(), (Long) dataSnapshot4.getValue()));
 
                     }
 
                     list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
                             dataSnapshot1.child("url").getValue().toString(),
                             dataSnapshot1.getKey(),
-                            sets,chapters
+                            sets, chapters
                     ));
 
                 }
@@ -112,6 +160,7 @@ public class CategoriesActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.GONE);
 
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 progressBar.setVisibility(View.GONE);
@@ -126,17 +175,11 @@ public class CategoriesActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadAds() {
-
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-    }
 }

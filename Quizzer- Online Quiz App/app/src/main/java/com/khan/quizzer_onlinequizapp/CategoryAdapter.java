@@ -18,12 +18,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewholder> {
 
     private static final int FROM_SUBJECT_WISE_ACTIVITY = 0;
-    private static final int FROM_BOOKMARKS_ACTIVITY = 1;
+    public static final int FROM_BOARD_QUESTION_BANK_ACTIVITY = 1;
+    public static final int FROM_ADMISSION_QUESTION_BANK_ACTIVITY = 2;
+    public static final int FROM_ADMISSION_PREPARATION_ACTIVITY = 3;
 
     private List<CategoryModel> categoryModelList;
     private int type;
 
-    public CategoryAdapter(int type,List<CategoryModel> categoryModelList) {
+    public CategoryAdapter(int type, List<CategoryModel> categoryModelList) {
         this.categoryModelList = categoryModelList;
         this.type = type;
     }
@@ -31,14 +33,14 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewho
     @NonNull
     @Override
     public Viewholder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_item, parent, false);
         return new Viewholder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
 
-        holder.setData(categoryModelList.get(position).getUrl(),categoryModelList.get(position).getName(),categoryModelList.get(position).getKey(),position);
+        holder.setData(categoryModelList.get(position).getUrl(), categoryModelList.get(position).getName(), categoryModelList.get(position).getKey(), position);
 
     }
 
@@ -47,7 +49,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewho
         return categoryModelList.size();
     }
 
-    class Viewholder extends RecyclerView.ViewHolder{
+    class Viewholder extends RecyclerView.ViewHolder {
 
         private CircleImageView imageView;
         private TextView title;
@@ -59,7 +61,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewho
             title = itemView.findViewById(R.id.title);
         }
 
-        private void setData(String url, final String title, final String key, final int position){
+        private void setData(String url, final String title, final String key, final int position) {
 
             Glide.with(itemView.getContext()).load(url).placeholder(R.color.place_holder).into(imageView);
             this.title.setText(title);
@@ -68,13 +70,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Viewho
                 @Override
                 public void onClick(View v) {
 
-                    if(type == FROM_SUBJECT_WISE_ACTIVITY){
-                        Intent setIntent = new Intent( itemView.getContext(),ChapterActivity.class);
-                        setIntent.putExtra("title",title);
-                        setIntent.putExtra("position",position);
-                        setIntent.putExtra("key",key);
-                        itemView.getContext().startActivity(setIntent);
-                    }
+                    Intent setIntent = new Intent(itemView.getContext(), ChapterActivity.class);
+                    setIntent.putExtra("title", title);
+                    setIntent.putExtra("position", position);
+                    setIntent.putExtra("key", key);
+                    setIntent.putExtra("type", type);
+                    itemView.getContext().startActivity(setIntent);
+
 
                 }
             });

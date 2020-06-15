@@ -20,11 +20,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_ADMISSION_QUESTION_BANK_ACTIVITY;
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_SUBJECT_WISE_ACTIVITY;
+
 public class ChapterActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Button modelTestBtn;
     private List<TestClass> chapterList;
+    private int type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +41,8 @@ public class ChapterActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getIntent().getStringExtra("title"));
 
+        type = getIntent().getIntExtra("type", 0);
+
         recyclerView = findViewById(R.id.recycler_view);
         modelTestBtn = findViewById(R.id.model_test_btn);
 
@@ -43,7 +50,7 @@ public class ChapterActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position",0)).getChapters();
+        chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters();
 
         Collections.sort(chapterList, new Comparator<TestClass>() {
             @Override
@@ -52,25 +59,33 @@ public class ChapterActivity extends AppCompatActivity {
             }
         });
 
-        ChapterAdapter adapter = new ChapterAdapter(chapterList,getIntent().getStringExtra("title"));
-        recyclerView.setAdapter(adapter);
-
-        modelTestBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent setIntent = new Intent( ChapterActivity.this,SetsActivity.class);
-                setIntent.putExtra("title",getIntent().getStringExtra("title"));
-                setIntent.putExtra("position",getIntent().getIntExtra("position",0));
-                setIntent.putExtra("key",getIntent().getStringExtra("key"));
-                startActivity(setIntent);
-            }
-        });
-
+        if (type == FROM_SUBJECT_WISE_ACTIVITY) {
+            ChapterAdapter adapter = new ChapterAdapter(FROM_SUBJECT_WISE_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
+            recyclerView.setAdapter(adapter);
+        }else if(type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY){
+            ChapterAdapter adapter = new ChapterAdapter(FROM_ADMISSION_QUESTION_BANK_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
+            recyclerView.setAdapter(adapter);
+        }
+        if (type == FROM_SUBJECT_WISE_ACTIVITY) {
+            modelTestBtn.setVisibility(View.VISIBLE);
+            modelTestBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent setIntent = new Intent(ChapterActivity.this, SetsActivity.class);
+                    setIntent.putExtra("title", getIntent().getStringExtra("title"));
+                    setIntent.putExtra("position", getIntent().getIntExtra("position", 0));
+                    setIntent.putExtra("key", getIntent().getStringExtra("key"));
+                    startActivity(setIntent);
+                }
+            });
+        } else {
+            modelTestBtn.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
 
         }

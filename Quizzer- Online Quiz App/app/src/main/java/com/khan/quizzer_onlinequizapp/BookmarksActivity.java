@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import com.google.android.gms.ads.AdRequest;
@@ -33,6 +34,7 @@ public class BookmarksActivity extends AppCompatActivity {
     private List<QuestionModel> bookmarksList;
     private List<QuestionModel> tempList;
     private String category;
+    private LinearLayout blankImageLinearLayout;
 
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -45,8 +47,8 @@ public class BookmarksActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
+        blankImageLinearLayout = findViewById(R.id.black_image_linear_layout);
 
-        loadAds();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Bookmarks");
@@ -96,7 +98,13 @@ public class BookmarksActivity extends AppCompatActivity {
         bookmarksList = gson.fromJson(json, type);
         if (bookmarksList == null) {
             bookmarksList = new ArrayList<>();
+            blankImageLinearLayout.setVisibility(View.VISIBLE);
         } else {
+            if(bookmarksList.isEmpty()){
+                blankImageLinearLayout.setVisibility(View.VISIBLE);
+            }else {
+                blankImageLinearLayout.setVisibility(View.GONE);
+            }
             for (QuestionModel questionModel : bookmarksList) {
                 questionModel.setQuestion(cutString(questionModel.getQuestion()));
             }
@@ -125,10 +133,5 @@ public class BookmarksActivity extends AppCompatActivity {
 
     }
 
-    private void loadAds() {
 
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-    }
 }

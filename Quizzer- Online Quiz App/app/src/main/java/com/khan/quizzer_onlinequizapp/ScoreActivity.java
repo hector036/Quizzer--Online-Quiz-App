@@ -25,8 +25,6 @@ public class ScoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score);
 
-        loadAds();
-
         score = findViewById(R.id.score);
         total = findViewById(R.id.total);
         doneBtn = findViewById(R.id.done_button);
@@ -36,11 +34,11 @@ public class ScoreActivity extends AppCompatActivity {
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (mInterstitialAd.isLoaded()){
-                    mInterstitialAd.show();
-                    return;
-                }
+//
+//                if (mInterstitialAd.isLoaded()){
+//                    mInterstitialAd.show();
+//                    return;
+//                }
 
                 Intent intent = new Intent(ScoreActivity.this,AnsSheetActivity.class);
                 intent.putExtra("isScoreBoard",0);
@@ -51,28 +49,28 @@ public class ScoreActivity extends AppCompatActivity {
 
     }
 
-    private void loadAds() {
-
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
-
-        mInterstitialAd = new InterstitialAd(this);
-        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitialAd_id));
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-        mInterstitialAd.setAdListener(new AdListener(){
-            @Override
-            public void onAdClosed() {
-                super.onAdClosed();
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-
-                Intent intent = new Intent(ScoreActivity.this,AnsSheetActivity.class);
-                startActivity(intent);
-                finish();
-                return;
-
-            }
-        });
-    }
+//    private void loadAds() {
+//
+//        AdView mAdView = findViewById(R.id.adView);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
+//
+//        mInterstitialAd = new InterstitialAd(this);
+//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitialAd_id));
+//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//
+//        mInterstitialAd.setAdListener(new AdListener(){
+//            @Override
+//            public void onAdClosed() {
+//                super.onAdClosed();
+//                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+//
+//                Intent intent = new Intent(ScoreActivity.this,AnsSheetActivity.class);
+//                startActivity(intent);
+//                finish();
+//                return;
+//
+//            }
+//        });
+//    }
 }

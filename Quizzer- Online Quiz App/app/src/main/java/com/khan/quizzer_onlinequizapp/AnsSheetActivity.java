@@ -35,9 +35,9 @@ public class AnsSheetActivity extends AppCompatActivity {
     private TextView scoreBoard;
     private Button viewMerit;
     private LinearLayout scoreBoardLayout;
-    private int score,total;
-    private int isScoreBoard,isEvaluation;
-    private String testName,setId;
+    private int score, total;
+    private int isScoreBoard, isEvaluation;
+    private String testName, setId;
 
 
     @Override
@@ -47,10 +47,9 @@ public class AnsSheetActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
-        loadAds();
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Answer Sheet");
+        getSupportActionBar().setTitle("Solution");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recyclerView = findViewById(R.id.rv_answersheet);
@@ -58,19 +57,19 @@ public class AnsSheetActivity extends AppCompatActivity {
         scoreBoardLayout = findViewById(R.id.score_board_layout);
         viewMerit = findViewById(R.id.view_merit);
 
-        score = getIntent().getIntExtra("score",0);
-        total = getIntent().getIntExtra("total",0);
+        score = getIntent().getIntExtra("score", 0);
+        total = getIntent().getIntExtra("total", 0);
         testName = getIntent().getStringExtra("test");
         setId = getIntent().getStringExtra("setId");
 
-        scoreBoard.setText("Your Score : "+score+" / "+total);
+        scoreBoard.setText("Your Score : " + score + " / " + total);
 
-        isScoreBoard = getIntent().getIntExtra("isScoreBoard",0);
-        isEvaluation = getIntent().getIntExtra("isEvaluation",1);
+        isScoreBoard = getIntent().getIntExtra("isScoreBoard", 0);
+        isEvaluation = getIntent().getIntExtra("isEvaluation", 1);
 
-        if(isScoreBoard==1){
+        if (isScoreBoard == 1) {
             scoreBoardLayout.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             scoreBoardLayout.setVisibility(View.GONE);
         }
 
@@ -78,17 +77,17 @@ public class AnsSheetActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
-        if(isEvaluation==1){
-            adater = new BookmarksAdater(QuestionsActivity.listAns,1);
-        }else {
-            adater = new BookmarksAdater(QuestionsActivity.listAns,3);
+        if (isEvaluation == 1) {
+            adater = new BookmarksAdater(QuestionsActivity.listAns, 1);
+        } else {
+            adater = new BookmarksAdater(QuestionsActivity.listAns, 3);
         }
         recyclerView.setAdapter(adater);
 
         viewMerit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AnsSheetActivity.this,ViewResultsActivity.class);
+                Intent intent = new Intent(AnsSheetActivity.this, ViewResultsActivity.class);
                 intent.putExtra("test", testName);
                 intent.putExtra("setId", setId);
                 startActivity(intent);
@@ -101,18 +100,11 @@ public class AnsSheetActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
-        if(item.getItemId() == android.R.id.home){
+        if (item.getItemId() == android.R.id.home) {
             finish();
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void loadAds() {
-
-        AdView mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
     }
 
 

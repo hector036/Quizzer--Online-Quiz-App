@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     private static final String TOPIC_WEEKLY_TEST_NOTIFICATION = "WEEKLYTEST";
     private static final int FIRST_TIME_LOAD = 0;
     private static final int SWIPE_REFRESH_LOAD = 1;
-    public static boolean isDark;
+    public static boolean showUpdate = true;
 
     public static String url = "";
     public static byte[] decodedBytes;
@@ -81,15 +81,19 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Quizzer");
+        //getSupportActionBar().setTitle("Quizzer");
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setLogo(R.drawable.app_logo_action_bar);
+        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setOverflowIcon(getDrawable(R.drawable.action));
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
         boolean isDarkMode = getSharedPreferences("Settings:" + "Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
 
         if (savedInstanceState == null) {
-            if(isDarkMode){
+            if (isDarkMode) {
                 mLastDayNightMode = AppCompatDelegate.MODE_NIGHT_YES;
-            }else {
+            } else {
                 mLastDayNightMode = AppCompatDelegate.MODE_NIGHT_NO;
             }
             AppCompatDelegate.setDefaultNightMode(mLastDayNightMode);
@@ -98,9 +102,6 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
         }
 
-//        UpdateHelper.with(this)
-//                .onUpdateCheck(this)
-//                .check();
 
         boolean isWeeklyTestEnable = getSharedPreferences("Settings:" + "Weekly Test Notification", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), true);
         if (isWeeklyTestEnable) {
@@ -123,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         listGrid.add(new HomeModel(R.drawable.mp1, "Subject-wise Exam"));
         listGrid.add(new HomeModel(R.drawable.mp2, "Weekly Test"));
         listGrid.add(new HomeModel(R.drawable.mp3, "Bookmarks"));
+       // listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
 
         adapter = new MainPageAdapter(mainPageModelList);
         mainRecyclerView.setAdapter(adapter);
@@ -141,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
     }
 
-    private void loadMainPage() {
+    private void loadMainPage(final int type) {
         myRef.child("tests").limitToFirst(1).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -184,7 +186,12 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         linearLayout.setVisibility(View.GONE);
                         refreshLayout.setRefreshing(false);
                         adapter.notifyDataSetChanged();
-
+                        if (showUpdate) {
+                            UpdateHelper.with(MainActivity.this)
+                                    .onUpdateCheck(MainActivity.this)
+                                    .check();
+                            showUpdate = false;
+                        }
                     }
 
                     @Override
@@ -249,7 +256,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     institute = dataSnapshot.child("instituteName").getValue().toString();
                     phone = dataSnapshot.child("phone").getValue().toString();
                     url = dataSnapshot.child("url").getValue().toString();
-                    loadMainPage();
+                    loadMainPage(type);
 
                     getSharedPreferences("FirstName", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), firstName).apply();
                     getSharedPreferences("LastName", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), lastName).apply();
@@ -271,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
             institute = pInstitute;
             phone = pPhone;
             url = pUrl;
-            loadMainPage();
+            loadMainPage(type);
             Toast.makeText(MainActivity.this, "FROM SHAREDPREFARENCE", Toast.LENGTH_SHORT).show();
         }
     }
@@ -363,19 +370,20 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
     }
 
     @Override
-    public void onUpdateCheckListener(final String urlApp,String updateMsg, boolean setCancelable) {
+    public void onUpdateCheckListener(final String urlApp, String updateMsg, boolean setCancelable) {
 
 
-        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this,R.style.bottomSheetTheme);
+        final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.bottomSheetTheme);
         bottomSheetDialog.setContentView(R.layout.update_dialog);
-        bottomSheetDialog.setCanceledOnTouchOutside(setCancelable);
+    //    bottomSheetDialog.setCanceledOnTouchOutside(setCancelable);
+        bottomSheetDialog.setCancelable(setCancelable);
 
         Button cancel = bottomSheetDialog.findViewById(R.id.update_cancelBtn);
         Button update = bottomSheetDialog.findViewById(R.id.update_updateBtn);
 
-        if(!setCancelable){
+        if (!setCancelable) {
             cancel.setVisibility(View.GONE);
-        }else
+        } else
             cancel.setVisibility(View.VISIBLE);
         update.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -421,10 +429,17 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
             recreate();
         }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
 
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
     }
 }

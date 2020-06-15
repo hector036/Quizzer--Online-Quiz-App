@@ -7,8 +7,7 @@
     android:layout_margin="8dp"
     android:background="@drawable/bookmark_bg"
     android:backgroundTint="@color/bookmark_backgroundTint"
-    android:elevation="2dp"
-    >
+    android:elevation="2dp">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -16,68 +15,161 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
 
+        android:paddingLeft="8dp"
         android:paddingTop="8dp"
         android:paddingRight="24dp"
-        android:paddingLeft="8dp"
-        android:paddingBottom="8dp"
+        android:paddingBottom="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-       <LinearLayout
-        android:id="@+id/layoutQuestion"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1.0"
-        android:orientation="vertical"
-        android:padding="8dp">
+        <LinearLayout
+            android:id="@+id/layoutQuestion"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.0"
+            android:orientation="vertical"
+            android:padding="8dp">
 
             <katex.hourglass.in.mathlib.MathView
-            android:id="@+id/question"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            app:setClickable="true"
-            android:textStyle="bold"
-            app:setTextColor="@color/colorBlack"
-            />
-           <TextView
-               android:id="@+id/quesText"
-               android:layout_width="match_parent"
-               android:layout_height="wrap_content"
-               android:layout_gravity="center"
-               android:textSize="18sp"
-               android:textColor="@color/colorBlack"
-               android:visibility="gone"
+                android:id="@+id/question"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                app:setClickable="true"
+                app:setTextColor="@color/colorBlack" />
 
-               />
+            <TextView
+                android:id="@+id/quesText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textColor="@color/colorBlack"
+                android:textSize="18sp"
+                android:visibility="gone"
 
-           <ImageView
-               android:id="@+id/figure_in_bookmarks"
-               android:visibility="gone"
-               android:layout_width="match_parent"
-               android:layout_height="200dp"
-               android:layout_weight="1"
+                />
 
-               app:srcCompat="@drawable/ic_launcher_background" />
+            <ImageView
+                android:id="@+id/figure_in_bookmarks"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_weight="1"
+                android:visibility="gone"
+
+                app:srcCompat="@drawable/ic_launcher_background" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/answer"
+            android:id="@+id/opA"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-           android:padding="8dp"
+            android:paddingLeft="24dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:text="opA"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
 
-            android:text="Answer"
-            android:textColor="@color/colorBlack" />
+            />
+
         <TextView
-            android:id="@+id/your_answer"
+            android:id="@+id/opB"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-         android:padding="8dp"
-            android:text="Your Ans"
-            android:textColor="@color/colorBlack" />
+            android:paddingLeft="24dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:text="opB"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+
+            />
+
+        <TextView
+            android:id="@+id/opC"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:text="opC"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+
+            />
+
+        <TextView
+            android:id="@+id/opD"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="24dp"
+            android:paddingTop="2dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="2dp"
+            android:text="opD"
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+
+            />
+
+        <LinearLayout
+            android:id="@+id/answer_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="10dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Correct Answer : "
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Answer"
+                android:textColor="@color/colorBlack" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/your_answer_linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="8dp"
+            android:paddingTop="4dp"
+            android:paddingRight="8dp"
+            android:paddingBottom="4dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your Answer : "
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/your_answer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Your Ans"
+                android:textColor="@color/colorBlack" />
+
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -86,8 +178,8 @@
         android:id="@+id/evaluation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/evaluationBgTint_green"
         android:background="@drawable/eveluation_bg"
+        android:backgroundTint="@color/evaluationBgTint_green"
         android:padding="3dp"
         android:text="✔ Correct"
         android:textAlignment="center"
@@ -108,7 +200,6 @@
         android:src="@drawable/close"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

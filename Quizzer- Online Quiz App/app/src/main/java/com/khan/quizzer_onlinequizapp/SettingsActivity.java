@@ -11,6 +11,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static final int FROM_NOTIFICATION = 1;
     public static final int FROM_SETTINGS = 0;
-    private static final String privacy_link = "https://hector036.github.io/";
+    private static final String privacy_link = "https://anunad001.github.io/anunad/";
 
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
@@ -44,12 +48,18 @@ public class SettingsActivity extends AppCompatActivity {
     private int type;
     private SettingsAdapter adapter;
     private List<SettingsModel> list = new ArrayList<>();
+    private ProgressBar progressBar;
+    private LinearLayout blankFigureLinearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_settings);
+
+        progressBar = findViewById(R.id.progress_bar_settings);
+        blankFigureLinearLayout = findViewById(R.id.black_image_linear_layout_noti);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -82,7 +92,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void getNotification() {
-
+        progressBar.setVisibility(View.VISIBLE);
         myRef.child("Users").child(mAuth.getCurrentUser().getUid()).child("notifications").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -96,13 +106,21 @@ public class SettingsActivity extends AppCompatActivity {
                     list.add(0, new SettingsModel(NOTIFICATION_ITEM, notificationType, notificationTitle, notificationDescription, notificationPhotoUrl, notificationLink, notificationTime));
 
                 }
+
+                if(list.isEmpty()){
+                    blankFigureLinearLayout.setVisibility(View.VISIBLE);
+                }else {
+                    blankFigureLinearLayout.setVisibility(View.GONE);
+                }
+                progressBar.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
                 getSharedPreferences("Notifications", MODE_PRIVATE).edit().putInt("" + mAuth.getCurrentUser().getUid(), (int) dataSnapshot.getChildrenCount()).apply();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(SettingsActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
 

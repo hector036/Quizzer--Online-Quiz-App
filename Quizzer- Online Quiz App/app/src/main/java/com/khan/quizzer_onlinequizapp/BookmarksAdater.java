@@ -43,7 +43,11 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
     @Override
     public void onBindViewHolder(@NonNull Viewholder holder, int position) {
-        holder.setData(list.get(position).getQuestion(), list.get(position).getUrl(), list.get(position).getCorrectAns(), list.get(position).getYourAns(), list.get(position).getCorrectAns(), position);
+        String optionA = list.get(position).getOptionA();
+        String optionB = list.get(position).getOptionB();
+        String optionC = list.get(position).getOptionC();
+        String optionD = list.get(position).getOptionD();
+        holder.setData(list.get(position).getQuestion(), list.get(position).getUrl(), list.get(position).getCorrectAns(), list.get(position).getYourAns(), list.get(position).getCorrectAns(),optionA,optionB,optionC,optionD, position);
     }
 
     @Override
@@ -63,11 +67,12 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
 
     class Viewholder extends RecyclerView.ViewHolder {
 
-        private TextView answer, evaluation, yourAnswer;
+        private TextView answer, evaluation, yourAnswer, optionA, optionB, optionC, optionD;
         private ImageView figure;
         private MathView question;
         private TextView quesText;
         private ImageButton deleteBtn;
+        private LinearLayout answerLinearLayout, yourAnsLinearLayout;
 
         public Viewholder(@NonNull View itemView) {
             super(itemView);
@@ -79,11 +84,16 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
             answer = itemView.findViewById(R.id.answer);
             yourAnswer = itemView.findViewById(R.id.your_answer);
             deleteBtn = itemView.findViewById(R.id.delete_btn);
-
+            optionA = itemView.findViewById(R.id.opA);
+            optionB = itemView.findViewById(R.id.opB);
+            optionC = itemView.findViewById(R.id.opC);
+            optionD = itemView.findViewById(R.id.opD);
+            answerLinearLayout = itemView.findViewById(R.id.answer_linear_layout);
+            yourAnsLinearLayout = itemView.findViewById(R.id.your_answer_linear_layout);
 
         }
 
-        private void setData(String question, String url, String answer, String yourAns, String correctAns, final int position) {
+        private void setData(String question, String url, String answer, String yourAns, String correctAns, String optionA, String optionB, String optionC, String optionD, final int position) {
 
             if (isTex(question)) {
                 this.quesText.setVisibility(View.GONE);
@@ -106,10 +116,14 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 figure.setVisibility(View.GONE);
             } else {
                 figure.setVisibility(View.VISIBLE);
-                Glide.with(itemView.getContext()).load(url).placeholder(R.drawable.profile_edit).into(figure);
+                Glide.with(itemView.getContext()).load(url).placeholder(R.color.place_holder).into(figure);
             }
-            this.answer.setText("Correct Ans : " + answer);
-            this.yourAnswer.setText("Your Ans : " + yourAns);
+            this.optionA.setText("(A) " + optionA);
+            this.optionB.setText("(B) " + optionB);
+            this.optionC.setText("(C) " + optionC);
+            this.optionD.setText("(D) " + optionD);
+            this.answer.setText(  answer);
+            this.yourAnswer.setText(yourAns);
 
             if (type == ANSSHEET) {
                 evaluation.setVisibility(View.VISIBLE);
@@ -117,18 +131,18 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 deleteBtn.setVisibility(View.GONE);
 
                 if (list.get(position).getYourAns() == null) {
-                    yourAnswer.setVisibility(View.GONE);
+                    yourAnsLinearLayout.setVisibility(View.GONE);
                     evaluation.setText("Blank");
                     //evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#50000000")));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.evaluationBgTint_blank)));
                 } else if (yourAns.equals(correctAns)) {
-                    yourAnswer.setVisibility(View.GONE);
+                    yourAnsLinearLayout.setVisibility(View.GONE);
                     evaluation.setText("\u2714" + "  Correct");
-                   // evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
+                    // evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#1ABC1A")));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(itemView.getContext().getResources().getColor(R.color.evaluationBgTint_green)));
 
                 } else {
-                    yourAnswer.setVisibility(View.VISIBLE);
+                    yourAnsLinearLayout.setVisibility(View.VISIBLE);
                     evaluation.setText("\u2718" + "  Wrong");
                     // evaluation.setBackgroundColor(Color.parseColor("#FA0000"));
                     evaluation.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
@@ -136,13 +150,13 @@ public class BookmarksAdater extends RecyclerView.Adapter<BookmarksAdater.Viewho
                 }
 
             } else if (type == BOOKMARK) {
-                yourAnswer.setVisibility(View.GONE);
+                yourAnsLinearLayout.setVisibility(View.GONE);
                 evaluation.setVisibility(View.GONE);
                 deleteBtn.setVisibility(View.VISIBLE);
                 deleteBtn.setEnabled(true);
             } else {
 
-                yourAnswer.setVisibility(View.GONE);
+                yourAnsLinearLayout.setVisibility(View.GONE);
                 evaluation.setVisibility(View.GONE);
                 deleteBtn.setVisibility(View.GONE);
             }
