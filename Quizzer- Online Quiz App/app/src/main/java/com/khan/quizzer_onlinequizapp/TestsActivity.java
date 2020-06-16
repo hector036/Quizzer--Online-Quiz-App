@@ -51,7 +51,9 @@ public class TestsActivity extends AppCompatActivity {
         toolbar.setTitle("Weekly Test");
 
         if(FirebaseAuth.getInstance().getCurrentUser()==null){
-            startActivity(new Intent(TestsActivity.this, OtpActivity.class));
+            Intent intent = new Intent(TestsActivity.this, OtpActivity.class);
+            intent.putExtra("type",1);
+            startActivity(intent);
             finish();
         }
 

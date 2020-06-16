@@ -73,14 +73,14 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
 
 
     private boolean mVerificationInProgress = false;
-    private String mVerificationId,mPhoneNumber,myCCP;
+    private String mVerificationId, mPhoneNumber, myCCP;
     private PhoneAuthProvider.ForceResendingToken mResendToken;
     private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private TextView tvPhoneNumber;
     private EditText mPhoneNumberField;
 
-    private TextView mResend,privacyText;
+    private TextView mResend, privacyText;
     private ImageView refreshIcon;
     private Button nextButton;
 
@@ -88,13 +88,13 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
     CountDownTimer countdownTimer;
 
 
-    private ProgressDialog dialogVerify,dialogSignin;
+    private ProgressDialog dialogVerify, dialogSignin;
 
-    private boolean onPhoneLayout=true;
-    private boolean onOtpLayout=false;
+    private boolean onPhoneLayout = true;
+    private boolean onOtpLayout = false;
     private int type;
 
-   private SquarePinField linePinField;
+    private SquarePinField linePinField;
 
     private ConstraintLayout constraintLayoutPhone, constraintLayoutOtp;
 
@@ -115,12 +115,12 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
-        type = getIntent().getIntExtra("type",0);
+        type = getIntent().getIntExtra("type", 0);
 
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef= database.getReference();
+        myRef = database.getReference();
 
 
         ccp = findViewById(R.id.countryCodePicker);
@@ -134,19 +134,19 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         mResend = findViewById(R.id.tv_resend_code);
         refreshIcon = findViewById(R.id.refresh_icon);
 
-        constraintLayoutPhone= findViewById(R.id.const_layout_phone);
-        constraintLayoutOtp= findViewById(R.id.const_layout_otp);
+        constraintLayoutPhone = findViewById(R.id.const_layout_phone);
+        constraintLayoutOtp = findViewById(R.id.const_layout_otp);
 
 
         nextButton.setOnClickListener(this);
         mResend.setOnClickListener(this);
         refreshIcon.setOnClickListener(this);
 
-        dialogVerify = new ProgressDialog(this,R.style.dialogStyle);
+        dialogVerify = new ProgressDialog(this, R.style.dialogStyle);
         dialogVerify.setMessage("Verifying number...");
         dialogVerify.setCancelable(false);
 
-        dialogSignin = new ProgressDialog(this,R.style.dialogStyle);
+        dialogSignin = new ProgressDialog(this, R.style.dialogStyle);
         dialogSignin.setMessage("Varifying...");
         dialogSignin.setCancelable(false);
 
@@ -154,7 +154,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         privacyText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(""+privacyLink)));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("" + privacyLink)));
 
             }
         });
@@ -162,18 +162,18 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         ccp.setPhoneNumberValidityChangeListener(new CountryCodePicker.PhoneNumberValidityChangeListener() {
             @Override
             public void onValidityChanged(boolean isValidNumber) {
-                if(isValidNumber){
+                if (isValidNumber) {
                     nextButton.setEnabled(true);
-                   // nextButton.setTextColor(Color.rgb(255,255,255));
+                    // nextButton.setTextColor(Color.rgb(255,255,255));
                     nextButton.setTextColor(getResources().getColor(R.color.colorWhite));
-                  //  nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
+                    //  nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
                     nextButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorPrimary)));
 
-                }else{
+                } else {
                     nextButton.setEnabled(false);
-                   // nextButton.setTextColor(Color.parseColor("#99FFFFFF"));
+                    // nextButton.setTextColor(Color.parseColor("#99FFFFFF"));
                     nextButton.setTextColor(getResources().getColor(R.color.otp_nextButton_disable_textColor));
-                   // nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#C6C6C6")));
+                    // nextButton.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#C6C6C6")));
                     nextButton.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.otp_nextButton_disable_bg)));
 
                 }
@@ -185,7 +185,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public boolean onTextComplete(@NotNull String s) {
                 dialogSignin.show();
-               // String code = linePinField.getText().toString();
+                // String code = linePinField.getText().toString();
                 verifyPhoneNumberWithCode(mVerificationId, s);
 
                 return false;
@@ -200,7 +200,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                 Log.d(TAG, "onVerificationCompleted:" + credential);
                 mVerificationInProgress = false;
 
-                Toast.makeText(OtpActivity.this,"Login success",Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtpActivity.this, "Login success", Toast.LENGTH_SHORT).show();
                 updateUI(STATE_VERIFY_SUCCESS, credential);
                 signInWithPhoneAuthCredential(credential);
             }
@@ -211,7 +211,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                 String error = e.getMessage();
                 dialogVerify.dismiss();
 
-                Toast.makeText(OtpActivity.this,error,Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtpActivity.this, error, Toast.LENGTH_SHORT).show();
 
                 mVerificationInProgress = false;
 
@@ -234,7 +234,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
                 Log.d(TAG, "onCodeSent:" + verificationId);
-                Toast.makeText(OtpActivity.this,"Verification code sent to your phone",Toast.LENGTH_SHORT).show();
+                Toast.makeText(OtpActivity.this, "Verification code sent to your phone", Toast.LENGTH_SHORT).show();
                 mVerificationId = verificationId;
                 mResendToken = token;
                 updateUI(STATE_CODE_SENT);
@@ -268,7 +268,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     private void startPhoneNumberVerification(String phoneNumber) {
-        if (!mVerificationInProgress){
+        if (!mVerificationInProgress) {
             mPhoneNumber = phoneNumber;
             PhoneAuthProvider.getInstance().verifyPhoneNumber(
                     phoneNumber,        // Phone number to verify
@@ -278,7 +278,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                     mCallbacks);        // OnVerificationStateChangedCallbacks
 
             mVerificationInProgress = true;
-        }else {
+        } else {
 
         }
     }
@@ -297,21 +297,17 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                         if (task.isSuccessful()) {
                             Log.d(TAG, "signInWithCredential:success");
 
-                            if(type == FROM_WEEKLY_TEST_NOTIFICATION){
-                                startActivity(new Intent(OtpActivity.this, TestsActivity.class));
-                                finish();
-                            }
-
-                            if(mAuth.getCurrentUser().getDisplayName()!=null){
-                                startActivity(new Intent(OtpActivity.this, MainActivity.class));
-                                finish();
-
-                            }else {
+                            if (mAuth.getCurrentUser().getDisplayName() != null) {
+                                if (type == FROM_WEEKLY_TEST_NOTIFICATION) {
+                                    startActivity(new Intent(OtpActivity.this, TestsActivity.class));
+                                } else {
+                                    startActivity(new Intent(OtpActivity.this, MainActivity.class));
+                                }
+                            } else {
                                 Intent intent = new Intent(OtpActivity.this, EditProfileActivity.class);
-                                intent.putExtra("type",1);
-                                intent.putExtra("phone",mPhoneNumber);
+                                intent.putExtra("type", 1);
+                                intent.putExtra("phone", mPhoneNumber);
                                 startActivity(intent);
-                                finish();
                             }
 
 //                            myRef.child("Users").child(Objects.requireNonNull(mAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -340,6 +336,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
 //                            startActivity(homeIntent);
 //                            finish();
 //
+                            finish();
                             FirebaseUser user = task.getResult().getUser();
                             updateUI(STATE_SIGNIN_SUCCESS, user);
                         } else {
@@ -385,8 +382,8 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             case STATE_CODE_SENT:
 
                 dialogVerify.dismiss();
-                onOtpLayout=true;
-                onPhoneLayout=false;
+                onOtpLayout = true;
+                onPhoneLayout = false;
                 constraintLayoutOtp.setVisibility(View.VISIBLE);
                 constraintLayoutPhone.setVisibility(View.GONE);
                 startCountdown();
@@ -436,11 +433,13 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         tvPhoneNumber.setText(mPhoneNumber);
         setResendButtonEnabled(false);
         countdownTimer = new CountDownTimer(60 * 1000, 1000) {
-            @Override public void onTick(long millisUntilFinished) {
+            @Override
+            public void onTick(long millisUntilFinished) {
                 setResendButtonTimerCount(millisUntilFinished / 1000);
             }
 
-            @Override public void onFinish() {
+            @Override
+            public void onFinish() {
                 setResendButtonEnabled(true);
             }
         }.start();
@@ -457,7 +456,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         } else {
             refreshIcon.setVisibility(View.GONE);
             mResend.setEnabled(false);
-           // mResend.setTextColor(Color.rgb(214,214,214));
+            // mResend.setTextColor(Color.rgb(214,214,214));
             mResend.setTextColor(getResources().getColor(R.color.otp_resentButton_disable_textColor));
         }
     }
@@ -494,8 +493,7 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
     public void onClick(View view) {
 
         switch (view.getId()) {
-            case R.id.next_button:
-            {
+            case R.id.next_button: {
                 dialogVerify.show();
                 String phoneWithPrefix = ccp.getFullNumberWithPlus();
                 startPhoneNumberVerification(phoneWithPrefix);
@@ -505,14 +503,14 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.tv_resend_code:
                 resendVerificationCode(mPhoneNumber, mResendToken);
                 mResend.setEnabled(false);
-             //   mResend.setTextColor(Color.rgb(214,214,214));
+                //   mResend.setTextColor(Color.rgb(214,214,214));
                 mResend.setTextColor(getResources().getColor(R.color.otp_resentButton_disable_textColor));
                 refreshIcon.setVisibility(View.GONE);
                 break;
             case R.id.refresh_icon:
                 resendVerificationCode(mPhoneNumber, mResendToken);
                 mResend.setEnabled(false);
-            //    mResend.setTextColor(Color.rgb(214,214,214));
+                //    mResend.setTextColor(Color.rgb(214,214,214));
                 mResend.setTextColor(getResources().getColor(R.color.otp_resentButton_disable_textColor));
                 refreshIcon.setVisibility(View.GONE);
                 break;
@@ -522,11 +520,11 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        if(keyCode == KeyEvent.KEYCODE_BACK){
-            if(onOtpLayout){
-                mVerificationInProgress=false;
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (onOtpLayout) {
+                mVerificationInProgress = false;
 
-                if(countdownTimer!=null){
+                if (countdownTimer != null) {
                     countdownTimer.cancel();
                 }
 

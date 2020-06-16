@@ -1,34 +1,71 @@
 {
   "project_info": {
-    "project_number": "1008669468566",
-    "firebase_url": "https://quizzer-70d0e.firebaseio.com",
-    "project_id": "quizzer-70d0e",
-    "storage_bucket": "quizzer-70d0e.appspot.com"
+    "project_number": "978790888105",
+    "firebase_url": "https://quizzer-a2e33.firebaseio.com",
+    "project_id": "quizzer-a2e33",
+    "storage_bucket": "quizzer-a2e33.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1008669468566:android:99aad4e55eb2cc9c45dfb7",
+        "mobilesdk_app_id": "1:978790888105:android:77092d64062b29c2f76fb8",
         "android_client_info": {
-          "package_name": "com.khan.quizzer_onlinequizapp"
+          "package_name": "com.example.quizzeradmin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1008669468566-8ibmrtg217inhkfa616mss22atida8pa.apps.googleusercontent.com",
+          "client_id": "978790888105-osgh5ktfh3e983cv00nsu9cjq3ec8bhf.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA5NUFgs3h8u9TSlitTWlyW9H9SZl17ZLA"
+          "current_key": "AIzaSyC4lxl_ElXNg-ut_IZn-KkmnQcLxJ-wPEY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1008669468566-8ibmrtg217inhkfa616mss22atida8pa.apps.googleusercontent.com",
+              "client_id": "978790888105-osgh5ktfh3e983cv00nsu9cjq3ec8bhf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:978790888105:android:33b4522abcb845f1f76fb8",
+        "android_client_info": {
+          "package_name": "com.khan.quizzer_onlinequizapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "978790888105-vfidlu1upbnuoerdu4n9bauvfag9kvv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.khan.quizzer_onlinequizapp",
+            "certificate_hash": "4a9bd5ca96bc90bf60c4386f5d13b3b91d4902ae"
+          }
+        },
+        {
+          "client_id": "978790888105-osgh5ktfh3e983cv00nsu9cjq3ec8bhf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4lxl_ElXNg-ut_IZn-KkmnQcLxJ-wPEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "978790888105-osgh5ktfh3e983cv00nsu9cjq3ec8bhf.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

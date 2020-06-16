@@ -346,7 +346,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                             url = "";
                             decodedBytes = null;
                             FirebaseAuth.getInstance().signOut();
-                            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                            Intent intent = new Intent(MainActivity.this, OtpActivity.class);
                             startActivity(intent);
                             finish();
 

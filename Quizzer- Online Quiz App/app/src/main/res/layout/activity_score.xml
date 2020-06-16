@@ -2,79 +2,106 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ScoreActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/colorPrimary"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp">
-
+        android:elevation="5dp"
+        >
         <TextView
-            android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:textColor="@color/colorWhite"
+            android:text="Score"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textColor="@android:color/white"
+            android:textSize="18dp"
             android:textStyle="bold"
-            android:textAlignment="center"
-            android:text="jQuizzer" />
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:textSize="38sp"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:text="Score" />
-
-        <TextView
-            android:id="@+id/score"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="35sp"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:text="5" />
-
-        <TextView
-            android:id="@+id/total"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="24dp"
-            android:textSize="38sp"
-            android:textColor="@color/colorWhite"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:text="OUT OF 10" />
+            android:background="@color/score_bg"
+            />
     </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/score_bg"
+       >
+
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+
+            app:srcCompat="@drawable/score_round"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="cursive"
+            android:layout_marginTop="16dp"
+            android:text="/"
+            android:textColor="@android:color/white"
+            android:textSize="120sp"
+             />
+
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="casual"
+                android:text="25"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginRight="40dp"
+                android:layout_gravity="center"
+                android:textColor="@android:color/white"
+                android:textSize="56sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="casual"
+                android:text="25"
+                android:layout_marginTop="48dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="44dp"
+                android:textColor="@android:color/white"
+                android:textSize="56sp"
+                android:textStyle="bold" />
+
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:background="@color/colorWhite"
         >
-    <Button
-        android:id="@+id/done_button"
-        android:layout_width="180dp"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/rounded_corners"
-        android:layout_gravity="center"
-        android:padding="8dp"
-        android:layout_height="wrap_content"
-        android:text="View Answer Sheet" />
-    </FrameLayout>
 
+        <Button
+            android:id="@+id/done_button"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="@color/score_btn"
+            android:padding="8dp"
+            android:text="View Solution"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:textColor="@android:color/white" />
+    </FrameLayout>
 
 
 </LinearLayout>
