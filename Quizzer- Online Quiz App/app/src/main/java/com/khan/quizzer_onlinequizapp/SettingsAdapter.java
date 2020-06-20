@@ -171,7 +171,7 @@ public class SettingsAdapter extends RecyclerView.Adapter {
         private void strorSettings (boolean isChecked, String title){
 
             itemView.getContext().getSharedPreferences("Settings:"+title, Context.MODE_PRIVATE).edit().putBoolean(FirebaseAuth.getInstance().getCurrentUser().getUid(),isChecked).apply();
-            Toast.makeText(itemView.getContext(), title+" - "+ isChecked, Toast.LENGTH_SHORT).show();
+          //  Toast.makeText(itemView.getContext(), title+" - "+ isChecked, Toast.LENGTH_SHORT).show();
             if(title.equals("Dark Mode")){
                 if(isChecked){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);

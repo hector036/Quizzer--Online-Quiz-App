@@ -336,6 +336,7 @@ public class QuestionsActivity extends AppCompatActivity {
                             ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.GONE);
                         } else {
                             ((ImageView) ((LinearLayout) view).getChildAt(2)).setVisibility(View.VISIBLE);
+
                             Glide.with(QuestionsActivity.this).load(figure).placeholder(R.color.place_holder).into((ImageView) ((LinearLayout) view).getChildAt(2));
                             ((ImageView) ((LinearLayout) view).getChildAt(2)).setOnClickListener(new View.OnClickListener() {
                                 @Override

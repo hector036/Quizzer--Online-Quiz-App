@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -115,6 +116,9 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
         }
+
+        getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+
         type = getIntent().getIntExtra("type", 0);
 
         mAuth = FirebaseAuth.getInstance();

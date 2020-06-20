@@ -13,12 +13,15 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 
+import ru.bullyboo.text_animation.TextCounter;
+
 public class ScoreActivity extends AppCompatActivity {
 
     private TextView score;
     private TextView total;
     private Button doneBtn;
     private InterstitialAd mInterstitialAd;
+    private int exmScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +32,16 @@ public class ScoreActivity extends AppCompatActivity {
         total = findViewById(R.id.total);
         doneBtn = findViewById(R.id.done_button);
 
-        score.setText(String.valueOf(getIntent().getIntExtra("score",1)));
-        total.setText(String.valueOf(getIntent().getIntExtra("total",0)));
+        exmScore = getIntent().getIntExtra("score", 0);
+
+        if (exmScore == 0) {
+            TextCounter.newBuilder().setTextView(score).setType(TextCounter.LONG).from(1).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).build().start();
+
+        } else {
+            TextCounter.newBuilder().setTextView(score).setType(TextCounter.LONG).from(0).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).build().start();
+        }
+
+        total.setText(String.valueOf(getIntent().getIntExtra("total", 0)));
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,8 +51,8 @@ public class ScoreActivity extends AppCompatActivity {
 //                    return;
 //                }
 
-                Intent intent = new Intent(ScoreActivity.this,AnsSheetActivity.class);
-                intent.putExtra("isScoreBoard",0);
+                Intent intent = new Intent(ScoreActivity.this, AnsSheetActivity.class);
+                intent.putExtra("isScoreBoard", 0);
                 startActivity(intent);
                 finish();
             }

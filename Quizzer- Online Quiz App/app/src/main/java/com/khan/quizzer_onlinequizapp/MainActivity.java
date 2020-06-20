@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -233,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -263,7 +263,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     getSharedPreferences("Institute", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), institute).apply();
                     getSharedPreferences("Phone", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), phone).apply();
                     getSharedPreferences("PhotoUrl", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), url).apply();
-                    Toast.makeText(MainActivity.this, "FROM DATABASE", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(MainActivity.this, "FROM DATABASE", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
             phone = pPhone;
             url = pUrl;
             loadMainPage(type);
-            Toast.makeText(MainActivity.this, "FROM SHAREDPREFARENCE", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(MainActivity.this, "FROM SHAREDPREFARENCE", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -400,25 +400,6 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         });
 
         bottomSheetDialog.show();
-
-//        AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.dialogStyle)
-//                .setTitle("jQuizzer Update")
-//                .setMessage("There is a new version available. Please update to new version to continue")
-//                .setPositiveButton("UPDATE", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Toast.makeText(MainActivity.this, "Update", Toast.LENGTH_SHORT).show();
-//                        // String appName = getPackageName();
-//                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("" + urlApp)));
-//                    }
-//                }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        dialog.dismiss();
-//                    }
-//                }).create();
-//
-//        alertDialog.show();
 
     }
 

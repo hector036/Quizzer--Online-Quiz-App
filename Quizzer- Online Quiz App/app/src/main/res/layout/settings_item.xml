@@ -59,6 +59,9 @@
                     android:layout_height="wrap_content"
                     android:text="Weekly Test Notification"
                     android:textColor="@color/colorBlack"
+                   android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
                     android:textSize="16sp" />
 
                 <Switch
@@ -67,7 +70,9 @@
                     android:layout_height="wrap_content"
                     android:theme="@style/dialogStyle"
                     android:textColor="@color/colorBlack"
-
+                    android:paddingBottom="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
                     tools:layout_editor_absoluteY="9dp" />
             </LinearLayout>
 
