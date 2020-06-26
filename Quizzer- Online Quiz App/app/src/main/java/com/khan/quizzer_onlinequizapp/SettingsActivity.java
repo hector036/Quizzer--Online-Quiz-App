@@ -137,7 +137,7 @@ public class SettingsActivity extends AppCompatActivity {
         list.add(new SettingsModel(SETTINGS_ITEM_WITH_SWITCH, R.drawable.s3, "Educational News", isEducationalNewsEnable));
         list.add(new SettingsModel(SETTINGS_HEADER, "Others"));
         list.add(new SettingsModel(SETTINGS_ITEM_WITH_OUT_SWITCH_AND_WITH_URL, R.drawable.s4, "Privacy And Policy", privacy_link));
-        list.add(new SettingsModel(SETTINGS_ITEM_WITH_OUT_SWITCH, R.drawable.s5, "Version 1.1.4", true));
+        list.add(new SettingsModel(SETTINGS_ITEM_WITH_OUT_SWITCH, R.drawable.s5, "Version 1.1.5", true));
 
         adapter.notifyDataSetChanged();
     }

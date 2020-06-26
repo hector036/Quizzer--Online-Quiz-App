@@ -9,15 +9,18 @@ public class Test implements Serializable {
     Long dateTime;
     String description;
     String setId;
+    private double socreDe,socreInc;
 
     public Test() {
     }
 
-    public Test(String name, Long dateTime, String description, String setId) {
+    public Test(String name, Long dateTime, String description, String setId, double socreInc, double socreDe) {
         this.Name = name;
         this.dateTime = dateTime;
         this.description = description;
         this.setId = setId;
+        this.socreInc = socreInc;
+        this.socreDe = socreDe;
     }
 
     public String getSetId() {
@@ -60,12 +63,19 @@ public class Test implements Serializable {
         Name = name;
     }
 
-//    public ArrayList<Question> getQuestions() {
-//        return Questions;
-//    }
-//
-//    public void setQuestions(ArrayList<Question> questions) {
-//        Questions = questions;
-//    }
+    public double getSocreDe() {
+        return socreDe;
+    }
 
+    public void setSocreDe(double socreDe) {
+        this.socreDe = socreDe;
+    }
+
+    public double getSocreInc() {
+        return socreInc;
+    }
+
+    public void setSocreInc(double socreInc) {
+        this.socreInc = socreInc;
+    }
 }

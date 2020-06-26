@@ -22,6 +22,7 @@ public class ScoreActivity extends AppCompatActivity {
     private Button doneBtn;
     private InterstitialAd mInterstitialAd;
     private int exmScore;
+    private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class ScoreActivity extends AppCompatActivity {
         doneBtn = findViewById(R.id.done_button);
 
         exmScore = getIntent().getIntExtra("score", 0);
+        type = getIntent().getIntExtra("type", 0);
 
         if (exmScore == 0) {
             TextCounter.newBuilder().setTextView(score).setType(TextCounter.LONG).from(1).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).build().start();
@@ -53,6 +55,7 @@ public class ScoreActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(ScoreActivity.this, AnsSheetActivity.class);
                 intent.putExtra("isScoreBoard", 0);
+                intent.putExtra("type", type);
                 startActivity(intent);
                 finish();
             }

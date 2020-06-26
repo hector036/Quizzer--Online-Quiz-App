@@ -200,7 +200,7 @@ public class SettingsAdapter extends RecyclerView.Adapter {
 
         }
 
-        private void setNotificationViewHolder(final String notificationType, String notificationTitle, String notificationDescription, String notificationPhotoUrl, String notificationLink, long notificationTime) {
+        private void setNotificationViewHolder(final String notificationType, String notificationTitle, String notificationDescription, String notificationPhotoUrl, final String notificationLink, long notificationTime) {
 
             this.title.setText(notificationTitle);
             this.description.setText(notificationDescription);
@@ -209,6 +209,8 @@ public class SettingsAdapter extends RecyclerView.Adapter {
 
             if (notificationType.equals("WeeklyTestNotification")) {
                 notiHeaderImg.setImageResource(R.drawable.mp2);
+            }else if(notificationType.equals("ImportantNewsNotification")){
+                notiHeaderImg.setImageResource(R.drawable.s3);
             }
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -217,6 +219,8 @@ public class SettingsAdapter extends RecyclerView.Adapter {
                     if (notificationType.equals("WeeklyTestNotification")) {
                         Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
                         itemView.getContext().startActivity(intent);
+                    }else if(notificationType.equals("ImportantNewsNotification")) {
+                        itemView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(notificationLink)));
                     }
                 }
             });

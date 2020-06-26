@@ -19,6 +19,9 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_ADMISSION_PREPARATION_ACTIVITY;
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_ADMISSION_QUESTION_BANK_ACTIVITY;
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_BOARD_QUESTION_BANK_ACTIVITY;
 import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_SUBJECT_WISE_ACTIVITY;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewholder> {
@@ -124,6 +127,19 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
                         questionIntent.putExtra("setId", setId);
                         questionIntent.putExtra("type", 1);
                         itemView.getContext().startActivity(questionIntent);
+                    }else if(type == FROM_BOARD_QUESTION_BANK_ACTIVITY || type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY){
+                        Intent questionIntent = new Intent(itemView.getContext(), QuesbankQuestionsActivity.class);
+                        questionIntent.putExtra("category", category);
+                        questionIntent.putExtra("setId", setId);
+                        questionIntent.putExtra("scoreInc", socreInc);
+                        questionIntent.putExtra("scoreDe", socreDe);
+                        questionIntent.putExtra("time", time);
+                        itemView.getContext().startActivity(questionIntent);
+                    }else if(type == FROM_ADMISSION_PREPARATION_ACTIVITY){
+                        Intent viewSolution = new Intent(itemView.getContext(), ViewSolutionActivity.class);
+                        viewSolution.putExtra("category", category);
+                        viewSolution.putExtra("setId", setId);
+                        itemView.getContext().startActivity(viewSolution);
                     }
                 }
             });

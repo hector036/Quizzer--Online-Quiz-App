@@ -42,9 +42,9 @@ public class FirebaseMessaging extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
 
-        String notificationType = remoteMessage.getData().get("notificationType");
+        final String notificationType = remoteMessage.getData().get("notificationType");
 
-        if (notificationType.equals("WeeklyTestNotification")) {
+        if (notificationType.equals("WeeklyTestNotification") || notificationType.equals("ImportantNewsNotification")) {
 
             final String pTitle = remoteMessage.getData().get("pTitle");
             final String pDescription = remoteMessage.getData().get("pDescription");
@@ -61,7 +61,7 @@ public class FirebaseMessaging extends FirebaseMessagingService {
 
                             bitmap[0] = resource;
                             // TODO Do some work: pass this bitmap
-                            showNotification("" + pTitle, "" + pDescription, bitmap[0]);
+                            showBigPictureNotification("" + pTitle, "" + pDescription, bitmap[0],notificationType);
                         }
 
                         @Override
@@ -69,11 +69,18 @@ public class FirebaseMessaging extends FirebaseMessagingService {
                         }
                     });
 
+        }else if (notificationType.equals("GeneralMessage")) {
+            final String pTitle = remoteMessage.getData().get("pTitle");
+            final String pDescription = remoteMessage.getData().get("pDescription");
+            String bigText = remoteMessage.getData().get("bigText");
+
+            showBigTextNotification("" + pTitle, "" + pDescription, bigText, notificationType);
+
         }
 
     }
 
-    private void showNotification(String pTitle, String pDescription, Bitmap bitmap) {
+    private void showBigTextNotification(String pTitle, String pDescription, String bigText, String notificationType) {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         int notificationID = new Random().nextInt(3000);
@@ -82,9 +89,52 @@ public class FirebaseMessaging extends FirebaseMessagingService {
             setUpPostNotificationChannel(notificationManager);
         }
 
-        Intent intent = new Intent(this, TestsActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+
+        Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);
+
+        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        long vibrate[] = {100, 600, 100, 600};
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, "" + ADMIN_CHANNEL_ID)
+                .setSmallIcon(R.drawable.notification_icon)
+                .setLargeIcon(largeIcon)
+                .setContentTitle(pTitle)
+                .setContentText(pDescription)
+                .setSound(notificationUri)
+                .setContentIntent(pendingIntent)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(bigText).setSummaryText(""))
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setTicker(pTitle)
+                .setAutoCancel(true)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVibrate(vibrate)
+                .setLights(Color.GREEN, 1000, 2000);
+
+
+        notificationManager.notify(notificationID, notificationBuilder.build());
+
+    }
+
+
+    private void showBigPictureNotification(String pTitle, String pDescription, Bitmap bitmap, String notificationType) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        int notificationID = new Random().nextInt(3000);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            setUpPostNotificationChannel(notificationManager);
+        }
+
+        Intent intent;
+        if (notificationType.equals("WeeklyTestNotification")) {
+            intent = new Intent(this, TestsActivity.class);
+        } else {
+            intent = new Intent(this, MainActivity.class);
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.drawable.notification_icon);

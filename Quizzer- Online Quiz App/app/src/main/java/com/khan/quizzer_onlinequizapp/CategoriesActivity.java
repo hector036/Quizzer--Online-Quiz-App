@@ -53,7 +53,7 @@ public class CategoriesActivity extends AppCompatActivity {
         type = getIntent().getIntExtra("type", 0);
 
         setSupportActionBar(toolbar);
-        if (type == FROM_SUBJECT_WISE_ACTIVITY) {
+        if (type == FROM_SUBJECT_WISE_ACTIVITY || type == FROM_BOARD_QUESTION_BANK_ACTIVITY || type == FROM_ADMISSION_PREPARATION_ACTIVITY) {
             getSupportActionBar().setTitle("Subjects");
         } else if (type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY) {
             getSupportActionBar().setTitle("Universities");
@@ -78,8 +78,59 @@ public class CategoriesActivity extends AppCompatActivity {
             adapter = new CategoryAdapter(FROM_ADMISSION_QUESTION_BANK_ACTIVITY, list);
             recyclerView.setAdapter(adapter);
             loadAdmissionQuestionBank();
+        }else if(type==FROM_BOARD_QUESTION_BANK_ACTIVITY){
+            adapter = new CategoryAdapter(FROM_BOARD_QUESTION_BANK_ACTIVITY, list);
+            recyclerView.setAdapter(adapter);
+            loadBoardQuestionBank();
+        }else if(type == FROM_ADMISSION_PREPARATION_ACTIVITY){
+            adapter = new CategoryAdapter(FROM_ADMISSION_PREPARATION_ACTIVITY, list);
+            recyclerView.setAdapter(adapter);
+            loadSubjectForSubjectWiseExam();
         }
 
+    }
+
+    private void loadBoardQuestionBank() {
+        progressBar.setVisibility(View.VISIBLE);
+        myRef.child("BoardQuesBank").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    List<TestClass> sets = new ArrayList<>();
+                    List<TestClass> quesSets = new ArrayList<>();
+
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("quesSets").getChildren()) {
+
+                        quesSets.add(new TestClass(dataSnapshot2.getKey().toString(),
+                                dataSnapshot2.child("name").getValue().toString(),
+                                (Long) dataSnapshot2.child("order").getValue(),
+                                Double.parseDouble(dataSnapshot2.child("socreInc").getValue().toString()),
+                                Double.parseDouble(dataSnapshot2.child("socreDe").getValue().toString()),
+                                (Long) dataSnapshot2.child("time").getValue(),
+                                dataSnapshot2.child("mcqUrl").getValue().toString(),
+                                dataSnapshot2.child("cqUrl").getValue().toString()
+                        ));
+                    }
+                    list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
+                            dataSnapshot1.child("url").getValue().toString(),
+                            dataSnapshot1.getKey(),
+                            sets, quesSets
+                    ));
+
+                }
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressBar.setVisibility(View.GONE);
+
+                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void loadAdmissionQuestionBank() {

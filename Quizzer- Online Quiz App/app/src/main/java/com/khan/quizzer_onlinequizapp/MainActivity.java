@@ -45,6 +45,9 @@ import java.util.Objects;
 public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUpdateCheckListener {
 
     private static final String TOPIC_WEEKLY_TEST_NOTIFICATION = "WEEKLYTEST";
+    private static final String TOPIC_IMPORTANT_NEWS_NOTIFICATION = "IMPORTANTNEWS";
+    private static final String TOPIC_GENERAL_MESSAGE_NOTIFICATION = "GENERALMESSAGE";
+
     private static final int FIRST_TIME_LOAD = 0;
     private static final int SWIPE_REFRESH_LOAD = 1;
     public static boolean showUpdate = true;
@@ -81,13 +84,18 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle("Quizzer");
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setLogo(R.drawable.app_logo_action_bar);
         getSupportActionBar().setDisplayUseLogoEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setOverflowIcon(getDrawable(R.drawable.action));
         toolbar.setTitleTextColor(Color.parseColor("#ffffff"));
+        if (FirebaseAuth.getInstance().getCurrentUser() == null) {
+            Intent intent = new Intent(MainActivity.this, OtpActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
         boolean isDarkMode = getSharedPreferences("Settings:" + "Dark Mode", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), false);
 
         if (savedInstanceState == null) {
@@ -104,11 +112,21 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
 
         boolean isWeeklyTestEnable = getSharedPreferences("Settings:" + "Weekly Test Notification", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), true);
+        boolean isEducationalNewsEnable = getSharedPreferences("Settings:" + "Educational News", MODE_PRIVATE).getBoolean(auth.getCurrentUser().getUid(), true);
+
         if (isWeeklyTestEnable) {
             subscribePostNotification();
         } else {
             unsubscripbePostNotification();
         }
+
+        if (isEducationalNewsEnable) {
+            subscribeNewsNotification();
+        } else {
+            unsubscripbeNewsNotification();
+        }
+
+        subscribeGeneralMessageNotification();
 
         progressBar = findViewById(R.id.mainpage_progress);
         linearLayout = findViewById(R.id.progress_bar_layout);
@@ -121,10 +139,13 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mainRecyclerView.setLayoutManager(linearLayoutManager);
 
-        listGrid.add(new HomeModel(R.drawable.mp1, "Subject-wise Exam"));
+        listGrid.add(new HomeModel(R.drawable.mp1, "Subject-wise Test"));
         listGrid.add(new HomeModel(R.drawable.mp2, "Weekly Test"));
+      //  listGrid.add(new HomeModel(R.drawable.mp3, "Central Test"));
         listGrid.add(new HomeModel(R.drawable.mp3, "Bookmarks"));
-       // listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
+        //listGrid.add(new HomeModel(R.drawable.mp3, "Board Question Bank"));
+      //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
+      //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Preparation"));
 
         adapter = new MainPageAdapter(mainPageModelList);
         mainRecyclerView.setAdapter(adapter);
@@ -223,6 +244,36 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                 });
     }
 
+    private void subscribeNewsNotification() {
+
+        FirebaseMessaging.getInstance().subscribeToTopic("" + TOPIC_IMPORTANT_NEWS_NOTIFICATION)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "You will receive Notification";
+                        if (!task.isSuccessful()) {
+                            msg = "Subcription Faild";
+                        }
+                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void unsubscripbeNewsNotification() {
+
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("" + TOPIC_IMPORTANT_NEWS_NOTIFICATION)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "You will not receive Notification";
+                        if (!task.isSuccessful()) {
+                            msg = "Subcription Faild";
+                        }
+                        // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private void subscribePostNotification() {
 
         FirebaseMessaging.getInstance().subscribeToTopic("" + TOPIC_WEEKLY_TEST_NOTIFICATION)
@@ -233,7 +284,22 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void subscribeGeneralMessageNotification() {
+
+        FirebaseMessaging.getInstance().subscribeToTopic("" + TOPIC_GENERAL_MESSAGE_NOTIFICATION)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "You will receive Notification";
+                        if (!task.isSuccessful()) {
+                            msg = "Subcription Faild";
+                        }
+                        // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }

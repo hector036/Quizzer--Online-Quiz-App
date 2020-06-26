@@ -20,12 +20,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 class TestAdapter extends ArrayAdapter<Test> implements Filterable {
+
+    private static int FROM_WEEKLYTEST = 0;
+    private static int FROM_CENTRALTEST = 1;
+
     private Context mContext;
     ArrayList<Test> dataList;
-    public TestAdapter( Context context,ArrayList<Test> list) {
+    private int type;
+    public TestAdapter( Context context,ArrayList<Test> list, int type) {
         super(context, 0 , list);
         mContext = context;
         dataList = list;
+        this.type = type;
     }
 
     @SuppressLint("SetTextI18n")
@@ -38,9 +44,6 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
 
         final TextView descripton = (TextView)listItem.findViewById(R.id.description);
         final TextView seeMore = (TextView)listItem.findViewById(R.id.see_more);
-
-//            ((ImageView)listItem.findViewById(R.id.item_imageView)).
-        //     setImageDrawable(ContextCompat.getDrawable(mContext,R.drawable.ic_appicon));
 
         ((TextView) listItem.findViewById(R.id.item_textView1))
                 .setText(dataList.get(position).getName());
@@ -70,13 +73,20 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
         (listItem.findViewById(R.id.item_button1)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(mContext, QuestionsActivity.class);
-                //  intent.putExtra("Questions",dataList.get(position));
-                intent.putExtra("setId",dataList.get(position).getSetId());
-                intent.putExtra("type",2);
-                intent.putExtra("test",dataList.get(position).getName());
-
-                parent.getContext().startActivity(intent);
+               if(type == FROM_WEEKLYTEST){
+                   Intent intent=new Intent(mContext, QuestionsActivity.class);
+                   intent.putExtra("setId",dataList.get(position).getSetId());
+                   intent.putExtra("type",2);
+                   intent.putExtra("test",dataList.get(position).getName());
+                   parent.getContext().startActivity(intent);
+               }else {
+                   Intent questionIntent = new Intent(mContext, QuesbankQuestionsActivity.class);
+                   questionIntent.putExtra("setId", dataList.get(position).getSetId());
+                   questionIntent.putExtra("scoreInc", dataList.get(position).getSocreInc());
+                   questionIntent.putExtra("scoreDe", dataList.get(position).getSocreDe());
+                   questionIntent.putExtra("time", dataList.get(position).getTime());
+                   parent.getContext().startActivity(questionIntent);
+               }
             }
         });
 
@@ -86,16 +96,9 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
                 Intent intent=new Intent(parent.getContext(), ViewResultsActivity.class);
                 intent.putExtra("test",dataList.get(position).getName());
                 intent.putExtra("setId",dataList.get(position).getSetId());
-
-                // intent.putExtra("ISAdmin",isAdmin);
                 parent.getContext().startActivity(intent);
             }
         });
-
-        //  Animation animation = AnimationUtils.loadAnimation(getContext(),
-        //           (position > lastPos) ? R.anim.up_from_bottom : R.anim.down_from_top);
-        //   (listItem).startAnimation(animation);
-        //   lastPos = position;
 
         return listItem;
     }

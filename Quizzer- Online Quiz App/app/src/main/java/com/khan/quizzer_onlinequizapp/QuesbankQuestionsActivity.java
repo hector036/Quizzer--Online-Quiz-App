@@ -36,7 +36,8 @@ public class QuesbankQuestionsActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private QuesbankQuestionAdapter adapter;
     private Button submitBtn;
-    public static List<QuestionModel> list;
+    private List<QuestionModel> list;
+    public static List<QuestionModel> listQAns = new ArrayList<>();
     private DatabaseReference myRef;
     private ProgressBar progressBar;
     private double score = 0;
@@ -80,11 +81,13 @@ public class QuesbankQuestionsActivity extends AppCompatActivity {
                 counter.setTitle("Time is Over");
 
                 Toast.makeText(QuesbankQuestionsActivity.this, "Time is Over", Toast.LENGTH_SHORT).show();
-                //  Intent scoreIntent = new Intent(QuesbankQuestionsActivity.this, ScoreActivity.class);
-                //   scoreIntent.putExtra("score", score);
-                // scoreIntent.putExtra("total", totalQues);
-                //   startActivity(scoreIntent);
-                //   finish();
+                Intent scoreIntent = new Intent(QuesbankQuestionsActivity.this, ScoreActivity.class);
+                scoreIntent.putExtra("score", score);
+                scoreIntent.putExtra("total", list.size());
+                scoreIntent.putExtra("type", 1);
+
+                startActivity(scoreIntent);
+                finish();
                 return;
             }
         };
@@ -106,6 +109,7 @@ public class QuesbankQuestionsActivity extends AppCompatActivity {
                     score = score - socreDe;
                 }
                 list.get(position).setAnsPosition(ansPosition);
+                listQAns.get(position).setYourAns(yourAns);
             }
 
         });
@@ -118,8 +122,43 @@ public class QuesbankQuestionsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Toast.makeText(QuesbankQuestionsActivity.this, "Your Score is " + score, Toast.LENGTH_SHORT).show();
+                Intent scoreIntent = new Intent(QuesbankQuestionsActivity.this, ScoreActivity.class);
+                scoreIntent.putExtra("score", score);
+                scoreIntent.putExtra("total", list.size());
+                scoreIntent.putExtra("type", 1);
+                startActivity(scoreIntent);
+                finish();
             }
         });
+    }
+
+    private void setUpTimer() {
+        countdownTimer = new CountDownTimer(timer * 60 * 1000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+
+                long Minutes = millisUntilFinished / (60 * 1000);
+                long Seconds = millisUntilFinished / 1000 % 60;
+
+                counter.setTitle(String.format("%02d", Minutes) + ":" + String.format("%02d", Seconds));
+            }
+
+            public void onFinish() {
+                counter.setTitle("Time is Over");
+
+                Toast.makeText(QuesbankQuestionsActivity.this, "Time is Over", Toast.LENGTH_SHORT).show();
+                Intent scoreIntent = new Intent(QuesbankQuestionsActivity.this, ScoreActivity.class);
+                scoreIntent.putExtra("score", score);
+                scoreIntent.putExtra("total", list.size());
+                scoreIntent.putExtra("type", 1);
+
+                startActivity(scoreIntent);
+                finish();
+                return;
+            }
+        };
+        countdownTimer.start();
+
     }
 
     private void getData(String categoryName, final String setId) {
@@ -127,6 +166,7 @@ public class QuesbankQuestionsActivity extends AppCompatActivity {
         myRef.child("SETS").child(setId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                int i = 1;
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     String id = dataSnapshot1.getKey();
                     String question = dataSnapshot1.child("question").getValue().toString();
@@ -147,10 +187,12 @@ public class QuesbankQuestionsActivity extends AppCompatActivity {
                         url = "";
                     }
                     list.add(new QuestionModel(id, question, a, b, c, d, e, corentAns, setId, url));
+                    listQAns.add(new QuestionModel(id, "Q " + i +".   "+ question, a, b, c, d, e, corentAns, setId, url));
+                    i++;
                 }
                 progressBar.setVisibility(View.GONE);
                 adapter.notifyDataSetChanged();
-                countdownTimer.start();
+                setUpTimer();
             }
 
             @Override

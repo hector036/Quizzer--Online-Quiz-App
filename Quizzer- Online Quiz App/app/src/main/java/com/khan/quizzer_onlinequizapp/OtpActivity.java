@@ -56,6 +56,7 @@ import java.util.concurrent.TimeUnit;
 public class OtpActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int FROM_WEEKLY_TEST_NOTIFICATION = 1;
+    private static final int FROM_CENTRAL_TEST_NOTIFICATION = 2;
 
     FirebaseAuth mAuth;
 
@@ -314,39 +315,11 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                                 startActivity(intent);
                             }
 
-//                            myRef.child("Users").child(Objects.requireNonNull(mAuth.getUid())).addListenerForSingleValueEvent(new ValueEventListener() {
-//                                @Override
-//                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                                    if(dataSnapshot.exists()){
-//                                        startActivity(new Intent(OtpActivity.this, MainActivity.class));
-//                                        finish();
-//                                    }else {
-//                                        Intent intent = new Intent(OtpActivity.this, EditProfileActivity.class);
-//                                        intent.putExtra("type",1);
-//                                        intent.putExtra("phone",mPhoneNumber);
-//                                        startActivity(intent);
-//                                        finish();
-//                                    }
-//
-//                                }
-//                                @Override
-//                                public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                                }
-//                            });
-
-//                            Intent homeIntent = new Intent(OtpActivity.this,MainActivity.class);
-//                            startActivity(homeIntent);
-//                            finish();
-//
                             finish();
                             FirebaseUser user = task.getResult().getUser();
                             updateUI(STATE_SIGNIN_SUCCESS, user);
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            //String error = task.getException().getMessage();
-                            //Toast.makeText(OtpActivity.this, error, Toast.LENGTH_SHORT).show();
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
                                 Toast.makeText(OtpActivity.this, "Invalid Code", Toast.LENGTH_SHORT).show();
                                 linePinField.setText("");

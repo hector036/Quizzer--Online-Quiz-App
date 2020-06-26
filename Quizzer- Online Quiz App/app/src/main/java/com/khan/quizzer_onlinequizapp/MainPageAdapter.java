@@ -187,9 +187,18 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
+                    intent.putExtra("type",0);
                     itemView.getContext().startActivity(intent);
                 }
             });
+//            gridLayout.getChildAt(2).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
+//                    intent.putExtra("type",1);
+//                    itemView.getContext().startActivity(intent);
+//                }
+//            });
 
             gridLayout.getChildAt(2).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -198,11 +207,27 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     itemView.getContext().startActivity(bookmarkIntent);
                 }
             });
-//            gridLayout.getChildAt(3).setOnClickListener(new View.OnClickListener() {
+//            gridLayout.getChildAt(4).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+//                    categoryIntent.putExtra("type", 1);
+//                    itemView.getContext().startActivity(categoryIntent);
+//                }
+//            });
+//            gridLayout.getChildAt(5).setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
 //                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
 //                    categoryIntent.putExtra("type", 2);
+//                    itemView.getContext().startActivity(categoryIntent);
+//                }
+//            });
+//            gridLayout.getChildAt(6).setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+//                    categoryIntent.putExtra("type", 3);
 //                    itemView.getContext().startActivity(categoryIntent);
 //                }
 //            });
@@ -245,20 +270,6 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 }
             });
 
-//            this.description.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    description.setMaxLines(100);
-//                    seeMore.setVisibility(View.GONE);
-//                }
-//            });
-//            seeMore.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    description.setMaxLines(100);
-//                    seeMore.setVisibility(View.GONE);
-//                }
-//            });
 
         }
     }

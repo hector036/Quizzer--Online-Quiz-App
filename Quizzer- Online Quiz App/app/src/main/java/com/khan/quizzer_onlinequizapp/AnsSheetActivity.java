@@ -27,17 +27,24 @@ import java.util.List;
 
 
 public class AnsSheetActivity extends AppCompatActivity {
+    private static final int ANSSHEET = 1;
+    private static final int VIEWSOLUTION = 3;
+
+    private static final int FROM_ANIMATED_QUES = 0;
+    private static final int FROM_SCROLLING_QUES = 1;
+
 
     private RecyclerView recyclerView;
     private BookmarksAdater adater;
 
-    private List<QuestionModel> list;
+    private List<QuestionModel> list = new ArrayList<>();
     private TextView scoreBoard;
     private Button viewMerit;
     private LinearLayout scoreBoardLayout;
     private int score, total;
     private int isScoreBoard, isEvaluation;
     private String testName, setId;
+    private int type;
 
 
     @Override
@@ -61,6 +68,7 @@ public class AnsSheetActivity extends AppCompatActivity {
         total = getIntent().getIntExtra("total", 0);
         testName = getIntent().getStringExtra("test");
         setId = getIntent().getStringExtra("setId");
+        type = getIntent().getIntExtra("type",0);
 
         scoreBoard.setText("Your Score : " + score + " / " + total);
 
@@ -77,10 +85,16 @@ public class AnsSheetActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
 
+        if(type == FROM_ANIMATED_QUES){
+            list = QuestionsActivity.listAns;
+        }else {
+            list = QuesbankQuestionsActivity.listQAns;
+        }
+
         if (isEvaluation == 1) {
-            adater = new BookmarksAdater(QuestionsActivity.listAns, 1);
+            adater = new BookmarksAdater(list, ANSSHEET);
         } else {
-            adater = new BookmarksAdater(QuestionsActivity.listAns, 3);
+            adater = new BookmarksAdater(list, VIEWSOLUTION);
         }
         recyclerView.setAdapter(adater);
 

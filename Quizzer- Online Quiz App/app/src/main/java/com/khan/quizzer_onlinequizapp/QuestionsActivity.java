@@ -52,6 +52,7 @@ import static com.khan.quizzer_onlinequizapp.MainActivity.institute;
 
 public class QuestionsActivity extends AppCompatActivity {
 
+
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference();
     private FirebaseAuth mAuth;
@@ -444,7 +445,6 @@ public class QuestionsActivity extends AppCompatActivity {
                 }
                 if (position == list.size()) {
                     //
-
                     if (type == 1) {
                         Intent scoreIntent = new Intent(QuestionsActivity.this, ScoreActivity.class);
                         scoreIntent.putExtra("score", score);
@@ -456,7 +456,6 @@ public class QuestionsActivity extends AppCompatActivity {
                         uploadScore();
                         return;
                     }
-
                 }
                 count = 0;
 

@@ -20,7 +20,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_ADMISSION_PREPARATION_ACTIVITY;
 import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_ADMISSION_QUESTION_BANK_ACTIVITY;
+import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_BOARD_QUESTION_BANK_ACTIVITY;
 import static com.khan.quizzer_onlinequizapp.CategoriesActivity.FROM_SUBJECT_WISE_ACTIVITY;
 
 public class ChapterActivity extends AppCompatActivity {
@@ -65,7 +67,14 @@ public class ChapterActivity extends AppCompatActivity {
         }else if(type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY){
             ChapterAdapter adapter = new ChapterAdapter(FROM_ADMISSION_QUESTION_BANK_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
             recyclerView.setAdapter(adapter);
+        }else if(type == FROM_BOARD_QUESTION_BANK_ACTIVITY){
+            ChapterAdapter adapter = new ChapterAdapter(FROM_BOARD_QUESTION_BANK_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
+            recyclerView.setAdapter(adapter);
+        }else if(type == FROM_ADMISSION_PREPARATION_ACTIVITY){
+            ChapterAdapter adapter = new ChapterAdapter(FROM_ADMISSION_PREPARATION_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
+            recyclerView.setAdapter(adapter);
         }
+
         if (type == FROM_SUBJECT_WISE_ACTIVITY) {
             modelTestBtn.setVisibility(View.VISIBLE);
             modelTestBtn.setOnClickListener(new View.OnClickListener() {
