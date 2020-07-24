@@ -305,19 +305,26 @@ public class OtpActivity extends AppCompatActivity implements View.OnClickListen
                             if (mAuth.getCurrentUser().getDisplayName() != null) {
                                 if (type == FROM_WEEKLY_TEST_NOTIFICATION) {
                                     startActivity(new Intent(OtpActivity.this, TestsActivity.class));
+                                    finish();
+                                    FirebaseUser user = task.getResult().getUser();
+                                    updateUI(STATE_SIGNIN_SUCCESS, user);
                                 } else {
                                     startActivity(new Intent(OtpActivity.this, MainActivity.class));
+                                    finish();
+                                    FirebaseUser user = task.getResult().getUser();
+                                    updateUI(STATE_SIGNIN_SUCCESS, user);
                                 }
                             } else {
                                 Intent intent = new Intent(OtpActivity.this, EditProfileActivity.class);
                                 intent.putExtra("type", 1);
                                 intent.putExtra("phone", mPhoneNumber);
                                 startActivity(intent);
+                                finish();
+                                FirebaseUser user = task.getResult().getUser();
+                                updateUI(STATE_SIGNIN_SUCCESS, user);
                             }
 
-                            finish();
-                            FirebaseUser user = task.getResult().getUser();
-                            updateUI(STATE_SIGNIN_SUCCESS, user);
+
                         } else {
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                             if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {

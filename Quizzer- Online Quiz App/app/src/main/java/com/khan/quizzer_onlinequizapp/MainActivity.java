@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +31,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -81,6 +83,23 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         setContentView(R.layout.activity_main);
 
         auth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = auth.getCurrentUser();
+
+        if (currentUser != null) {
+
+            if (currentUser.getDisplayName() == null) {
+                Intent editProfileIntent = new Intent(MainActivity.this, EditProfileActivity.class);
+                editProfileIntent.putExtra("type", 1);
+                editProfileIntent.putExtra("phone", auth.getCurrentUser().getPhoneNumber());
+                startActivity(editProfileIntent);
+                finish();
+            }
+
+        } else {
+            Intent loginIntent = new Intent(MainActivity.this, OtpActivity.class);
+            startActivity(loginIntent);
+            finish();
+        }
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -141,11 +160,11 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
         listGrid.add(new HomeModel(R.drawable.mp1, "Subject-wise Test"));
         listGrid.add(new HomeModel(R.drawable.mp2, "Weekly Test"));
-      //  listGrid.add(new HomeModel(R.drawable.mp3, "Central Test"));
+        //  listGrid.add(new HomeModel(R.drawable.mp3, "Central Test"));
         listGrid.add(new HomeModel(R.drawable.mp3, "Bookmarks"));
         //listGrid.add(new HomeModel(R.drawable.mp3, "Board Question Bank"));
-      //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
-      //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Preparation"));
+        //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
+        //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Preparation"));
 
         adapter = new MainPageAdapter(mainPageModelList);
         mainRecyclerView.setAdapter(adapter);
@@ -196,6 +215,34 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                                     bannerImg, bannerText, bannerUrl, true));
                         }
 
+                        if (dataSnapshot.child("horizontal_scroll_banner").exists()) {
+
+                            for (DataSnapshot snapshot : dataSnapshot.child("horizontal_scroll_banner").getChildren()) {
+                                String title = snapshot.child("title").getValue().toString();
+                                String viewAllUrl;
+                                if (snapshot.child("viewAllUrl").exists()) {
+                                    viewAllUrl = snapshot.child("viewAllUrl").getValue().toString();
+                                } else {
+                                    viewAllUrl = "";
+                                }
+                                List<MainPageModel> bannerList = new ArrayList<>();
+
+                                for (DataSnapshot snapshot1 : snapshot.child("banners").getChildren()) {
+                                    String bannerImg = snapshot1.child("bannerImg").getValue().toString();
+                                    String bannerText = snapshot1.child("bannerText").getValue().toString();
+                                    String bannerUrl = snapshot1.child("bannerUrl").getValue().toString();
+                                    bannerList.add(0, new MainPageModel(3,
+                                            bannerImg, bannerText, bannerUrl, true));
+                                }
+
+                                mainPageModelList.add(new MainPageModel(4,
+                                        title, viewAllUrl, bannerList));
+
+                            }
+
+                        }
+
+
                         for (DataSnapshot snapshot : dataSnapshot.child("feature_banner").getChildren()) {
                             String bannerImg = snapshot.child("bannerImg").getValue().toString();
                             String bannerText = snapshot.child("bannerText").getValue().toString();
@@ -239,7 +286,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -254,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                         if (!task.isSuccessful()) {
                             msg = "Subcription Faild";
                         }
-                       // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        // Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
     }
@@ -329,7 +376,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                     getSharedPreferences("Institute", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), institute).apply();
                     getSharedPreferences("Phone", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), phone).apply();
                     getSharedPreferences("PhotoUrl", MODE_PRIVATE).edit().putString("" + auth.getCurrentUser().getUid(), url).apply();
-                   // Toast.makeText(MainActivity.this, "FROM DATABASE", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(MainActivity.this, "FROM DATABASE", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -345,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
             phone = pPhone;
             url = pUrl;
             loadMainPage(type);
-           // Toast.makeText(MainActivity.this, "FROM SHAREDPREFARENCE", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(MainActivity.this, "FROM SHAREDPREFARENCE", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -440,12 +487,18 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
 
         final BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(MainActivity.this, R.style.bottomSheetTheme);
-        bottomSheetDialog.setContentView(R.layout.update_dialog);
-    //    bottomSheetDialog.setCanceledOnTouchOutside(setCancelable);
+
+        View view = getLayoutInflater().inflate(R.layout.update_dialog, null);
+
+        //  bottomSheetDialog.setContentView(R.layout.update_dialog);
+        bottomSheetDialog.setContentView(view);
+        //    bottomSheetDialog.setCanceledOnTouchOutside(setCancelable);
         bottomSheetDialog.setCancelable(setCancelable);
 
         Button cancel = bottomSheetDialog.findViewById(R.id.update_cancelBtn);
         Button update = bottomSheetDialog.findViewById(R.id.update_updateBtn);
+        TextView updateText = bottomSheetDialog.findViewById(R.id.update_text);
+        updateText.setText(updateMsg);
 
         if (!setCancelable) {
             cancel.setVisibility(View.GONE);

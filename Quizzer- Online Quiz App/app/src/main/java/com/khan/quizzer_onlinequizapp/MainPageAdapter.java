@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.gridlayout.widget.GridLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -32,9 +33,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class MainPageAdapter extends RecyclerView.Adapter {
 
     private List<MainPageModel> mainPageModelList;
+    private RecyclerView.RecycledViewPool recycledViewPool;
 
     public MainPageAdapter(List<MainPageModel> mainPageModelList) {
         this.mainPageModelList = mainPageModelList;
+        recycledViewPool = new RecyclerView.RecycledViewPool();
     }
 
 
@@ -50,6 +53,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 return MainPageModel.WEEKLY_TEST_VIEW;
             case 3:
                 return MainPageModel.BANNER_VIEW;
+            case 4:
+                return MainPageModel.HORIZONTAL_BANNER_LAYOUT_VIEW;
             default:
                 return -1;
         }
@@ -74,6 +79,9 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             case MainPageModel.BANNER_VIEW:
                 View bannerView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mainpage_banner_item, viewGroup, false);
                 return new BannerViewholder(bannerView);
+            case MainPageModel.HORIZONTAL_BANNER_LAYOUT_VIEW:
+                View horizontalBannerLayoutView = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.mainpage_horizontal_banner_layout, viewGroup, false);
+                return new HorizontalBannerViewholder(horizontalBannerLayoutView);
 
             default:
                 return null;
@@ -111,6 +119,12 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 String bannerUrl = mainPageModelList.get(i).getBannerUrl();
                 boolean bannerEnable = mainPageModelList.get(i).isBannerEnable();
                 ((BannerViewholder) viewHolder).setBannerLayout(bannerImg, bannerActionText, bannerUrl, bannerEnable);
+                break;
+            case MainPageModel.HORIZONTAL_BANNER_LAYOUT_VIEW:
+                String horizontalBannerLayoutTitle = mainPageModelList.get(i).getHorizontalScrollLayoutTitle();
+                String horizontalBannerLayoutViewAllUrl = mainPageModelList.get(i).getHorizontalScrollLayoutViewAllUrl();
+                List<MainPageModel> horizontalScrollBannerList = mainPageModelList.get(i).getHorizontalScrollBannerList();
+                ((HorizontalBannerViewholder) viewHolder).setHorizontalBannerLayout(horizontalBannerLayoutTitle, horizontalBannerLayoutViewAllUrl, horizontalScrollBannerList);
                 break;
             default:
                 return;
@@ -187,7 +201,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
-                    intent.putExtra("type",0);
+                    intent.putExtra("type", 0);
                     itemView.getContext().startActivity(intent);
                 }
             });
@@ -302,6 +316,49 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
         }
     }
+
+    public class HorizontalBannerViewholder extends RecyclerView.ViewHolder {
+
+        private TextView horizontalBannerLayoutTitle;
+        private Button horizontalBannerLayoutViewAllButton;
+        private RecyclerView horizontalBannerLayoutRecyclerView;
+
+        public HorizontalBannerViewholder(@NonNull View itemView) {
+            super(itemView);
+
+            horizontalBannerLayoutTitle = itemView.findViewById(R.id.horizontal_banner_layout_title);
+            horizontalBannerLayoutViewAllButton = itemView.findViewById(R.id.horizontal_banner_layout_view_all);
+            horizontalBannerLayoutRecyclerView = itemView.findViewById(R.id.horizontal_banner_layout_rv);
+            horizontalBannerLayoutRecyclerView.setRecycledViewPool(recycledViewPool);
+        }
+
+        private void setHorizontalBannerLayout(String horizontalBannerLayoutTitle, final String horizontalBannerLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList){
+            this.horizontalBannerLayoutTitle.setText(horizontalBannerLayoutTitle);
+            if(horizontalBannerLayoutViewAllUrl.isEmpty()){
+                this.horizontalBannerLayoutViewAllButton.setVisibility(View.GONE);
+            }else {
+                this.horizontalBannerLayoutViewAllButton.setVisibility(View.VISIBLE);
+            }
+            this.horizontalBannerLayoutViewAllButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isValidUrl(horizontalBannerLayoutViewAllUrl)) {
+                        itemView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(horizontalBannerLayoutViewAllUrl)));
+                    }
+                }
+            });
+            MainPageHorizontalBannerAdapter mainPageHorizontalBannerAdapter = new MainPageHorizontalBannerAdapter(horizontalScrollBannerList);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
+            linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+            horizontalBannerLayoutRecyclerView.setLayoutManager(linearLayoutManager);
+
+            horizontalBannerLayoutRecyclerView.setAdapter(mainPageHorizontalBannerAdapter);
+            mainPageHorizontalBannerAdapter.notifyDataSetChanged();
+        }
+
+    }
+
 
     private boolean isValidUrl(String url) {
         try {

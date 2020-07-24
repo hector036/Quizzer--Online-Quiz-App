@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -53,6 +54,10 @@ public class ChapterActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters();
+        if (chapterList == null) {
+            finish();
+            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }
 
         Collections.sort(chapterList, new Comparator<TestClass>() {
             @Override
@@ -64,13 +69,13 @@ public class ChapterActivity extends AppCompatActivity {
         if (type == FROM_SUBJECT_WISE_ACTIVITY) {
             ChapterAdapter adapter = new ChapterAdapter(FROM_SUBJECT_WISE_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
             recyclerView.setAdapter(adapter);
-        }else if(type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY){
+        } else if (type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY) {
             ChapterAdapter adapter = new ChapterAdapter(FROM_ADMISSION_QUESTION_BANK_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
             recyclerView.setAdapter(adapter);
-        }else if(type == FROM_BOARD_QUESTION_BANK_ACTIVITY){
+        } else if (type == FROM_BOARD_QUESTION_BANK_ACTIVITY) {
             ChapterAdapter adapter = new ChapterAdapter(FROM_BOARD_QUESTION_BANK_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
             recyclerView.setAdapter(adapter);
-        }else if(type == FROM_ADMISSION_PREPARATION_ACTIVITY){
+        } else if (type == FROM_ADMISSION_PREPARATION_ACTIVITY) {
             ChapterAdapter adapter = new ChapterAdapter(FROM_ADMISSION_PREPARATION_ACTIVITY, chapterList, getIntent().getStringExtra("title"));
             recyclerView.setAdapter(adapter);
         }

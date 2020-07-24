@@ -54,6 +54,9 @@
     <color name="score_btn">#121212</color>
     <color name="score_bg">#000000</color>
 
+    <color name="forword_for_item">#ffffff</color>
+
+
     <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>
     <color name="redButtonDisabled">#50ffffff</color>

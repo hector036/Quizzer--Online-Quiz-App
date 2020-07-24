@@ -8,6 +8,7 @@ public class MainPageModel {
     public static final int GRID_VIEW = 1;
     public static final int WEEKLY_TEST_VIEW = 2;
     public static final int BANNER_VIEW = 3;
+    public static final int HORIZONTAL_BANNER_LAYOUT_VIEW = 4;
 
     private int type;
 
@@ -197,4 +198,44 @@ public class MainPageModel {
     }
 
     ////////////// BANNER_VIEW /////////////////
+
+
+    ////////////// HORIZONTAL_SCROLL_BANNER_VIEW ///////////
+
+    private String horizontalScrollLayoutTitle;
+    private String horizontalScrollLayoutViewAllUrl;
+    private List<MainPageModel> horizontalScrollBannerList;
+
+    public MainPageModel(int type, String horizontalScrollLayoutTitle, String horizontalScrollLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList) {
+        this.type = type;
+        this.horizontalScrollLayoutTitle = horizontalScrollLayoutTitle;
+        this.horizontalScrollLayoutViewAllUrl = horizontalScrollLayoutViewAllUrl;
+        this.horizontalScrollBannerList = horizontalScrollBannerList;
+    }
+
+    public String getHorizontalScrollLayoutTitle() {
+        return horizontalScrollLayoutTitle;
+    }
+
+    public void setHorizontalScrollLayoutTitle(String horizontalScrollLayoutTitle) {
+        this.horizontalScrollLayoutTitle = horizontalScrollLayoutTitle;
+    }
+
+    public String getHorizontalScrollLayoutViewAllUrl() {
+        return horizontalScrollLayoutViewAllUrl;
+    }
+
+    public void setHorizontalScrollLayoutViewAllUrl(String horizontalScrollLayoutViewAllUrl) {
+        this.horizontalScrollLayoutViewAllUrl = horizontalScrollLayoutViewAllUrl;
+    }
+
+    public List<MainPageModel> getHorizontalScrollBannerList() {
+        return horizontalScrollBannerList;
+    }
+
+    public void setHorizontalScrollBannerList(List<MainPageModel> horizontalScrollBannerList) {
+        this.horizontalScrollBannerList = horizontalScrollBannerList;
+    }
+
+    ////////////// HORIZONTAL_SCROLL_BANNER_VIEW ///////////
 }
