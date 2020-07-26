@@ -53,10 +53,11 @@ public class ChapterActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters();
-        if (chapterList == null) {
+        if (CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters() == null) {
             finish();
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+        }else {
+            chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters();
         }
 
         Collections.sort(chapterList, new Comparator<TestClass>() {

@@ -227,16 +227,17 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                                 }
                                 List<MainPageModel> bannerList = new ArrayList<>();
 
-                                for (DataSnapshot snapshot1 : snapshot.child("banners").getChildren()) {
-                                    String bannerImg = snapshot1.child("bannerImg").getValue().toString();
-                                    String bannerText = snapshot1.child("bannerText").getValue().toString();
-                                    String bannerUrl = snapshot1.child("bannerUrl").getValue().toString();
-                                    bannerList.add(0, new MainPageModel(3,
-                                            bannerImg, bannerText, bannerUrl, true));
+                                if(snapshot.child("banners").exists()){
+                                    for (DataSnapshot snapshot1 : snapshot.child("banners").getChildren()) {
+                                        String bannerImg = snapshot1.child("bannerImg").getValue().toString();
+                                        String bannerText = snapshot1.child("bannerText").getValue().toString();
+                                        String bannerUrl = snapshot1.child("bannerUrl").getValue().toString();
+                                        bannerList.add(0, new MainPageModel(3,
+                                                bannerImg, bannerText, bannerUrl, true));
+                                    }
+                                    mainPageModelList.add(new MainPageModel(4,
+                                            title, viewAllUrl, bannerList));
                                 }
-
-                                mainPageModelList.add(new MainPageModel(4,
-                                        title, viewAllUrl, bannerList));
 
                             }
 
