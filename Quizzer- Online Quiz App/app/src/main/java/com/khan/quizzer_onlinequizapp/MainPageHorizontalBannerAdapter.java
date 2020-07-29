@@ -22,10 +22,15 @@ import java.util.List;
 
 public class MainPageHorizontalBannerAdapter extends RecyclerView.Adapter<MainPageHorizontalBannerAdapter.ViewHolder> {
 
-    private List<MainPageModel> horizontalScrollBannerList;
+    private static int ACTION_PDF = 1;
+    private static int ACTION_GOTO_URL = 0;
 
-    public MainPageHorizontalBannerAdapter(List<MainPageModel> horizontalScrollBannerList) {
+    private List<MainPageModel> horizontalScrollBannerList;
+    private int actionType;
+
+    public MainPageHorizontalBannerAdapter(List<MainPageModel> horizontalScrollBannerList, int actionType) {
         this.horizontalScrollBannerList = horizontalScrollBannerList;
+        this.actionType = actionType;
     }
 
     @NonNull
@@ -63,14 +68,21 @@ public class MainPageHorizontalBannerAdapter extends RecyclerView.Adapter<MainPa
             bannerText = itemView.findViewById(R.id.bannerText);
         }
 
-        public void setData(String url, String bannerActionText, final String bannerUrl, boolean bannerEnable) {
-            Glide.with(itemView.getContext()).load(url).transform(new CenterCrop(), new GranularRoundedCorners(22,22,0,0)).placeholder(R.color.place_holder).into(bannerImg);
+        public void setData(final String url, String bannerActionText, final String bannerUrl, boolean bannerEnable) {
+            Glide.with(itemView.getContext()).load(url).transform(new CenterCrop(), new GranularRoundedCorners(22, 22, 0, 0)).placeholder(R.color.place_holder).into(bannerImg);
             this.bannerText.setText(bannerActionText);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (isValidUrl(bannerUrl)) {
-                        itemView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerUrl)));
+                        if (actionType == ACTION_PDF) {
+                            Intent viewSolution = new Intent(itemView.getContext(), ViewSolutionActivity.class);
+                            viewSolution.putExtra("singlePdfUrl", bannerUrl);
+                            viewSolution.putExtra("type", 0);
+                            itemView.getContext().startActivity(viewSolution);
+                        } else {
+                            itemView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerUrl)));
+                        }
                     }
                 }
             });

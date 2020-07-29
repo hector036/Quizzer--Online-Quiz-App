@@ -57,6 +57,10 @@
 
     <color name="forword_for_item">#0097E4</color>
 
+    <color name="colorPdfSelectorBg">#515151</color>
+    <color name="colorPdfSelectorGeneralBg">#EDEDED</color>
+    <color name="pdfBg">#ffffff</color>
+
     <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>
     <color name="redButtonDisabled">#50ffffff</color>

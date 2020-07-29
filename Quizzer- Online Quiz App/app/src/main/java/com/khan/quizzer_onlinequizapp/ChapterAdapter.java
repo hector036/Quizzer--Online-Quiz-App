@@ -54,7 +54,11 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
         long time = chapters.get(position).getTime();
         String mcqUrl = chapters.get(position).getMcqUrl();
         String cqUrl = chapters.get(position).getCqUrl();
-        holder.setData(name, setId, socreInc, socreDe, time, mcqUrl, cqUrl, position);
+        String urlMedical = chapters.get(position).getUrlMedical();
+        String urlEngineering = chapters.get(position).getUrlEngineering();
+        String urlPublic = chapters.get(position).getUrlPublic();
+        String urlPrivate = chapters.get(position).getUrlPrivate();
+        holder.setData(name, setId, socreInc, socreDe, time, mcqUrl, cqUrl, urlMedical, urlEngineering, urlPublic, urlPrivate, position);
 
     }
 
@@ -80,14 +84,15 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
             forword = itemView.findViewById(R.id.forword_chapter);
         }
 
-        private void setData(final String title, final String setId, final double socreInc, final double socreDe, final long time, String mcqUrl, String cqUrl, final int position) {
+        private void setData(final String title, final String setId, final double socreInc, final double socreDe, final long time, final String mcqUrl, final String cqUrl,
+                             final String urlMedical, final String urlEngineering, final String urlPublic, final String urlPrivate, final int position) {
             this.title.setText(title);
             if ((mcqUrl == null || mcqUrl.equals("")) && (cqUrl == null || cqUrl.equals(""))) {
                 linearLayout.setVisibility(View.GONE);
                 forword.setVisibility(View.VISIBLE);
                 this.title.setTextSize(15);
                 this.title.setTypeface(this.title.getTypeface(), Typeface.NORMAL);
-            }else {
+            } else {
                 linearLayout.setVisibility(View.VISIBLE);
                 forword.setVisibility(View.GONE);
                 this.title.setTextSize(18);
@@ -113,6 +118,9 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
                     Intent viewSolution = new Intent(itemView.getContext(), ViewSolutionActivity.class);
                     viewSolution.putExtra("category", category);
                     viewSolution.putExtra("setId", setId);
+                    viewSolution.putExtra("mcqUrl", mcqUrl);
+                    viewSolution.putExtra("cqUrl", cqUrl);
+                    viewSolution.putExtra("type", 2);
                     itemView.getContext().startActivity(viewSolution);
 
                 }
@@ -127,7 +135,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
                         questionIntent.putExtra("setId", setId);
                         questionIntent.putExtra("type", 1);
                         itemView.getContext().startActivity(questionIntent);
-                    }else if(type == FROM_BOARD_QUESTION_BANK_ACTIVITY || type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY){
+                    } else if (type == FROM_BOARD_QUESTION_BANK_ACTIVITY || type == FROM_ADMISSION_QUESTION_BANK_ACTIVITY) {
                         Intent questionIntent = new Intent(itemView.getContext(), QuesbankQuestionsActivity.class);
                         questionIntent.putExtra("category", category);
                         questionIntent.putExtra("setId", setId);
@@ -135,10 +143,17 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.Viewhold
                         questionIntent.putExtra("scoreDe", socreDe);
                         questionIntent.putExtra("time", time);
                         itemView.getContext().startActivity(questionIntent);
-                    }else if(type == FROM_ADMISSION_PREPARATION_ACTIVITY){
+                    } else if (type == FROM_ADMISSION_PREPARATION_ACTIVITY) {
                         Intent viewSolution = new Intent(itemView.getContext(), ViewSolutionActivity.class);
                         viewSolution.putExtra("category", category);
                         viewSolution.putExtra("setId", setId);
+                        viewSolution.putExtra("mcqUrl", mcqUrl);
+                        viewSolution.putExtra("cqUrl", cqUrl);
+                        viewSolution.putExtra("urlMedical", urlMedical);
+                        viewSolution.putExtra("urlEngineering", urlEngineering);
+                        viewSolution.putExtra("urlPublic", urlPublic);
+                        viewSolution.putExtra("urlPrivate", urlPrivate);
+                        viewSolution.putExtra("type", 1);
                         itemView.getContext().startActivity(viewSolution);
                     }
                 }

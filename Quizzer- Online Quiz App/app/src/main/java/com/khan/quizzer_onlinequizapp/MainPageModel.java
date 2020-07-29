@@ -205,14 +205,22 @@ public class MainPageModel {
     private String horizontalScrollLayoutTitle;
     private String horizontalScrollLayoutViewAllUrl;
     private List<MainPageModel> horizontalScrollBannerList;
+    private int actionType;
 
-    public MainPageModel(int type, String horizontalScrollLayoutTitle, String horizontalScrollLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList) {
+    public MainPageModel(int type, String horizontalScrollLayoutTitle, String horizontalScrollLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList,int actionType) {
         this.type = type;
         this.horizontalScrollLayoutTitle = horizontalScrollLayoutTitle;
         this.horizontalScrollLayoutViewAllUrl = horizontalScrollLayoutViewAllUrl;
         this.horizontalScrollBannerList = horizontalScrollBannerList;
+        this.actionType = actionType;
+    }
+    public int getActionType() {
+        return actionType;
     }
 
+    public void setActionType(int actionType) {
+        this.actionType = actionType;
+    }
     public String getHorizontalScrollLayoutTitle() {
         return horizontalScrollLayoutTitle;
     }

@@ -78,15 +78,71 @@ public class CategoriesActivity extends AppCompatActivity {
             adapter = new CategoryAdapter(FROM_ADMISSION_QUESTION_BANK_ACTIVITY, list);
             recyclerView.setAdapter(adapter);
             loadAdmissionQuestionBank();
-        }else if(type==FROM_BOARD_QUESTION_BANK_ACTIVITY){
+        } else if (type == FROM_BOARD_QUESTION_BANK_ACTIVITY) {
             adapter = new CategoryAdapter(FROM_BOARD_QUESTION_BANK_ACTIVITY, list);
             recyclerView.setAdapter(adapter);
             loadBoardQuestionBank();
-        }else if(type == FROM_ADMISSION_PREPARATION_ACTIVITY){
+        } else if (type == FROM_ADMISSION_PREPARATION_ACTIVITY) {
             adapter = new CategoryAdapter(FROM_ADMISSION_PREPARATION_ACTIVITY, list);
             recyclerView.setAdapter(adapter);
-            loadSubjectForSubjectWiseExam();
+            loadSubjectForAdmissionPreparation();
         }
+
+    }
+
+    private void loadSubjectForAdmissionPreparation() {
+        progressBar.setVisibility(View.VISIBLE);
+        myRef.child("AdmissionPreparation").orderByChild("order").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                    List<TestClass> sets = new ArrayList<>();
+                    List<TestClass> chapters = new ArrayList<>();
+
+                    for (DataSnapshot dataSnapshot2 : dataSnapshot1.child("chapters").getChildren()) {
+                        String urlMedical = "", urlEngineering = "", urlPublic = "", urlPrivate = "";
+
+                        String setId = dataSnapshot2.getKey().toString();
+                        String setName = dataSnapshot2.child("name").getValue().toString();
+                        Long order = (Long) dataSnapshot2.child("order").getValue();
+
+                        if (dataSnapshot2.child("urlMedical").exists()) {
+                            urlMedical = dataSnapshot2.child("urlMedical").getValue().toString();
+                        }
+                        if (dataSnapshot2.child("urlEngineering").exists()) {
+                            urlEngineering = dataSnapshot2.child("urlEngineering").getValue().toString();
+                        }
+                        if (dataSnapshot2.child("urlPublic").exists()) {
+                            urlPublic = dataSnapshot2.child("urlPublic").getValue().toString();
+                        }
+                        if (dataSnapshot2.child("urlPrivate").exists()) {
+                            urlPrivate = dataSnapshot2.child("urlPrivate").getValue().toString();
+                        }
+
+                        chapters.add(new TestClass(setId, setName, order, urlMedical, urlEngineering, urlPublic, urlPrivate));
+
+                    }
+
+                    list.add(new CategoryModel(dataSnapshot1.child("name").getValue().toString(),
+                            dataSnapshot1.child("url").getValue().toString(),
+                            dataSnapshot1.getKey(),
+                            sets, chapters
+                    ));
+
+                }
+                adapter.notifyDataSetChanged();
+                progressBar.setVisibility(View.GONE);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                progressBar.setVisibility(View.GONE);
+
+                Toast.makeText(CategoriesActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
@@ -176,7 +232,6 @@ public class CategoriesActivity extends AppCompatActivity {
         });
 
     }
-
 
     private void loadSubjectForSubjectWiseExam() {
         progressBar.setVisibility(View.VISIBLE);

@@ -164,7 +164,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
         listGrid.add(new HomeModel(R.drawable.mp3, "Bookmarks"));
         //listGrid.add(new HomeModel(R.drawable.mp3, "Board Question Bank"));
         //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
-        //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Preparation"));
+        //listGrid.add(new HomeModel(R.drawable.mp3, "Admission Preparation"));
 
         adapter = new MainPageAdapter(mainPageModelList);
         mainRecyclerView.setAdapter(adapter);
@@ -219,15 +219,19 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
                             for (DataSnapshot snapshot : dataSnapshot.child("horizontal_scroll_banner").getChildren()) {
                                 String title = snapshot.child("title").getValue().toString();
-                                String viewAllUrl;
+                                String viewAllUrl = "";
+                                int actionType;
                                 if (snapshot.child("viewAllUrl").exists()) {
                                     viewAllUrl = snapshot.child("viewAllUrl").getValue().toString();
+                                }
+                                if (snapshot.child("actionType").exists()) {
+                                    actionType = Integer.parseInt(snapshot.child("actionType").getValue().toString());
                                 } else {
-                                    viewAllUrl = "";
+                                    actionType = 0;
                                 }
                                 List<MainPageModel> bannerList = new ArrayList<>();
 
-                                if(snapshot.child("banners").exists()){
+                                if (snapshot.child("banners").exists()) {
                                     for (DataSnapshot snapshot1 : snapshot.child("banners").getChildren()) {
                                         String bannerImg = snapshot1.child("bannerImg").getValue().toString();
                                         String bannerText = snapshot1.child("bannerText").getValue().toString();
@@ -236,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
                                                 bannerImg, bannerText, bannerUrl, true));
                                     }
                                     mainPageModelList.add(new MainPageModel(4,
-                                            title, viewAllUrl, bannerList));
+                                            title, viewAllUrl, bannerList, actionType));
                                 }
 
                             }

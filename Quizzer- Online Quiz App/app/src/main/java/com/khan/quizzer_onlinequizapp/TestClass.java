@@ -6,8 +6,59 @@ public class TestClass {
     private long order,time;
     private double socreDe,socreInc;
     private String mcqUrl,cqUrl;
+    private String urlMedical, urlEngineering, urlPublic, urlPrivate;
 
-    public TestClass(String setId, String setName,long order) {
+    public TestClass(String setId, String setName, long order, String urlMedical, String urlEngineering, String urlPublic, String urlPrivate) {
+        this.setId = setId;
+        this.setName = setName;
+        this.order = order;
+        this.urlMedical = urlMedical;
+        this.urlEngineering = urlEngineering;
+        this.urlPublic = urlPublic;
+        this.urlPrivate = urlPrivate;
+    }
+
+    public void setSocreDe(double socreDe) {
+        this.socreDe = socreDe;
+    }
+
+    public void setSocreInc(double socreInc) {
+        this.socreInc = socreInc;
+    }
+
+    public String getUrlMedical() {
+        return urlMedical;
+    }
+
+    public void setUrlMedical(String urlMedical) {
+        this.urlMedical = urlMedical;
+    }
+
+    public String getUrlEngineering() {
+        return urlEngineering;
+    }
+
+    public void setUrlEngineering(String urlEngineering) {
+        this.urlEngineering = urlEngineering;
+    }
+
+    public String getUrlPublic() {
+        return urlPublic;
+    }
+
+    public void setUrlPublic(String urlPublic) {
+        this.urlPublic = urlPublic;
+    }
+
+    public String getUrlPrivate() {
+        return urlPrivate;
+    }
+
+    public void setUrlPrivate(String urlPrivate) {
+        this.urlPrivate = urlPrivate;
+    }
+
+    public TestClass(String setId, String setName, long order) {
         this.setId = setId;
         this.setName = setName;
         this.order = order;

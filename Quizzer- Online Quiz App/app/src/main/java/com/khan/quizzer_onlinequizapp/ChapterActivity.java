@@ -30,7 +30,7 @@ public class ChapterActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private Button modelTestBtn;
-    private List<TestClass> chapterList;
+    private List<TestClass> chapterList = new ArrayList<>();
     private int type;
 
     @Override
@@ -53,12 +53,12 @@ public class ChapterActivity extends AppCompatActivity {
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        if (CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters() == null) {
-            finish();
-            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
-        }else {
+//        if (CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters() == null) {
+//            finish();
+//            Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
+//        }else {
             chapterList = CategoriesActivity.list.get(getIntent().getIntExtra("position", 0)).getChapters();
-        }
+//        }
 
         Collections.sort(chapterList, new Comparator<TestClass>() {
             @Override

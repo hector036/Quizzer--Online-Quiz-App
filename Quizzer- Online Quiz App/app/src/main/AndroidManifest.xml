@@ -12,9 +12,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/temp"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/temp_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity android:name=".ViewSolutionActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".QuesbankQuestionsActivity" android:screenOrientation="portrait"/>
         <activity android:name=".SettingsActivity" android:screenOrientation="portrait"/>

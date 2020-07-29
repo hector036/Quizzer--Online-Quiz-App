@@ -124,7 +124,8 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 String horizontalBannerLayoutTitle = mainPageModelList.get(i).getHorizontalScrollLayoutTitle();
                 String horizontalBannerLayoutViewAllUrl = mainPageModelList.get(i).getHorizontalScrollLayoutViewAllUrl();
                 List<MainPageModel> horizontalScrollBannerList = mainPageModelList.get(i).getHorizontalScrollBannerList();
-                ((HorizontalBannerViewholder) viewHolder).setHorizontalBannerLayout(horizontalBannerLayoutTitle, horizontalBannerLayoutViewAllUrl, horizontalScrollBannerList);
+                int actionType = mainPageModelList.get(i).getActionType();
+                ((HorizontalBannerViewholder) viewHolder).setHorizontalBannerLayout(horizontalBannerLayoutTitle, horizontalBannerLayoutViewAllUrl, horizontalScrollBannerList,actionType);
                 break;
             default:
                 return;
@@ -237,7 +238,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 //                    itemView.getContext().startActivity(categoryIntent);
 //                }
 //            });
-//            gridLayout.getChildAt(6).setOnClickListener(new View.OnClickListener() {
+//            gridLayout.getChildAt(3).setOnClickListener(new View.OnClickListener() {
 //                @Override
 //                public void onClick(View v) {
 //                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
@@ -332,7 +333,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             horizontalBannerLayoutRecyclerView.setRecycledViewPool(recycledViewPool);
         }
 
-        private void setHorizontalBannerLayout(String horizontalBannerLayoutTitle, final String horizontalBannerLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList){
+        private void setHorizontalBannerLayout(String horizontalBannerLayoutTitle, final String horizontalBannerLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList,int actionType){
             this.horizontalBannerLayoutTitle.setText(horizontalBannerLayoutTitle);
             if(horizontalBannerLayoutViewAllUrl.isEmpty()){
                 this.horizontalBannerLayoutViewAllButton.setVisibility(View.GONE);
@@ -347,7 +348,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-            MainPageHorizontalBannerAdapter mainPageHorizontalBannerAdapter = new MainPageHorizontalBannerAdapter(horizontalScrollBannerList);
+            MainPageHorizontalBannerAdapter mainPageHorizontalBannerAdapter = new MainPageHorizontalBannerAdapter(horizontalScrollBannerList,actionType);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
