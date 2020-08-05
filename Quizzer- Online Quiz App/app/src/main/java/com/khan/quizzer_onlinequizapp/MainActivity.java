@@ -160,11 +160,11 @@ public class MainActivity extends AppCompatActivity implements UpdateHelper.OnUp
 
         listGrid.add(new HomeModel(R.drawable.mp1, "Subject-wise Test"));
         listGrid.add(new HomeModel(R.drawable.mp2, "Weekly Test"));
-        //  listGrid.add(new HomeModel(R.drawable.mp3, "Central Test"));
+        listGrid.add(new HomeModel(R.drawable.mp4, "Central Test"));
         listGrid.add(new HomeModel(R.drawable.mp3, "Bookmarks"));
-        //listGrid.add(new HomeModel(R.drawable.mp3, "Board Question Bank"));
-        //  listGrid.add(new HomeModel(R.drawable.mp3, "Admission Question Bank"));
-        //listGrid.add(new HomeModel(R.drawable.mp3, "Admission Preparation"));
+        listGrid.add(new HomeModel(R.drawable.mp5, "Board Question Bank"));
+        listGrid.add(new HomeModel(R.drawable.mp6, "Admission Question Bank"));
+        listGrid.add(new HomeModel(R.drawable.mp7, "Admission Preparation"));
 
         adapter = new MainPageAdapter(mainPageModelList);
         mainRecyclerView.setAdapter(adapter);

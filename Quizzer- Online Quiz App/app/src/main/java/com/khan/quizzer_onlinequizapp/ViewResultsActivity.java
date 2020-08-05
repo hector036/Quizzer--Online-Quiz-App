@@ -100,23 +100,24 @@ public class ViewResultsActivity extends AppCompatActivity {
                     TestResults t = new TestResults();
                     t.userID = snapshot.getKey();
                     // t.score= Objects.requireNonNull(snapshot.getValue()).toString();
-                    t.score = (long) snapshot.child("score").getValue();
+                    t.score = Double.parseDouble(snapshot.child("score").getValue().toString());
                     t.profileName = snapshot.child("name").getValue().toString();
                     t.institute = snapshot.child("instituteName").getValue().toString();
                     t.type = 1;
                     result.add(t);
                 }
 
-                if(result.isEmpty()){
+                if (result.isEmpty()) {
                     blankFigureLinearLayout.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     blankFigureLinearLayout.setVisibility(View.GONE);
                 }
 
                 Collections.sort(result, new Comparator<TestResults>() {
                     @Override
                     public int compare(TestResults o1, TestResults o2) {
-                        return (int) (o2.score - o1.score);
+                        return Double.compare(o2.score, o1.score);
+                        //return (int) (o2.score - o1.score);
                     }
                 });
 
@@ -151,7 +152,7 @@ public class ViewResultsActivity extends AppCompatActivity {
     class TestResults {
 
         public String userID, profileName, institute;
-        public long score;
+        public double score;
         public int type, merit;
     }
 

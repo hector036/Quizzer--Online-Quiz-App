@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 class TestAdapter extends ArrayAdapter<Test> implements Filterable {
 
@@ -85,6 +86,8 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
                    questionIntent.putExtra("scoreInc", dataList.get(position).getSocreInc());
                    questionIntent.putExtra("scoreDe", dataList.get(position).getSocreDe());
                    questionIntent.putExtra("time", dataList.get(position).getTime());
+                   questionIntent.putExtra("type",1);
+
                    parent.getContext().startActivity(questionIntent);
                }
             }
@@ -128,46 +131,51 @@ class TestAdapter extends ArrayAdapter<Test> implements Filterable {
 
         int mDay = c.get(Calendar.DAY_OF_MONTH);
         int currentDay = current.get(Calendar.DAY_OF_MONTH);
+        int mMonth = c.get(Calendar.MONTH);
+        int currentMonth = current.get(Calendar.MONTH);
+        int mYear = c.get(Calendar.YEAR);
+        int currentYear = current.get(Calendar.YEAR);
+
 
         int mHour = (c.get(Calendar.HOUR_OF_DAY)) % 12;
         int mAM_PM = (c.get(Calendar.AM_PM));
         int mMin = (c.get(Calendar.MINUTE));
 
         int difDay = currentDay - mDay;
+        int difMonth = currentMonth - mMonth;
+        int difYear = currentYear - mYear;
 
-        if (difDay == 0) {
+        if (difDay == 0 && difMonth == 0 && difYear == 0) {
             StringBuilder str = new StringBuilder();
             str.append("Today - ");
-            str.append(""+mHour);
-            if(mMin!=0){
+            str.append("" + mHour);
+            if (mMin != 0) {
                 str.append(":");
                 String s = String.format("%02d", mMin);
                 str.append(s);
             }
-            if(mAM_PM==0){
+            if (mAM_PM == 0) {
                 str.append(" AM");
-            }else {
+            } else {
                 str.append(" PM");
             }
             finalTime = str.toString();
-        }
-        else if(difDay==1){
+        } else if (difDay == 1 && difMonth == 0 && difYear == 0) {
             StringBuilder str = new StringBuilder();
             str.append("Yesterday - ");
-            str.append(""+mHour);
-            if(mMin!=0){
+            str.append("" + mHour);
+            if (mMin != 0) {
                 str.append(":");
                 String s = String.format("%02d", mMin);
                 str.append(s);
             }
-            if(mAM_PM==0){
+            if (mAM_PM == 0) {
                 str.append(" AM");
-            }else {
+            } else {
                 str.append(" PM");
             }
             finalTime = str.toString();
-        }
-        else if(difDay > 1 && difDay <8){
+        } else if ((difDay > 1 && difDay < 8) && difMonth == 0 && difYear == 0) {
             finalTime = difDay + " days ago";
         }
 

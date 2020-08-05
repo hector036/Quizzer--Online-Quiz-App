@@ -4,6 +4,260 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context=".ViewSolutionActivity">
+
+
+    <ImageView
+        android:id="@+id/reload_pdf"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/reload_pdf" />
+
+    <TextView
+        android:id="@+id/pdf_error_msg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Something Went Wrong"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdfView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:visibility="gone"
+        android:background="@color/pdfBg"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </com.github.barteksc.pdfviewer.PDFView>
+
+    <HorizontalScrollView
+        android:id="@+id/horizontalScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp">
+
+            <Button
+                android:id="@+id/mcq"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_stock"
+                android:backgroundTint="@color/colorPdfSelectorGeneralBg"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="MCQ"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/cq"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_stock"
+                android:backgroundTint="@color/colorPdfSelectorGeneralBg"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="CQ"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/medical"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_stock"
+                android:backgroundTint="@color/colorPdfSelectorGeneralBg"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Medical"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/engineering"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_stock"
+                android:backgroundTint="@color/colorPdfSelectorGeneralBg"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Engineering"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/publicBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_stock"
+                android:backgroundTint="@color/colorPdfSelectorGeneralBg"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Varsity - ka unit"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp" />
+
+            <Button
+                android:id="@+id/privateBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/rounded_stock"
+                android:backgroundTint="@color/colorPdfSelectorGeneralBg"
+
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Private University"
+                android:textAllCaps="false"
+                android:textColor="@color/colorBlack"
+                android:textSize="11sp" />
+
+
+        </LinearLayout>
+
+
+    </HorizontalScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:theme="@style/progressStyle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/buttom_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/question_dialog_bg"
+        android:orientation="vertical"
+        android:elevation="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="0dp">
+
+            <SeekBar
+                android:id="@+id/seekBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:theme="@style/dialogStyle"
+
+                />
+
+            <TextView
+                android:id="@+id/pages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="... ..."
+                android:textSize="16sp"
+                android:textColor="@color/colorBlack"
+                />
+
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/night_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/dialogStyle"
+
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="8dp"
+            android:text="* Night Mode"
+            android:textColor="@color/colorBlack"
+            tools:layout_editor_absoluteY="9dp" />
+
+        <Switch
+            android:id="@+id/horizontal_swipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/dialogStyle"
+            android:paddingStart="20dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp"
+            android:text="* Horizontal Swipe"
+            android:textColor="@color/colorBlack"
+            tools:layout_editor_absoluteY="9dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

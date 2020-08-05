@@ -61,6 +61,8 @@
     <color name="colorPdfSelectorGeneralBg">#EDEDED</color>
     <color name="pdfBg">#ffffff</color>
 
+    <color name="optionDisable">#BCBCBC</color>
+
     <color name="colorHint">#99ffffff</color>
     <color name="disableBtn">#45ffffff</color>
     <color name="redButtonDisabled">#50ffffff</color>

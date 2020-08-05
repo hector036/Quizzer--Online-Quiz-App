@@ -125,7 +125,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 String horizontalBannerLayoutViewAllUrl = mainPageModelList.get(i).getHorizontalScrollLayoutViewAllUrl();
                 List<MainPageModel> horizontalScrollBannerList = mainPageModelList.get(i).getHorizontalScrollBannerList();
                 int actionType = mainPageModelList.get(i).getActionType();
-                ((HorizontalBannerViewholder) viewHolder).setHorizontalBannerLayout(horizontalBannerLayoutTitle, horizontalBannerLayoutViewAllUrl, horizontalScrollBannerList,actionType);
+                ((HorizontalBannerViewholder) viewHolder).setHorizontalBannerLayout(horizontalBannerLayoutTitle, horizontalBannerLayoutViewAllUrl, horizontalScrollBannerList, actionType);
                 break;
             default:
                 return;
@@ -181,7 +181,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
         public void setGridLayout(List<HomeModel> homeModelList) {
 
-            for (int x = 0; x < 3; x++) {
+            for (int x = 0; x < 7; x++) {
                 CircleImageView image = gridLayout.getChildAt(x).findViewById(R.id.iamge_grid_view);
                 TextView title = gridLayout.getChildAt(x).findViewById(R.id.title_grid_view);
 
@@ -206,46 +206,46 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     itemView.getContext().startActivity(intent);
                 }
             });
-//            gridLayout.getChildAt(2).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
-//                    intent.putExtra("type",1);
-//                    itemView.getContext().startActivity(intent);
-//                }
-//            });
-
             gridLayout.getChildAt(2).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(itemView.getContext(), TestsActivity.class);
+                    intent.putExtra("type", 1);
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+            gridLayout.getChildAt(3).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent bookmarkIntent = new Intent(itemView.getContext(), BookmarksActivity.class);
                     itemView.getContext().startActivity(bookmarkIntent);
                 }
             });
-//            gridLayout.getChildAt(4).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
-//                    categoryIntent.putExtra("type", 1);
-//                    itemView.getContext().startActivity(categoryIntent);
-//                }
-//            });
-//            gridLayout.getChildAt(5).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
-//                    categoryIntent.putExtra("type", 2);
-//                    itemView.getContext().startActivity(categoryIntent);
-//                }
-//            });
-//            gridLayout.getChildAt(3).setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
-//                    categoryIntent.putExtra("type", 3);
-//                    itemView.getContext().startActivity(categoryIntent);
-//                }
-//            });
+            gridLayout.getChildAt(4).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+                    categoryIntent.putExtra("type", 1);
+                    itemView.getContext().startActivity(categoryIntent);
+                }
+            });
+            gridLayout.getChildAt(5).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+                    categoryIntent.putExtra("type", 2);
+                    itemView.getContext().startActivity(categoryIntent);
+                }
+            });
+            gridLayout.getChildAt(6).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent categoryIntent = new Intent(itemView.getContext(), CategoriesActivity.class);
+                    categoryIntent.putExtra("type", 3);
+                    itemView.getContext().startActivity(categoryIntent);
+                }
+            });
 
         }
     }
@@ -333,11 +333,11 @@ public class MainPageAdapter extends RecyclerView.Adapter {
             horizontalBannerLayoutRecyclerView.setRecycledViewPool(recycledViewPool);
         }
 
-        private void setHorizontalBannerLayout(String horizontalBannerLayoutTitle, final String horizontalBannerLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList,int actionType){
+        private void setHorizontalBannerLayout(String horizontalBannerLayoutTitle, final String horizontalBannerLayoutViewAllUrl, List<MainPageModel> horizontalScrollBannerList, int actionType) {
             this.horizontalBannerLayoutTitle.setText(horizontalBannerLayoutTitle);
-            if(horizontalBannerLayoutViewAllUrl.isEmpty()){
+            if (horizontalBannerLayoutViewAllUrl.isEmpty()) {
                 this.horizontalBannerLayoutViewAllButton.setVisibility(View.GONE);
-            }else {
+            } else {
                 this.horizontalBannerLayoutViewAllButton.setVisibility(View.VISIBLE);
             }
             this.horizontalBannerLayoutViewAllButton.setOnClickListener(new View.OnClickListener() {
@@ -348,7 +348,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                     }
                 }
             });
-            MainPageHorizontalBannerAdapter mainPageHorizontalBannerAdapter = new MainPageHorizontalBannerAdapter(horizontalScrollBannerList,actionType);
+            MainPageHorizontalBannerAdapter mainPageHorizontalBannerAdapter = new MainPageHorizontalBannerAdapter(horizontalScrollBannerList, actionType);
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(itemView.getContext());
             linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -380,16 +380,21 @@ public class MainPageAdapter extends RecyclerView.Adapter {
 
         int mDay = c.get(Calendar.DAY_OF_MONTH);
         int currentDay = current.get(Calendar.DAY_OF_MONTH);
-
         int mMonth = c.get(Calendar.MONTH);
         String monthS = months[mMonth];
+        int currentMonth = current.get(Calendar.MONTH);
+        int mYear = c.get(Calendar.YEAR);
+        int currentYear = current.get(Calendar.YEAR);
+
         int mHour = (c.get(Calendar.HOUR_OF_DAY)) % 12;
         int mAM_PM = (c.get(Calendar.AM_PM));
         int mMin = (c.get(Calendar.MINUTE));
 
         int difDay = currentDay - mDay;
+        int difMonth = currentMonth - mMonth;
+        int difYear = currentYear - mYear;
 
-        if (difDay == 0) {
+        if (difDay == 0 && difMonth == 0 && difYear == 0) {
             StringBuilder str = new StringBuilder();
             str.append("Today - ");
             str.append("" + mHour);
@@ -404,7 +409,7 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 str.append(" PM");
             }
             finalTime = str.toString();
-        } else if (difDay == 1) {
+        } else if (difDay == 1 && difMonth == 0 && difYear == 0) {
             StringBuilder str = new StringBuilder();
             str.append("Yesterday - ");
             str.append("" + mHour);
@@ -419,9 +424,9 @@ public class MainPageAdapter extends RecyclerView.Adapter {
                 str.append(" PM");
             }
             finalTime = str.toString();
-        } else if (difDay > 1 && difDay < 8) {
+        } else if ((difDay > 1 && difDay < 8) && difMonth == 0 && difYear == 0) {
             finalTime = difDay + " days ago";
-        } else {
+        } else if (difYear == 0) {
             finalTime = mDay + " " + monthS;
         }
 

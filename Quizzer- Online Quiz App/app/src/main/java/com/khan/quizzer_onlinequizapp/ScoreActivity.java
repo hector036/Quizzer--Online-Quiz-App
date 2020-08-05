@@ -21,8 +21,9 @@ public class ScoreActivity extends AppCompatActivity {
     private TextView total;
     private Button doneBtn;
     private InterstitialAd mInterstitialAd;
-    private int exmScore;
+    private double exmScore;
     private int type;
+    private int round = 0, totalQues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,25 +34,23 @@ public class ScoreActivity extends AppCompatActivity {
         total = findViewById(R.id.total);
         doneBtn = findViewById(R.id.done_button);
 
-        exmScore = getIntent().getIntExtra("score", 0);
+        exmScore = getIntent().getDoubleExtra("score", 0.0);
         type = getIntent().getIntExtra("type", 0);
-
-        if (exmScore == 0) {
-            TextCounter.newBuilder().setTextView(score).setType(TextCounter.LONG).from(1).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).build().start();
-
+        totalQues = getIntent().getIntExtra("total", 0);
+        if (type == 1) {
+            round = 2;
+            resizeTextView();
+        }
+        if (exmScore == 0.0) {
+            TextCounter.newBuilder().setTextView(score).setType(TextCounter.DOUBLE).from(1d).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).setRound(round).build().start();
         } else {
-            TextCounter.newBuilder().setTextView(score).setType(TextCounter.LONG).from(0).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).build().start();
+            TextCounter.newBuilder().setTextView(score).setType(TextCounter.DOUBLE).from(0d).to(exmScore).setDuration(500).setMode(TextCounter.ACCELERATION_FROM_ALPHA_MODE).setFPS(100).setRound(round).build().start();
         }
 
-        total.setText(String.valueOf(getIntent().getIntExtra("total", 0)));
+        total.setText(String.valueOf(totalQues));
         doneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//
-//                if (mInterstitialAd.isLoaded()){
-//                    mInterstitialAd.show();
-//                    return;
-//                }
 
                 Intent intent = new Intent(ScoreActivity.this, AnsSheetActivity.class);
                 intent.putExtra("isScoreBoard", 0);
@@ -63,28 +62,23 @@ public class ScoreActivity extends AppCompatActivity {
 
     }
 
-//    private void loadAds() {
-//
-//        AdView mAdView = findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
-//
-//        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.interstitialAd_id));
-//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-//
-//        mInterstitialAd.setAdListener(new AdListener(){
-//            @Override
-//            public void onAdClosed() {
-//                super.onAdClosed();
-//                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-//
-//                Intent intent = new Intent(ScoreActivity.this,AnsSheetActivity.class);
-//                startActivity(intent);
-//                finish();
-//                return;
-//
-//            }
-//        });
-//    }
+    private void resizeTextView() {
+        if (exmScore < 10) {
+            score.setTextSize(40);
+        } else if (exmScore < 100 && exmScore > 9) {
+            score.setTextSize(35);
+        } else {
+            score.setTextSize(30);
+        }
+
+        if (totalQues < 10) {
+            total.setTextSize(56);
+        } else if (totalQues < 100 && totalQues > 9) {
+            total.setTextSize(45);
+        } else {
+            total.setTextSize(35);
+        }
+
+    }
+
 }

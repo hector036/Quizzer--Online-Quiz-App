@@ -66,7 +66,7 @@ public class QuestionsActivity extends AppCompatActivity {
     private List<QuestionModel> bookmarksList;
 
     private int position;
-    private int score = 0;
+    private double score = 0.0;
     private int type;
     private int count = 0;
     private String category;
@@ -386,7 +386,7 @@ public class QuestionsActivity extends AppCompatActivity {
             // selectOption.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#55D394")));
             selectOption.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.colorBlueApp)));
             listAns.get(list.get(position).getInitPosition()).setYourAns(selectOption.getText().toString());
-            score++;
+            score = score + 1.0;
 
         } else {
 

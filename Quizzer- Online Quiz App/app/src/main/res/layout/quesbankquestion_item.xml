@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/rounded_box"
-    android:backgroundTint="#ffffff"
+    android:backgroundTint="@color/colorWhite"
     android:orientation="vertical">
 
     <LinearLayout
@@ -28,18 +28,17 @@
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 app:setClickable="true"
-                app:setTextColor="@android:color/black" />
+                app:setTextColor="@color/colorBlack" />
 
             <TextView
                 android:id="@+id/quesText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:textColor="@color/colorBlack"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="gone"
-
-                />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/figure"
@@ -47,7 +46,6 @@
                 android:layout_height="200dp"
                 android:layout_weight="1"
                 android:visibility="gone"
-
                 app:srcCompat="@drawable/ic_launcher_background" />
 
         </LinearLayout>
@@ -74,9 +72,9 @@
                     android:id="@+id/radioA"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:buttonTint="@color/colorPrimary"
+                    android:buttonTint="@color/colorBlueApp"
                     android:text="A)"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -92,12 +90,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:setClickable="true"
-                        app:setTextColor="@android:color/black" />
+                        app:setTextColor="@color/colorBlack" />
 
                     <TextView
                         android:id="@+id/opAText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -121,8 +120,9 @@
                     android:id="@+id/radioB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/colorPrimary"
+                    android:buttonTint="@color/colorBlueApp"
                     android:text="B)"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -138,12 +138,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:setClickable="true"
-                        app:setTextColor="@android:color/black" />
+                        app:setTextColor="@color/colorBlack" />
 
                     <TextView
                         android:id="@+id/opBText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -167,8 +168,9 @@
                     android:id="@+id/radioC"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/colorPrimary"
+                    android:buttonTint="@color/colorBlueApp"
                     android:text="C)"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -184,12 +186,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:setClickable="true"
-                        app:setTextColor="@android:color/black" />
+                        app:setTextColor="@color/colorBlack" />
 
                     <TextView
                         android:id="@+id/opCText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -213,8 +216,9 @@
                     android:id="@+id/radioD"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/colorPrimary"
+                    android:buttonTint="@color/colorBlueApp"
                     android:text="D)"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -230,12 +234,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:setClickable="true"
-                        app:setTextColor="@android:color/black" />
+                        app:setTextColor="@color/colorBlack" />
 
                     <TextView
                         android:id="@+id/opDText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
@@ -251,17 +256,18 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/linearLayoutOptionE"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/linearLayoutOptionE"
                 android:orientation="horizontal">
 
                 <RadioButton
                     android:id="@+id/radioE"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:buttonTint="@color/colorPrimary"
+                    android:buttonTint="@color/colorBlueApp"
                     android:text="E)"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16sp" />
 
                 <LinearLayout
@@ -277,12 +283,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:setClickable="true"
-                        app:setTextColor="@android:color/black" />
+                        app:setTextColor="@color/colorBlack" />
 
                     <TextView
                         android:id="@+id/opEText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/colorBlack"
                         android:textStyle="bold"
                         android:visibility="gone" />
 
